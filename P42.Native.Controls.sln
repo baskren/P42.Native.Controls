@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.809.7
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P42.Native.Controls.Shared", "P42.Native.Controls.Common\P42.Native.Controls.Shared.csproj", "{5E97ED9F-8590-430B-B710-31DB17933CDE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DemoApp", "DemoApp", "{47E94847-B230-48F1-835B-8112C2DB2258}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Droid", "Demo.Droid\Demo.Droid.csproj", "{899B1336-24C7-48F0-A8BA-2EF149BBBF92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P42.Native.Controls.Droid", "P42.Native.Controls.Droid\P42.Native.Controls.Droid.csproj", "{B26D6545-4CF4-40BA-9DE6-3B60C8FEF571}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "P42.Utils", "P42.Utils", "{A44DDE5D-A07A-485E-8348-7D09E4531659}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P42.Utils", "P42.Utils\P42.Utils\P42.Utils.csproj", "{74DD3A7E-11A2-480E-8D11-6F11016B6D7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P42.Utils.Droid", "P42.Utils\P42.Utils.Droid\P42.Utils.Droid.csproj", "{25F52C0B-8C1B-4245-AFF1-2EEB263C49E9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5E97ED9F-8590-430B-B710-31DB17933CDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E97ED9F-8590-430B-B710-31DB17933CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E97ED9F-8590-430B-B710-31DB17933CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E97ED9F-8590-430B-B710-31DB17933CDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{899B1336-24C7-48F0-A8BA-2EF149BBBF92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{899B1336-24C7-48F0-A8BA-2EF149BBBF92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{899B1336-24C7-48F0-A8BA-2EF149BBBF92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{899B1336-24C7-48F0-A8BA-2EF149BBBF92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B26D6545-4CF4-40BA-9DE6-3B60C8FEF571}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B26D6545-4CF4-40BA-9DE6-3B60C8FEF571}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B26D6545-4CF4-40BA-9DE6-3B60C8FEF571}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B26D6545-4CF4-40BA-9DE6-3B60C8FEF571}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74DD3A7E-11A2-480E-8D11-6F11016B6D7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74DD3A7E-11A2-480E-8D11-6F11016B6D7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74DD3A7E-11A2-480E-8D11-6F11016B6D7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74DD3A7E-11A2-480E-8D11-6F11016B6D7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25F52C0B-8C1B-4245-AFF1-2EEB263C49E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25F52C0B-8C1B-4245-AFF1-2EEB263C49E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25F52C0B-8C1B-4245-AFF1-2EEB263C49E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25F52C0B-8C1B-4245-AFF1-2EEB263C49E9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9CEA0EFC-D23E-4556-AA54-46A72BBB5158}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{899B1336-24C7-48F0-A8BA-2EF149BBBF92} = {47E94847-B230-48F1-835B-8112C2DB2258}
+		{74DD3A7E-11A2-480E-8D11-6F11016B6D7C} = {A44DDE5D-A07A-485E-8348-7D09E4531659}
+		{25F52C0B-8C1B-4245-AFF1-2EEB263C49E9} = {A44DDE5D-A07A-485E-8348-7D09E4531659}
+	EndGlobalSection
+EndGlobal
