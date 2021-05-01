@@ -19,24 +19,14 @@ namespace P42.Native.Controls.Droid
 {
     public class SegmentedControl : SegmentedPanel, INotifyPropertyChanged
     {
-        #region Properties
 
-        static int s_defaultOutlineWidth = (int)(ViewExtensions.ConvertFromDipToPx(1) + 0.5f);
+        static int s_defaultBorderThickness = (int)(DisplayExtensions.DipToPx(1) + 0.5f);
         static Color s_defaultOutlineColor = Color.DarkGray;
 
-        public override bool IsHorizontal
-        {
-            get => base.IsHorizontal;
-            set
-            {
-                if (_isHorizontal != value)
-                {
-                    base.IsHorizontal = value;
-                    UpdateSegments(s => s.IsHorizontal = value);
-                }
-            }
-        }
+        #region Properties
 
+
+        #region Colors
         Color b_TextColor = SegmentButton.s_defaultTextColor;
         public Color TextColor
         {
@@ -85,49 +75,57 @@ namespace P42.Native.Controls.Droid
         public Color OutlineColor
         {
             get => b_OutlineColor;
-            set
-            {
-                if (SetField(ref b_OutlineColor, value))
-                    UpdateOutlineColor();
-            }
+            set => SetField(ref b_OutlineColor, value);
+        }
+        #endregion
+
+        #region Outline Width / Radius
+        double b_borderWidth = s_defaultBorderThickness;
+        public double BorderWidth
+        {
+            get => b_borderWidth;
+            set => SetField(ref b_borderWidth, value);
+        }
+
+        public double DipBorderWidth
+        {
+            get => DisplayExtensions.PxToDip(b_borderWidth);
+            set => BorderWidth = DisplayExtensions.DipToPx(value);
         }
 
 
-        int b_OutlineWidth = s_defaultOutlineWidth;
-        public int OutlineWidth
+        double b_cornerRadius = SegmentButton.s_defaultCornerRadius + s_defaultBorderThickness;
+        public double CornerRadius
         {
-            get => b_OutlineWidth;
+            get => b_cornerRadius;
             set
             {
-                if (SetField(ref b_OutlineWidth, value))
-                    UpdateOutlineWidth();
-            }
-        }
-
-        float b_OutlineRadius = SegmentButton.s_defaultCornerRadius + s_defaultOutlineWidth;
-        public float OutlineRadius
-        {
-            get => b_OutlineRadius;
-            set
-            {
-                if (SetField(ref b_OutlineRadius, value))
+                if (SetField(ref b_cornerRadius, value))
                     UpdateRadii();
             }
         }
 
-        Thickness b_SegmentPadding = SegmentButton.sDefaultPadding;
-        public Thickness SegmentPadding
+        public double DipCornerRadius
         {
-            get => b_SegmentPadding;
-            set
-            {
-                if (SetField(ref b_SegmentPadding, value))
-                    UpdateSegments(s => s.SetPadding(b_SegmentPadding));
-            }
+            get => DisplayExtensions.PxToDip(b_cornerRadius);
+            set => CornerRadius = DisplayExtensions.DipToPx(value);
         }
-
         #endregion
 
+        #region DipPadding
+        Thickness b_dipPadding = SegmentButton.sDefaultDipPadding;
+        public Thickness DipPadding
+        {
+            get => b_dipPadding;
+            set
+            {
+                if (SetField(ref b_dipPadding, value))
+                    UpdateSegments(s => s.SetDipPadding(b_dipPadding));
+            }
+        }
+        #endregion
+
+        #endregion
 
 
         #region Fields
@@ -138,6 +136,8 @@ namespace P42.Native.Controls.Droid
         Paint m_paint = new Paint();
         #endregion
 
+
+        #region Constructors / Initializer
         public SegmentedControl() : base(P42.Utils.Droid.Settings.Context)
         {
             Init();
@@ -171,44 +171,20 @@ namespace P42.Native.Controls.Droid
 
         void Init()
         {
-            //m_layer = new LayerDrawable(new Drawable[] { m_Shape });
-            //Background = m_layer;
+            SetWillNotDraw(false);
             m_paint.AntiAlias = true;
             m_paint.SetStyle(Paint.Style.Fill);
-            SetWillNotDraw(false);
-
-            UpdateOutlineWidth();
-            UpdateOutlineColor();
             UpdateRadii();
             SetPadding(PaddingLeft, PaddingTop, PaddingRight, PaddingBottom);
+            DipSpacing = 0;
         }
+        #endregion
 
+
+        #region Property Change Handlers
         void UpdateRadii()
         {
-            UpdateSegments(s => s.CornerRadius = OutlineRadius - OutlineWidth);
-            //var shape = new RoundRectShape(new float[] { OutlineRadius, OutlineRadius, OutlineRadius, OutlineRadius, OutlineRadius, OutlineRadius, OutlineRadius, OutlineRadius }, null, null);
-            //m_Shape.Shape = shape;
-        }
-
-        void UpdateOutlineColor()
-        {
-            //InvalidateOutline();  // worth looking into
-            //m_Shape.Paint.Color = OutlineColor;
-        }
-
-        void UpdateOutlineWidth()
-        {
-           // m_Shape.Paint.StrokeWidth = OutlineWidth;
-        }
-
-        public override void SetPadding(int left, int top, int right, int bottom)
-        {
-            //var inset = new InsetDrawable(m_Shape, PaddingLeft, PaddingTop, PaddingRight, PaddingBottom);
-            //var paddingCheck = inset.GetPadding(new Rect(PaddingLeft, PaddingTop, PaddingRight, PaddingBottom));
-            //var item = m_layer.GetDrawable(0);
-            //var x = item.GetPadding(new Rect(10, 10, 10, 10));
-            
-            base.SetPadding(left, top, right, bottom);
+            UpdateSegments(s => s.CornerRadius = CornerRadius);
         }
 
         public override void OnViewAdded(View child)
@@ -251,7 +227,7 @@ namespace P42.Native.Controls.Droid
 
         void InitiateSegment(SegmentButton segment)
         {
-            segment.CornerRadius = OutlineRadius - OutlineWidth;
+            segment.CornerRadius = CornerRadius;
             segment.TextColor = TextColor;
             segment.SelectedTextColor = SelectedTextColor;
             segment.BackgroundColor = BackgroundColor;
@@ -284,107 +260,111 @@ namespace P42.Native.Controls.Droid
                     action?.Invoke(button);
             }
         }
+        #endregion
 
-        protected override void OnDraw(Canvas canvas)
-        {
-            m_paint.Color = OutlineColor;
-            canvas.DrawRoundRect(
-                new RectF(0 + PaddingLeft, 0 + PaddingTop, canvas.Width - PaddingRight, canvas.Height - PaddingBottom),
-                OutlineRadius, OutlineRadius,
-                m_paint);
-            base.OnDraw(canvas);
-        }
 
-        public override void OnDrawForeground(Canvas canvas)
-        {
-            base.OnDrawForeground(canvas);
-        }
-
-        protected override void OnLayout(bool changed, int l, int t, int r, int b)
-        {
-            base.OnLayout(changed, l + OutlineWidth, t + OutlineWidth, r - OutlineWidth, b - OutlineWidth);
-        }
-
+        #region Android Measure / Layout / Draw
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
-            var availableWidth = MeasureSpec.GetSize(widthMeasureSpec) - 2 * OutlineWidth;
-            var availableHeight = MeasureSpec.GetSize(heightMeasureSpec) - 2 * OutlineWidth;
+            var borderW = (int)(BorderWidth + 0.5);
+
+            System.Diagnostics.Debug.WriteLine($"SegmentedControl.OnMeasure(({MeasureSpec.GetSize(widthMeasureSpec)},{MeasureSpec.GetMode(widthMeasureSpec)}),({MeasureSpec.GetSize(heightMeasureSpec)},{MeasureSpec.GetMode(heightMeasureSpec)})");
+
+            var availableWidth = MeasureSpec.GetSize(widthMeasureSpec) - 2 * borderW;
+            var availableHeight = MeasureSpec.GetSize(heightMeasureSpec) - 2 * borderW;
             var hzMode = MeasureSpec.GetMode(widthMeasureSpec);
             var vtMode = MeasureSpec.GetMode(heightMeasureSpec);
+
+
 
             base.OnMeasure(
                 MeasureSpec.MakeMeasureSpec(availableWidth, hzMode),
                 MeasureSpec.MakeMeasureSpec(availableHeight, vtMode));
-
-            SetMeasuredDimension(MeasuredWidth + 2 * OutlineWidth, MeasuredHeight + 2 * OutlineWidth);
-
+            SetMeasuredDimension(MeasuredWidth + 2 * borderW, MeasuredHeight + 2 * borderW);
         }
 
-        #region Property Change Handler
-        protected List<string> BatchedPropertyChanges = new List<string>();
-
-        int _batchChanges;
-        [JsonIgnore]
-        public bool BatchChanges
+        /*
+        protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
-            get => _batchChanges > 0;
-            set
-            {
-                if (value)
-                    _batchChanges++;
-                else
-                    _batchChanges--;
-                _batchChanges = Math.Max(0, _batchChanges);
-                if (_batchChanges == 0)
-                {
-                    var propertyNames = new List<string>(BatchedPropertyChanges);
-                    BatchedPropertyChanges.Clear();
-                    foreach (var propertyName in propertyNames)
-                        OnPropertyChanged(propertyName);
-                }
-            }
+            System.Diagnostics.Debug.WriteLine($"SegmentedControl.OnLayout({changed}, {l}, {t}, {r}, {b}");
+            var borderW = (int)(BorderWidth + 0.5);
+            base.OnLayout(changed, l + borderW, t + borderW, r - borderW, b - borderW);
         }
+        */
 
-        [JsonIgnore]
-        public bool HasChanged { get; set; }
-
-        [OnDeserialized]
-        internal void OnDeserializedMethod(StreamingContext context)
-            => HasChanged = false;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        /*
+        protected override void OnDraw(Canvas canvas)
         {
-            if (propertyName == nameof(TextColor))
-            {
-                foreach (var segment in this.Children().Cast<SegmentButton>())
-                {
+            
+            System.Diagnostics.Debug.WriteLine($"SegmentedControl.OnDraw({canvas.Width}, {canvas.Height})");
+            m_paint.Color = OutlineColor;
+            float r = (float)CornerRadius;
+            canvas.DrawRoundRect(
+                new RectF(0 + PaddingLeft, 0 + PaddingTop, canvas.Width - PaddingRight, canvas.Height - PaddingBottom),
+                r, r,
+                m_paint);
+            base.OnDraw(canvas);
+            
+        }
+        */
+        public override void OnDrawForeground(Canvas canvas)
+        {
+            base.OnDrawForeground(canvas);
+            m_paint.Color = OutlineColor;
+            m_paint.SetStyle(Paint.Style.Stroke);
+            m_paint.StrokeWidth = (float)BorderWidth;
+            var borderInset = (float)BorderWidth / 2.0f;
+            float r = (float)CornerRadius - borderInset;
+            canvas.DrawRoundRect(
+                new RectF(PaddingLeft + borderInset, PaddingTop + borderInset, canvas.Width - PaddingRight - borderInset, canvas.Height - PaddingBottom - borderInset),
+                r, r,
+                m_paint);
 
+            System.Diagnostics.Debug.WriteLine($"SegmentedControl.OnDrawForeground: right: {canvas.Width - PaddingRight}  radius:{r}");
+
+            double cellWidth = canvas.Width - PaddingLeft - PaddingRight;
+            double cellHeight = canvas.Height - PaddingTop - PaddingBottom;
+
+            if (IsHorizontal && canvas.Width > 1)
+                cellWidth /= ChildCount;
+            else if (!IsHorizontal && canvas.Height > 1)
+                cellHeight /= ChildCount;
+
+            var path = new Path();
+
+            if (IsHorizontal)
+            {
+                double start = PaddingLeft;
+                var top = (float)(PaddingTop + BorderWidth);
+                var bottom = (float)(PaddingTop + cellHeight - BorderWidth);
+                for (int i = 0; i < ChildCount - 1; i++)
+                {
+                    start += cellWidth;
+                    var x = (int) (start + 0.5);
+                    path.MoveTo(x, top);
+                    path.LineTo(x, bottom);
                 }
             }
-
-            if (BatchChanges)
-                BatchedPropertyChanges.Add(propertyName);
             else
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            {
+                double start = PaddingTop;
+                var left = (float)(PaddingLeft + BorderWidth);
+                var right = (float)(PaddingLeft + cellWidth - BorderWidth);
+                for (int i = 0; i < ChildCount -1; i++)
+                {
+                    start += cellHeight;
+                    var y = (int)(start + 0.5);
+                    path.MoveTo(left, y);
+                    path.LineTo(right, y);
+                }
+            }
 
+            canvas.DrawPath(path, m_paint);
         }
-
-        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value))
-                return false;
-            if (propertyName == null)
-                throw new Exception("OnPropertyChanged: null propertyName in SetField");
-
-            field = value;
-            HasChanged = true;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
         #endregion
+
+
+
 
 
     }

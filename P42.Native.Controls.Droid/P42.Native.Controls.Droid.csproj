@@ -48,11 +48,15 @@
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewExtensions.cs" />
     <Compile Include="SegmentedControl\SegmentButton.cs" />
     <Compile Include="SegmentedControl\SegmentedControl.cs" />
     <Compile Include="SegmentedControl\SegmentedPanel.cs" />
     <Compile Include="Platform.cs" />
+    <Compile Include="Popups\BubbleBorder.cs" />
+    <Compile Include="Extensions\ColorExtensions.cs" />
+    <Compile Include="Extensions\ViewExtensions.cs" />
+    <Compile Include="Extensions\DisplayExtensions.cs" />
+    <Compile Include="Extensions\PathExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -66,6 +70,8 @@
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
     <Folder Include="SegmentedControl\" />
+    <Folder Include="Popups\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\P42.Utils\P42.Utils\P42.Utils.csproj">

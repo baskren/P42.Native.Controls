@@ -11,13 +11,14 @@ namespace P42.Native.Controls.Droid
 {
     public class SegmentButton : TextView
     {
+        #region Static Implmenetation
         static ColorStateList sDefaultColorStateList = new ColorStateList(new int[][] { }, new int[] { });
-        internal static Thickness sDefaultPadding = new Thickness(ViewExtensions.ConvertFromDipToPx(5), ViewExtensions.ConvertFromDipToPx(2));
+        internal static Thickness sDefaultDipPadding = new Thickness(5,2);
         internal static Color s_defaultBackgroundColor = Color.White;
         internal static Color s_defaultSelectedBackgroundColor = Color.DarkGray;
         internal static Color s_defaultTextColor = Color.Gray;
         internal static Color s_defaultSelectedTextColor = Color.White;
-        internal static float s_defaultCornerRadius = ViewExtensions.ConvertFromDipToPx(5);
+        internal static float s_defaultCornerRadius = DisplayExtensions.DipToPx(5);
 
         static SegmentButton()
         {
@@ -26,9 +27,17 @@ namespace P42.Native.Controls.Droid
             s_defaultTextColor = colors.DefaultColor.ToColor();
             //  android.R.attr.textColorSecondary
         }
+        #endregion
 
+
+        #region Events
         public event EventHandler<bool> SelectedChanged;
+        #endregion
 
+
+        #region Properties
+
+        #region Index / Selection
         public override bool Selected
         {
             get => base.Selected;
@@ -40,50 +49,6 @@ namespace P42.Native.Controls.Droid
                     SelectedChanged?.Invoke(this, base.Selected);
                     m_Background.SetColor(base.Selected ? SelectedBackgroundColor : BackgroundColor);
                     SetTextColor(base.Selected ? SelectedTextColor : TextColor);
-                }
-            }
-        }
-        
-        Color b_BackgroundColor = s_defaultBackgroundColor;
-        internal Color BackgroundColor
-        {
-            get => b_BackgroundColor;
-            set
-            {
-                if (b_BackgroundColor != value)
-                {
-                    b_BackgroundColor = value;
-                    if (!Selected)
-                        m_Background.SetColor(b_BackgroundColor);
-                }
-            }
-        }
-
-        Color b_selectedBackgroundColor = s_defaultSelectedBackgroundColor;
-        internal Color SelectedBackgroundColor
-        {
-            get => b_selectedBackgroundColor;
-            set
-            {
-                if (b_selectedBackgroundColor != value)
-                {
-                    b_selectedBackgroundColor = value;
-                    if (Selected)
-                        m_Background.SetColor(b_selectedBackgroundColor);
-                }
-            }
-        }
-
-        float b_cornerRadius = s_defaultCornerRadius;
-        internal float CornerRadius
-        {
-            get => b_cornerRadius;
-            set
-            {
-                if (b_cornerRadius != value)
-                {
-                    b_cornerRadius = value;
-                    UpdateRadii();
                 }
             }
         }
@@ -101,7 +66,6 @@ namespace P42.Native.Controls.Droid
                 }
             }
         }
-
 
         SegmentPosition b_Position;
         internal SegmentPosition Position
@@ -130,7 +94,33 @@ namespace P42.Native.Controls.Droid
                 }
             }
         }
+        #endregion
 
+
+        #region Corner Radius
+        public double DipCornerRadius
+        {
+            get => DisplayExtensions.PxToDip(b_cornerRadius);
+            set => CornerRadius = DisplayExtensions.DipToPx(value);
+        }
+
+        double b_cornerRadius = s_defaultCornerRadius;
+        internal double CornerRadius
+        {
+            get => b_cornerRadius;
+            set
+            {
+                if (b_cornerRadius != value)
+                {
+                    b_cornerRadius = value;
+                    UpdateRadii();
+                }
+            }
+        }
+        #endregion
+
+
+        #region Color Properties
         Color b_TextColor = s_defaultTextColor;
         public Color TextColor
         {
@@ -161,11 +151,46 @@ namespace P42.Native.Controls.Droid
             }
         }
 
+        Color b_BackgroundColor = s_defaultBackgroundColor;
+        internal Color BackgroundColor
+        {
+            get => b_BackgroundColor;
+            set
+            {
+                if (b_BackgroundColor != value)
+                {
+                    b_BackgroundColor = value;
+                    if (!Selected)
+                        m_Background.SetColor(b_BackgroundColor);
+                }
+            }
+        }
+
+        Color b_selectedBackgroundColor = s_defaultSelectedBackgroundColor;
+        internal Color SelectedBackgroundColor
+        {
+            get => b_selectedBackgroundColor;
+            set
+            {
+                if (b_selectedBackgroundColor != value)
+                {
+                    b_selectedBackgroundColor = value;
+                    if (Selected)
+                        m_Background.SetColor(b_selectedBackgroundColor);
+                }
+            }
+        }
+        #endregion
+
+        #endregion
 
 
-
+        #region Fields
         GradientDrawable m_Background = new GradientDrawable();
+        #endregion
 
+
+        #region Constructors / Initialization
         public SegmentButton(string text) : this(P42.Utils.Droid.Settings.Context)
         {
             Text = text;
@@ -198,27 +223,21 @@ namespace P42.Native.Controls.Droid
 
         void Init()
         {
-            this.SetPadding(sDefaultPadding);
+            this.SetDipPadding(sDefaultDipPadding);
             Click += OnClicked;
-            //SetPadding(1, 1, 1, 1);
-            //SetMinHeight(20);
-            //SetMinWidth(20);
-            SetIncludeFontPadding(false);
             TextAlignment = Android.Views.TextAlignment.Center;
             m_Background.SetShape(ShapeType.Rectangle);
             m_Background.SetColor(BackgroundColor);
             Background = new RippleDrawable(sDefaultColorStateList, m_Background, null);
         }
+        #endregion
 
+
+        #region Event Handlers
         private void OnClicked(object sender, EventArgs e)
         {
             if (Parent is SegmentedControl control)
                 control.OnSegmentClicked(this);
-        }
-
-        protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
-        {
-            base.OnLayout(changed, left, top, right, bottom);
         }
 
         void UpdateRadii()
@@ -227,24 +246,25 @@ namespace P42.Native.Controls.Droid
 
             if (b_Position == SegmentPosition.Only)
             {
-                tl = tr = br = bl = CornerRadius;
+                tl = tr = br = bl = (float)CornerRadius;
             }
             else if (b_Position == SegmentPosition.First)
             {
                 if (IsHorizontal)
-                    tl = bl = CornerRadius;
+                    tl = bl = (float)CornerRadius;
                 else
-                    tl = tr = CornerRadius;
+                    tl = tr = (float)CornerRadius;
             }
             else if (b_Position == SegmentPosition.Last)
             {
                 if (IsHorizontal)
-                    tr = br = CornerRadius;
+                    tr = br = (float)CornerRadius;
                 else
-                    bl = br = CornerRadius;
+                    bl = br = (float)CornerRadius;
             }
             m_Background.SetCornerRadii(new float[] { tl, tl, tr, tr, br, br, bl, bl }); // TL, TR, BR, BL
         }
+
         /*
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
@@ -257,6 +277,13 @@ namespace P42.Native.Controls.Droid
 
             System.Diagnostics.Debug.WriteLine($"   Button measureW:{MeasuredWidth} measuredH:{MeasuredHeight} ");
         }
+        protected override void OnDraw(Canvas canvas)
+        {
+            base.OnDraw(canvas);
+            System.Diagnostics.Debug.WriteLine($"SegmentButton.OnDraw: radius:{CornerRadius}");
+        }
         */
+
+        #endregion
     }
 }
