@@ -57,6 +57,14 @@
     <Compile Include="Extensions\ViewExtensions.cs" />
     <Compile Include="Extensions\DisplayExtensions.cs" />
     <Compile Include="Extensions\PathExtensions.cs" />
+    <Compile Include="Popups\BubbleBorder.Control.cs" />
+    <Compile Include="Popups\BubbleBorder.FrameworkElement.cs" />
+    <Compile Include="Popups\BubbleBorder.Notifiable.cs" />
+    <Compile Include="Extensions\RectExtensions.cs" />
+    <Compile Include="SegmentedControl\SegmentedPanel.Control.cs" />
+    <Compile Include="SegmentedControl\SegmentedPanel.FrameworkElement.cs" />
+    <Compile Include="SegmentedControl\SegmentedPanel.Notifiable.cs" />
+    <Compile Include="SegmentedControl\SegmentButton.Notifiable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

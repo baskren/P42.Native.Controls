@@ -13,59 +13,59 @@ using Newtonsoft.Json;
 
 namespace P42.Native.Controls.Droid
 {
-    public class SegmentedPanel : Android.Views.ViewGroup, INotifyPropertyChanged
+    public partial class SegmentedPanel : Android.Views.ViewGroup
     {
-        float b_dipSpacing = 1;
-        public float DipSpacing
+        #region Properties
+
+        #region Spacing
+        internal protected int b_Spacing = 0;
+        public virtual int Spacing
         {
-            get => b_dipSpacing;
-            set
-            {
-                if (value != b_dipSpacing)
-                {
-                    b_dipSpacing = value;
-                    Invalidate();
-                }
-            }
+            get => b_Spacing;
+            set => SetRedrawField(ref b_Spacing, value);
         }
 
-        /*
-        protected bool _isHorizontal = true;
-        public virtual bool IsHorizontal
+        public virtual double DipSpacing
         {
-            get => _isHorizontal;
-            set
-            {
-                if (_isHorizontal != value)
-                {
-                    _isHorizontal = value;
-                    Invalidate();
-                }
-            }
+            get => DisplayExtensions.PxToDip(Spacing);
+            set => Spacing = (int)(DisplayExtensions.DipToPx(value)+0.5);
         }
-        */
+        #endregion
 
-        Orientation b_Orientation = Orientation.Horizontal;
-        public Orientation Orientation
+
+        #region Orientation
+        internal protected Orientation b_Orientation = Orientation.Horizontal;
+        public virtual Orientation Orientation
         {
             get => b_Orientation;
             set => SetField(ref b_Orientation, value);
         }
 
         protected bool IsHorizontal => Orientation == Orientation.Horizontal;
+        #endregion
 
-        public bool ExceedsAvailableSpace { get; private set; }
 
-        SelectionMode b_selectionMode = SelectionMode.Single;
-        public SelectionMode SelectionMode
+        #region ExceedsAvailableSpace
+        internal protected bool b_ExceedsAvailableSpace;
+        public virtual bool ExceedsAvailableSpace
         {
-            get => b_selectionMode;
+            get => b_ExceedsAvailableSpace;
+            private set => SetField(ref b_ExceedsAvailableSpace, value);
+        }
+        #endregion
+
+
+        #region SelectionMode
+        internal protected SelectionMode b_SelectionMode = SelectionMode.Single;
+        public virtual SelectionMode SelectionMode
+        {
+            get => b_SelectionMode;
             set
             {
-                if (b_selectionMode != value)
+                if (b_SelectionMode != value)
                 {
-                    b_selectionMode = value;
-                    if (b_selectionMode == SelectionMode.None)
+                    b_SelectionMode = value;
+                    if (b_SelectionMode == SelectionMode.None)
                     {
                         foreach (var child in this.Children())
                         {
@@ -76,7 +76,13 @@ namespace P42.Native.Controls.Droid
                 }
             }
         }
+        #endregion
 
+
+        #endregion
+
+
+        #region Constructors
         public SegmentedPanel(Context context) : base(context)
         {
         }
@@ -96,18 +102,20 @@ namespace P42.Native.Controls.Droid
         public SegmentedPanel(Context context, IAttributeSet attrs, int defStyleAttr, int defStyleRes) : base(context, attrs, defStyleAttr, defStyleRes)
         {
         }
+        #endregion
 
+
+        #region Android Measure / Layout / Draw
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
-            System.Diagnostics.Debug.WriteLine($"SegmentedPanel.OnMeasure(({MeasureSpec.GetSize(widthMeasureSpec)},{MeasureSpec.GetMode(widthMeasureSpec)}),({MeasureSpec.GetSize(heightMeasureSpec)},{MeasureSpec.GetMode(heightMeasureSpec)})");
             if (ChildCount > 0)
             {
                 var children = this.Children();
                 foreach (var child in children)
                     child.LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
 
-                var availableWidth = MeasureSpec.GetSize(widthMeasureSpec) - PaddingLeft - PaddingRight;
-                var availableHeight = MeasureSpec.GetSize(heightMeasureSpec) - PaddingTop - PaddingBottom;
+                var availableWidth = MeasureSpec.GetSize(widthMeasureSpec) - (int)(Margin.Horizontal+0.5);
+                var availableHeight = MeasureSpec.GetSize(heightMeasureSpec) - (int)(Margin.Vertical+0.5);
 
                 //System.Diagnostics.Debug.WriteLine($"availW:{availableWidth} availH:{availableHeight}");
 
@@ -127,15 +135,13 @@ namespace P42.Native.Controls.Droid
 
                 int cellWidth = availableWidth;
                 int cellHeight = availableHeight;
-                var deviceSpacing = (int)(DisplayExtensions.DipToPx(DipSpacing) + 0.5f);
                 if (IsHorizontal && availableWidth > 0)
-                    cellWidth = (int)Math.Ceiling((double)(availableWidth - deviceSpacing * (ChildCount - 1)) / ChildCount);
+                    cellWidth = (int)Math.Ceiling((double)(availableWidth - Spacing * (ChildCount - 1)) / ChildCount);
                 else if (!IsHorizontal && availableHeight > 0)
-                    cellHeight = (int)Math.Ceiling((double)(availableHeight - deviceSpacing * (ChildCount - 1)) / ChildCount);
+                    cellHeight = (int)Math.Ceiling((double)(availableHeight - Spacing * (ChildCount - 1)) / ChildCount);
 
-                //System.Diagnostics.Debug.WriteLine($" cellW:{cellWidth} cellH:{cellHeight}");
                 // Having to add Padding to the cell size, below, is yet another example of how the Android developers should have spent more time
-                // thinking about their code and less time piling up sexual harrasment lawsuits.  Bunch of drunk monkeys claiming to be software engineers.
+                // thinking about their code and less time piling up sexual harrasment lawsuits.  
                 MeasureChildren(MeasureSpec.MakeMeasureSpec(cellWidth + PaddingLeft + PaddingRight, hzMode), MeasureSpec.MakeMeasureSpec(cellHeight + PaddingLeft + PaddingRight, vtMode));
 
                 var maxCellWidth = 0;
@@ -150,11 +156,11 @@ namespace P42.Native.Controls.Droid
                 //System.Diagnostics.Debug.WriteLine($" maxW:{maxCellWidth} maxH:{maxCellHeight}");
 
                 var calcWidth = IsHorizontal
-                    ? maxCellWidth * ChildCount + deviceSpacing * (ChildCount - 1)
+                    ? maxCellWidth * ChildCount + Spacing * (ChildCount - 1)
                     : maxCellWidth;
                 var calcHeight = IsHorizontal
                     ? maxCellHeight
-                    : maxCellHeight * ChildCount + deviceSpacing * (ChildCount - 1);
+                    : maxCellHeight * ChildCount + Spacing * (ChildCount - 1);
 
                 var measuredWidth = calcWidth;
                 if (hzMode == MeasureSpecMode.AtMost)
@@ -179,7 +185,8 @@ namespace P42.Native.Controls.Droid
                 //System.Diagnostics.Debug.WriteLine($"measuredW:{measuredWidth} measuredH:{measuredHeight}");
                 //System.Diagnostics.Debug.WriteLine(" ");
                 //SetMeasuredDimension(measuredWidth + PaddingLeft + PaddingRight, measuredHeight + PaddingTop + PaddingBottom);
-                SetMeasuredDimension(measuredWidth + PaddingLeft + PaddingRight, measuredHeight + PaddingTop + PaddingBottom);
+                //SetMeasuredDimension(measuredWidth + PaddingLeft + PaddingRight, measuredHeight + PaddingTop + PaddingBottom);
+                SetMeasuredDimension((int)(measuredWidth + Margin.Horizontal + PaddingLeft + 0.5), (int)(measuredHeight + Margin.Vertical + PaddingTop + 0.5));
                 ExceedsAvailableSpace = tooSmall || calcWidth > availableWidth || calcHeight > availableHeight;
             }
             else
@@ -191,96 +198,46 @@ namespace P42.Native.Controls.Droid
 
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
-            System.Diagnostics.Debug.WriteLine($"SegmentedPanel.OnLayout({changed}, {l}, {t}, {r}, {b}");
             if (ChildCount > 0)
             {
                 var children = this.Children();
 
-                var availableWidth = r - l - PaddingLeft - PaddingRight;
-                var availableHeight = b - t - PaddingTop - PaddingBottom;
+                var availableWidth = r - l - Margin.Horizontal;
+                var availableHeight = b - t - Margin.Vertical;
 
-                float cellWidth = availableWidth;
-                float cellHeight = availableHeight;
-                float deviceSpacing = (int)(DisplayExtensions.DipToPx(DipSpacing) + 0.5f);
+                var cellWidth = availableWidth;
+                var cellHeight = availableHeight;
 
                 if (IsHorizontal && availableWidth > 0)
-                    cellWidth = (availableWidth - deviceSpacing * (ChildCount - 1)) / ChildCount;
+                    cellWidth = (availableWidth - Spacing * (ChildCount - 1)) / ChildCount;
                 else if (!IsHorizontal && availableHeight > 0)
-                    cellHeight = (availableHeight - deviceSpacing * (ChildCount - 1)) / ChildCount;
+                    cellHeight = (availableHeight - Spacing * (ChildCount - 1)) / ChildCount;
 
                 if (IsHorizontal)
                 {
-                    float start = PaddingLeft;
+                    var start = Margin.Left;
+                    var top = (int)(Margin.Top + 0.5);
+                    var bottom = (int)(Margin.Top + availableHeight + 0.5);
                     foreach (var child in children)
                     {
-                        child.Layout((int)(start + 0.5f), PaddingTop, (int)(start + cellWidth + 0.5f), PaddingTop + availableHeight);
-                        start += cellWidth + deviceSpacing;
+                        child.Layout((int)(start + 0.5), top, (int)(start + cellWidth + 0.5), bottom);
+                        start += cellWidth + Spacing;
                     }
                 }
                 else
                 {
-                    float start = PaddingTop;
+                    var start = Margin.Top;
+                    var left = (int)(Margin.Left + 0.5);
+                    var right = (int)(Margin.Left + availableWidth + 0.5);
                     foreach (var child in children)
                     {
-                        child.Layout(PaddingLeft, (int)(start + 0.5f), PaddingLeft + availableWidth, (int)(start + cellHeight + 0.5f));
-                        start += cellHeight + deviceSpacing;
+                        child.Layout(left, (int)(start + 0.5), right, (int)(start + cellHeight + 0.5f));
+                        start += cellHeight + Spacing;
                     }
                 }
             }
         }
-
-
-
-
-        #region Property Change Handler
-        protected bool hasDrawn;
-
-        [JsonIgnore]
-        public bool HasChanged { get; set; }
-
-        [OnDeserialized]
-        internal void OnDeserializedMethod(StreamingContext context)
-            => HasChanged = false;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value))
-                return false;
-            if (propertyName == null)
-                throw new Exception("null propertyName in SetField");
-
-            field = value;
-            HasChanged = true;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
-        protected bool SetRedrawField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
-        {
-            if (SetField(ref field, value, propertyName, callerPath))
-            {
-                if (hasDrawn) PostInvalidate();
-                return true;
-            }
-            return false;
-        }
-
-        protected bool SetLayoutField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
-        {
-            if (SetField(ref field, value, propertyName, callerPath))
-            {
-                if (hasDrawn) RequestLayout();
-                return true;
-            }
-            return false;
-        }
         #endregion
+
     }
 }

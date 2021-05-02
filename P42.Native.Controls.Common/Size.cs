@@ -16,35 +16,21 @@ namespace P42.Native.Controls
 			get
 			{
 				if (width == 0)
-				{
 					return height == 0;
-				}
 				return false;
 			}
 		}
 
 		public double Width
 		{
-			get
-			{
-				return width;
-			}
-			set
-			{
-				width = value;
-			}
+			get =>  width;
+			set => width = value;
 		}
 
 		public double Height
 		{
-			get
-			{
-				return height;
-			}
-			set
-			{
-				height = value;
-			}
+			get => height;
+			set => height = value;
 		}
 
 		public Size(Point pt)
@@ -63,97 +49,63 @@ namespace P42.Native.Controls
 			=> new Size(s,s);
 
 		public static Size operator +(Size sz1, Size sz2)
-		{
-			return Add(sz1, sz2);
-		}
+			=> Add(sz1, sz2);
 
 		public static Size operator -(Size sz1, Size sz2)
-		{
-			return Subtract(sz1, sz2);
-		}
+			=> Subtract(sz1, sz2);
 
 		public static Size operator *(double left, Size right)
-		{
-			return Multiply(right, left);
-		}
-
+			=> Multiply(right, left);
+		
 		public static Size operator *(Size left, double right)
-		{
-			return Multiply(left, right);
-		}
+			=>  Multiply(left, right);
 
 		public static Size operator /(Size left, double right)
-		{
-			return new Size(left.width / right, left.height / right);
-		}
+			=>  new Size(left.width / right, left.height / right);
 
 		public static bool operator ==(Size sz1, Size sz2)
 		{
 			if (sz1.Width == sz2.Width)
-			{
 				return sz1.Height == sz2.Height;
-			}
 			return false;
 		}
 
 		public static bool operator !=(Size sz1, Size sz2)
-		{
-			return !(sz1 == sz2);
-		}
+			=> !(sz1 == sz2);
 
 		public static explicit operator Point(Size size)
-		{
-			return new Point(size.Width, size.Height);
-		}
+			=> new Point(size.Width, size.Height);
 
 		public static Size Add(Size sz1, Size sz2)
-		{
-			return new Size(sz1.Width + sz2.Width, sz1.Height + sz2.Height);
-		}
+			=> new Size(sz1.Width + sz2.Width, sz1.Height + sz2.Height);
 
 		public static Size Ceiling(Size value)
-		{
-			return new Size((int)Math.Ceiling(value.Width), (int)Math.Ceiling(value.Height));
-		}
+			=> new Size(Math.Ceiling(value.Width), Math.Ceiling(value.Height));
 
 		public static Size Subtract(Size sz1, Size sz2)
-		{
-			return new Size(sz1.Width - sz2.Width, sz1.Height - sz2.Height);
-		}
+			=> new Size(sz1.Width - sz2.Width, sz1.Height - sz2.Height);
 
 		public static Size Truncate(Size value)
-		{
-			return new Size((int)value.Width, (int)value.Height);
-		}
+			=> new Size((int)value.Width, (int)value.Height);
 
 		public static Size Round(Size value)
-		{
-			return new Size((int)Math.Round(value.Width), (int)Math.Round(value.Height));
-		}
+			=> new Size(Math.Round(value.Width), Math.Round(value.Height));
 
 		public override bool Equals(object obj)
 		{
 			if (obj is Size)
-			{
 				return Equals((Size)obj);
-			}
 			return false;
 		}
 
 		public bool Equals(Size other)
-		{
-			return this == other;
-		}
+			=> this == other;
 
 		public override string ToString()
-		{
-			return "{Width=" + width + ", Height=" + height + "}";
-		}
+			=> "{Width=" + width + ", Height=" + height + "}";
 
 		private static Size Multiply(Size size, double multiplier)
-		{
-			return new Size(size.width * multiplier, size.height * multiplier);
-		}
+			=> new Size(size.width * multiplier, size.height * multiplier);
 
         public override int GetHashCode()
         {

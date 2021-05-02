@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Android.Content;
@@ -11,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace P42.Native.Controls.Droid
 {
-    public class BubbleBorder : Android.Views.ViewGroup, INotifyPropertyChanged
+    public partial class BubbleBorder : Android.Views.ViewGroup
     {
 
         #region Properties
@@ -115,233 +116,11 @@ namespace P42.Native.Controls.Droid
         }
         #endregion
 
-
-        #region Control
-        Thickness b_Padding = DisplayExtensions.DipToPx(10);
-        public Thickness Padding
-        {
-            get => b_Padding;
-            set => SetLayoutField(ref b_Padding, value);
-        }
-
-        public Thickness DipPadding
-        {
-            get => DisplayExtensions.PxToDip(b_Padding);
-            set => Padding = DisplayExtensions.DipToPx(value);
-        }
-
-        double b_BorderWidth = DisplayExtensions.DipToPx(1);
-        public double BorderWidth
-        {
-            get => b_BorderWidth;
-            set => SetLayoutField(ref b_BorderWidth, value);
-        }
-
-        public double DipBorderWidth
-        {
-            get => DisplayExtensions.PxToDip(b_BorderWidth);
-            set => BorderWidth = DisplayExtensions.DipToPx(value);
-        }
-
-        Color b_BorderColor = Color.Black;
-        public Color BorderColor
-        {
-            get => b_BorderColor;
-            set => SetRedrawField(ref b_BorderColor, value);
-        }
-
-        double b_cornerRadius = DisplayExtensions.DipToPx(5);
-        public double CornerRadius
-        {
-            get => b_cornerRadius;
-            set => SetRedrawField(ref b_cornerRadius, value);
-        }
-
-        public double DipCornerRadius
-        {
-            get => DisplayExtensions.PxToDip(b_cornerRadius);
-            set => CornerRadius = DisplayExtensions.DipToPx(value);
-        }
-
-        Color b_BackgroundColor = Color.Gray;
-        public Color BackgroundColor
-        {
-            get => b_BackgroundColor;
-            set => SetRedrawField(ref b_BackgroundColor, value);
-        }
-
-
-
-        #region FrameworkElement
-        public double b_dipWidth = -1;
-        public double DipWidth
-        {
-            get => b_dipWidth;
-            set
-            {
-                if (SetField(ref b_dipWidth, value))
-                    UpdateLayoutParams();
-            }
-        }
-
-        public double b_dipHeight = -1;
-        public double DipHeight
-        {
-            get => b_dipHeight;
-            set
-            {
-                if (SetField(ref b_dipHeight, value))
-                    UpdateLayoutParams();
-            }
-        }
-
-        Alignment b_HorizontalAlignment = Alignment.Center;
-        public Alignment HorizontalAlignment
-        {
-            get => b_HorizontalAlignment;
-            set
-            {
-                if (SetField(ref b_HorizontalAlignment, value))
-                    UpdateLayoutParams();
-            }
-        }
-
-        Alignment b_VerticalAlignment = Alignment.Center;
-        public Alignment VerticalAlignment
-        {
-            get => b_VerticalAlignment;
-            set
-            {
-                if (SetField(ref b_VerticalAlignment, value))
-                    UpdateLayoutParams();
-            }
-        }
-
-        Thickness b_Margin = 0;
-        public Thickness Margin
-        {
-            get => b_Margin;
-            set => SetLayoutField(ref b_Margin, value);
-        }
-
-        public Thickness DipMargin
-        {
-            get => DisplayExtensions.PxToDip(b_Margin);
-            set => Margin = DisplayExtensions.DipToPx(value);
-        }
-
-        double b_MinWidth = DisplayExtensions.DipToPx(50);
-        public double MinWidth
-        {
-            get => b_MinWidth;
-            set
-            {
-                if (SetField(ref b_MinWidth, value))
-                    UpdateMinWidth();
-            }
-        }
-
-        public double DipMinWidth
-        {
-            get => DisplayExtensions.PxToDip(b_MinWidth);
-            set => MinWidth = DisplayExtensions.DipToPx(value);
-        }
-
-        double b_MinHeight = DisplayExtensions.DipToPx(50);
-        public double MinHeight
-        {
-            get => b_MinHeight;
-            set
-            {
-                if (SetField(ref b_MinHeight, value))
-                    UpdateMinHeight();
-            }
-        }
-
-        public double DipMinHeight
-        {
-            get => DisplayExtensions.PxToDip(b_MinHeight);
-            set => MinHeight = DisplayExtensions.DipToPx(value);
-        }
-
-        double b_MaxWidth = DisplayExtensions.Width;
-        public double MaxWidth
-        {
-            get => b_MaxWidth;
-            set
-            {
-                if (SetField(ref b_MaxWidth, value) && hasDrawn && m_ActualWidthSet && ActualWidth > MaxWidth)
-                    RequestLayout();
-            }
-        }
-
-        public double DipMaxWidth
-        {
-            get => DisplayExtensions.PxToDip(b_MaxWidth);
-            set => MaxWidth = DisplayExtensions.DipToPx(value);
-        }
-
-        double b_MaxHeight = DisplayExtensions.Height;
-        public double MaxHeight
-        {
-            get => b_MaxHeight;
-            set
-            {
-                if (SetField(ref b_MaxHeight, value) && hasDrawn && m_ActualHeightSet && ActualHeight > MaxHeight)
-                    RequestLayout();
-            }
-        }
-
-        public double DipMaxHeight
-        {
-            get => DisplayExtensions.PxToDip(b_MaxHeight);
-            set => MaxHeight = DisplayExtensions.DipToPx(value);
-        }
-
-        double b_ActualWidth;
-        bool m_ActualWidthSet;
-        public double ActualWidth
-        {
-            get => b_ActualWidth;
-            private set
-            {
-                if (SetField(ref b_ActualWidth, value))
-                    m_ActualWidthSet = true;
-            }
-        }
-
-        public double DipActualWidth => DisplayExtensions.PxToDip(b_ActualWidth);
-
-        double b_ActualHeight;
-        bool m_ActualHeightSet;
-        public double ActualHeight
-        {
-            get => b_ActualHeight;
-            private set
-            {
-                if (SetField(ref b_ActualHeight, value))
-                    m_ActualHeightSet = true;
-            }
-        }
-
-        public double DipActualHeight => DisplayExtensions.PxToDip(b_ActualHeight);
-
-
-
-        #endregion
-
-        #endregion
-
         #endregion
 
 
         #region Fields
         readonly Paint m_paint = new Paint(PaintFlags.AntiAlias);
-        #endregion
-
-
-        #region Events
-        public event EventHandler<Size> SizeChanged;
         #endregion
 
 
@@ -367,8 +146,7 @@ namespace P42.Native.Controls.Droid
         #endregion
 
 
-
-        #region Measure / Layout / Draw
+        #region Android Measure / Layout / Draw
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
@@ -384,18 +162,18 @@ namespace P42.Native.Controls.Droid
             var hzMode = MeasureSpec.GetMode(widthMeasureSpec);
             var vtMode = MeasureSpec.GetMode(heightMeasureSpec);
 
-            /*
+            
             if (hzMode == Android.Views.MeasureSpecMode.Exactly && vtMode == Android.Views.MeasureSpecMode.Exactly)
             {
 
                 SetMeasuredDimension(availableWidth, availableHeight);
                 return;
             }
-            */
+            
             
 
-            var hzInset = (int)(2 * BorderWidth + Padding.Horizontal + (PointerDirection.IsHorizontal() ? PointerLength : 0) + 0.5);
-            var vtInset = (int)(2 * BorderWidth + Padding.Vertical + (PointerDirection.IsVertical() ? PointerLength : 0) + 0.5);
+            var hzInset = (int)(Margin.Horizontal + 2 * BorderWidth + Padding.Horizontal + (PointerDirection.IsHorizontal() ? PointerLength : 0) + 0.5);
+            var vtInset = (int)(Margin.Vertical + 2 * BorderWidth + Padding.Vertical + (PointerDirection.IsVertical() ? PointerLength : 0) + 0.5);
             var contentWidthAvailable = availableWidth - hzInset;
             var contentHeightAvailable = availableHeight - vtInset;
 
@@ -403,25 +181,75 @@ namespace P42.Native.Controls.Droid
             var contentHeightSpec = MeasureSpec.MakeMeasureSpec(contentHeightAvailable, vtMode);
 
             Content.Measure(contentWidthSpec, contentHeightSpec);
+            //MeasureChildren(contentWidthSpec, contentHeightSpec);
+
+            /*
+            var mWidth = Content.MeasuredWidth + hzInset;
+            if (Content.LayoutParameters.Width.GetTypeCode() == TypeCo)
+            var mHeigth = Content.MeasuredHeight + vtInset;
+            */
+
             SetMeasuredDimension(Content.MeasuredWidth + hzInset, Content.MeasuredHeight + vtInset);
         }
 
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
-            System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout({changed}, {l}, {t}, {r}, {b}");
+            //System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout({changed}, {l}, {t}, {r}, {b}");
             if (Content != null)
             {
-                l += (int)(BorderWidth + Padding.Left + (PointerDirection == PointerDirection.Right ? PointerLength : 0) + 0.5);
-                t += (int)(BorderWidth + Padding.Top + (PointerDirection == PointerDirection.Up ? PointerLength : 0) + 0.5);
-                r -= (int)(BorderWidth + Padding.Right + (PointerDirection == PointerDirection.Left ? PointerLength : 0) + 0.5);
-                b -= (int)(BorderWidth + Padding.Bottom + (PointerDirection == PointerDirection.Down ? PointerLength : 0) + 0.5);
-                Content.Layout(l, r, t, b);
+                var cl = Margin.Left + BorderWidth + Padding.Left + (PointerDirection == PointerDirection.Right ? PointerLength : 0);
+                var ct = Margin.Top + BorderWidth + Padding.Top + (PointerDirection == PointerDirection.Up ? PointerLength : 0);
+                var cr = (r - l) - (Margin.Right + BorderWidth + Padding.Right + (PointerDirection == PointerDirection.Left ? PointerLength : 0));
+                var cb = (b - t) - (Margin.Bottom + BorderWidth + Padding.Bottom + (PointerDirection == PointerDirection.Down ? PointerLength : 0));
+
+                var type = Content.GetType();
+
+                if (P42.Utils.ReflectionExtensions.GetPropertyInfo(type, "Gravity") is PropertyInfo propertyInfo)
+                {
+                    var gravity = (Android.Views.GravityFlags)propertyInfo.GetValue(Content);
+                    if (gravity != Android.Views.GravityFlags.Fill && gravity != Android.Views.GravityFlags.NoGravity)
+                    {
+                        var contentWidthSpec = MeasureSpec.MakeMeasureSpec((int)(cr - cl + 0.5), Android.Views.MeasureSpecMode.AtMost);
+                        var contentHeightSpec = MeasureSpec.MakeMeasureSpec((int)(cb - ct + 0.5), Android.Views.MeasureSpecMode.AtMost);
+                        Content.Measure(contentWidthSpec, contentHeightSpec);
+                        if ((gravity & Android.Views.GravityFlags.Bottom) == Android.Views.GravityFlags.Bottom)
+                        {
+                            ct = cb - Content.MeasuredHeight;
+                        }
+                        else if ((gravity & Android.Views.GravityFlags.Top) == Android.Views.GravityFlags.Top || (gravity & Android.Views.GravityFlags.VerticalGravityMask) == 0)
+                        {
+                            cb = ct + Content.MeasuredHeight;
+                        }
+                        else if ((gravity & Android.Views.GravityFlags.CenterVertical) == Android.Views.GravityFlags.CenterVertical)
+                        {
+                            ct += +(cb - ct) / 2 - (Content.MeasuredHeight / 2.0);
+                            cb = ct + Content.MeasuredHeight;
+                        }
+
+                        if ((gravity & Android.Views.GravityFlags.Right) == Android.Views.GravityFlags.Right)
+                        {
+                            cl = cr - Content.MeasuredWidth;
+                        }
+                        else if ((gravity & Android.Views.GravityFlags.Left) == Android.Views.GravityFlags.Left || (gravity & Android.Views.GravityFlags.HorizontalGravityMask) == 0)
+                        {
+                            cr = cl + Content.MeasuredWidth;
+                        }
+                        else if ((gravity & Android.Views.GravityFlags.CenterHorizontal) == Android.Views.GravityFlags.CenterHorizontal)
+                        {
+                            cl += (cr - cl) / 2 - (Content.MeasuredWidth / 2.0);
+                            cr = cl + Content.MeasuredWidth;
+                        }
+                    }
+                }
+
+                Content.Layout((int)(cl+0.5), (int)(ct+0.5), (int)(cr+0.5), (int)(cb+0.5));
             }
 
         }
 
         protected override void OnDraw(Canvas canvas)
         {
+            
             System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnDraw({canvas.Width}, {canvas.Height})");
             Path p = GeneratePath(new Size(canvas.Width, canvas.Height));
             m_paint.Color = BackgroundColor;
@@ -432,7 +260,7 @@ namespace P42.Native.Controls.Droid
             m_paint.Color = BorderColor;
             m_paint.SetStyle(Paint.Style.Stroke);
             canvas.DrawPath(p, m_paint);
-
+            
             base.OnDraw(canvas);
             hasDrawn = true;
         }
@@ -455,10 +283,10 @@ namespace P42.Native.Controls.Droid
 
             var pointerLength = PointerDirection == PointerDirection.None ? 0 : (float)PointerLength;
 
-            var left = 0.0f + borderWidth / 2;
-            var right = (float)(width - Margin.Left - Margin.Right - borderWidth / 2);
-            var top = 0.0f + borderWidth / 2;
-            var bottom = (float)(height - Margin.Top - Margin.Bottom - borderWidth / 2);
+            var left = (float)(Margin.Left + borderWidth / 2);
+            var right = (float)(width  - Margin.Right - borderWidth / 2);
+            var top = (float)(Margin.Top + borderWidth / 2);
+            var bottom = (float)(height - Margin.Bottom - borderWidth / 2);
 
             width -= (PointerDirection.IsHorizontal() ? pointerLength : 0);
             height -= (PointerDirection.IsVertical() ? pointerLength : 0);
@@ -709,99 +537,9 @@ namespace P42.Native.Controls.Droid
         }
         #endregion
 
-        #region Property Change Handlers
-        void UpdateLayoutParams()
-        {
-            //LayoutParameters = new LayoutParams(Android.Views.ViewGroup.LayoutParams.WrapContent, Android.Views.ViewGroup.LayoutParams.WrapContent);
-            
-            LayoutParameters = new LayoutParams(
-                    HorizontalAlignment == Alignment.Stretch
-                        ? Android.Views.ViewGroup.LayoutParams.MatchParent
-                        : DipWidth < 0
-                            ? Android.Views.ViewGroup.LayoutParams.WrapContent
-                            : DipWidth < DipMinWidth
-                                ? (int)(MinWidth+0.5)
-                                : DipWidth > DipMaxWidth
-                                    ? (int)(MaxWidth+0.5)
-                                    : (int)(DisplayExtensions.DipToPx(DipWidth)+0.5),
-                    VerticalAlignment == Alignment.Start
-                        ? Android.Views.ViewGroup.LayoutParams.MatchParent
-                        : DipHeight < 0
-                            ? Android.Views.ViewGroup.LayoutParams.WrapContent
-                            : DipHeight < DipMinHeight
-                                ? (int)(MinHeight+0.5)
-                                : DipHeight > DipMaxHeight
-                                    ? (int)(MaxHeight+0.5)
-                                    : (int)(DisplayExtensions.DipToPx(DipHeight)+0.5)
-                );
-            if (hasDrawn)
-                RequestLayout();
-            
-        }
 
-        void UpdateMinWidth()
-        {
-            SetMinimumWidth((int)(b_MinWidth + 0.5));
-            UpdateLayoutParams();
-        }
 
-        void UpdateMinHeight()
-        {
-            SetMinimumHeight((int)(b_MinHeight + 0.5));
-            UpdateLayoutParams();
-        }
-        #endregion
 
-        #region Property Change Handler
-        protected bool hasDrawn;
-
-        [JsonIgnore]
-        public bool HasChanged { get; set; }
-
-        [OnDeserialized]
-        internal void OnDeserializedMethod(StreamingContext context)
-            => HasChanged = false;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value))
-                return false;
-            if (propertyName == null)
-                throw new Exception("null propertyName in SetField");
-
-            field = value;
-            HasChanged = true;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
-        protected bool SetRedrawField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
-        {
-            if (SetField(ref field, value, propertyName, callerPath))
-            {
-                if (hasDrawn) PostInvalidate();
-                return true;
-            }
-            return false;
-        }
-
-        protected bool SetLayoutField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
-        {
-            if (SetField(ref field, value, propertyName, callerPath))
-            {
-                if (hasDrawn) RequestLayout();
-                return true;
-            }
-            return false;
-        }
-        #endregion
 
     }
 }

@@ -49,5 +49,11 @@ namespace P42.Native.Controls.Droid
 
         public static Size PxToDip(Size sz)
             => sz / Scale;
+
+        public static Rect DipToPx(Rect r)
+            => r * Scale;
+
+        public static Rect PxToDip(Rect r)
+            => r / Scale;
     }
 }

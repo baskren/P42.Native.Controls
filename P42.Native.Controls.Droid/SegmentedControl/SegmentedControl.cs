@@ -20,15 +20,15 @@ namespace P42.Native.Controls.Droid
     public class SegmentedControl : SegmentedPanel, INotifyPropertyChanged
     {
 
-        static int s_defaultBorderThickness = (int)(DisplayExtensions.DipToPx(1) + 0.5f);
+        static int s_DefaultBorderThickness = (int)(DisplayExtensions.DipToPx(1) + 0.5f);
         static Color s_defaultOutlineColor = Color.DarkGray;
 
         #region Properties
 
 
         #region Colors
-        Color b_TextColor = SegmentButton.s_defaultTextColor;
-        public Color TextColor
+        Color b_TextColor = SegmentButton.s_DefaultTextColor;
+        public virtual Color TextColor
         {
             get => b_TextColor;
             set
@@ -38,19 +38,8 @@ namespace P42.Native.Controls.Droid
             }
         }
 
-        Color b_BackgroundColor = SegmentButton.s_defaultBackgroundColor;
-        public Color BackgroundColor
-        {
-            get => b_BackgroundColor;
-            set
-            {
-                if (SetField(ref b_BackgroundColor, value))
-                    UpdateSegments(s => s.BackgroundColor = value);
-            }
-        }
-
-        Color b_SelectedTextColor = SegmentButton.s_defaultSelectedTextColor;
-        public Color SelectedTextColor
+        Color b_SelectedTextColor = SegmentButton.s_DefaultSelectedTextColor;
+        public virtual Color SelectedTextColor
         {
             get => b_SelectedTextColor;
             set
@@ -60,7 +49,17 @@ namespace P42.Native.Controls.Droid
             }
         }
 
-        Color b_SelectedBackgroundColor = SegmentButton.s_defaultSelectedBackgroundColor;
+        public override Color BackgroundColor
+        {
+            get => b_BackgroundColor;
+            set
+            {
+                if (SetField(ref b_BackgroundColor, value))
+                    UpdateSegments(s => s.BackgroundColor = value);
+            }
+        }
+
+        Color b_SelectedBackgroundColor = SegmentButton.s_DefaultSelectedBackgroundColor;
         public Color SelectedBackgroundColor
         {
             get => b_SelectedBackgroundColor;
@@ -80,47 +79,25 @@ namespace P42.Native.Controls.Droid
         #endregion
 
         #region Outline Width / Radius
-        double b_borderWidth = s_defaultBorderThickness;
-        public double BorderWidth
+        public override double CornerRadius
         {
-            get => b_borderWidth;
-            set => SetField(ref b_borderWidth, value);
-        }
-
-        public double DipBorderWidth
-        {
-            get => DisplayExtensions.PxToDip(b_borderWidth);
-            set => BorderWidth = DisplayExtensions.DipToPx(value);
-        }
-
-
-        double b_cornerRadius = SegmentButton.s_defaultCornerRadius + s_defaultBorderThickness;
-        public double CornerRadius
-        {
-            get => b_cornerRadius;
+            get => b_CornerRadius;
             set
             {
-                if (SetField(ref b_cornerRadius, value))
+                if (SetField(ref b_CornerRadius, value))
                     UpdateRadii();
             }
-        }
-
-        public double DipCornerRadius
-        {
-            get => DisplayExtensions.PxToDip(b_cornerRadius);
-            set => CornerRadius = DisplayExtensions.DipToPx(value);
         }
         #endregion
 
         #region DipPadding
-        Thickness b_dipPadding = SegmentButton.sDefaultDipPadding;
-        public Thickness DipPadding
+        public override Thickness Padding
         {
-            get => b_dipPadding;
+            get => b_Padding;
             set
             {
-                if (SetField(ref b_dipPadding, value))
-                    UpdateSegments(s => s.SetDipPadding(b_dipPadding));
+                if (SetField(ref b_Padding, value))
+                    UpdateSegments(s => s.SetPadding(b_Padding));
             }
         }
         #endregion
@@ -133,7 +110,7 @@ namespace P42.Native.Controls.Droid
         //ShapeDrawable m_Shape = new ShapeDrawable();
         //LayerDrawable m_layer;
         //InsetDrawable m_Inset;
-        Paint m_paint = new Paint();
+        Paint m_paint = new Paint(PaintFlags.AntiAlias);
         #endregion
 
 
@@ -171,12 +148,12 @@ namespace P42.Native.Controls.Droid
 
         void Init()
         {
+            b_BackgroundColor = SegmentButton.s_DefaultBackgroundColor;
+            b_BorderWidth = s_DefaultBorderThickness;
+            b_CornerRadius = SegmentButton.s_DefaultCornerRadius + s_DefaultBorderThickness;
+            b_Padding = DisplayExtensions.DipToPx(SegmentButton.s_DefaultPadding);
             SetWillNotDraw(false);
-            m_paint.AntiAlias = true;
-            m_paint.SetStyle(Paint.Style.Fill);
             UpdateRadii();
-            SetPadding(PaddingLeft, PaddingTop, PaddingRight, PaddingBottom);
-            DipSpacing = 0;
         }
         #endregion
 
@@ -232,7 +209,9 @@ namespace P42.Native.Controls.Droid
             segment.SelectedTextColor = SelectedTextColor;
             segment.BackgroundColor = BackgroundColor;
             segment.SelectedBackgroundColor = SelectedBackgroundColor;
-            segment.IsHorizontal = IsHorizontal;
+            segment.Orientation = Orientation;
+            segment.Gravity = GravityFlags.Center;
+            segment.SetPadding(Padding);
         }
 
         internal void OnSegmentClicked(SegmentButton segment)
@@ -268,14 +247,10 @@ namespace P42.Native.Controls.Droid
         {
             var borderW = (int)(BorderWidth + 0.5);
 
-            System.Diagnostics.Debug.WriteLine($"SegmentedControl.OnMeasure(({MeasureSpec.GetSize(widthMeasureSpec)},{MeasureSpec.GetMode(widthMeasureSpec)}),({MeasureSpec.GetSize(heightMeasureSpec)},{MeasureSpec.GetMode(heightMeasureSpec)})");
-
             var availableWidth = MeasureSpec.GetSize(widthMeasureSpec) - 2 * borderW;
             var availableHeight = MeasureSpec.GetSize(heightMeasureSpec) - 2 * borderW;
             var hzMode = MeasureSpec.GetMode(widthMeasureSpec);
             var vtMode = MeasureSpec.GetMode(heightMeasureSpec);
-
-
 
             base.OnMeasure(
                 MeasureSpec.MakeMeasureSpec(availableWidth, hzMode),
@@ -283,30 +258,6 @@ namespace P42.Native.Controls.Droid
             SetMeasuredDimension(MeasuredWidth + 2 * borderW, MeasuredHeight + 2 * borderW);
         }
 
-        /*
-        protected override void OnLayout(bool changed, int l, int t, int r, int b)
-        {
-            System.Diagnostics.Debug.WriteLine($"SegmentedControl.OnLayout({changed}, {l}, {t}, {r}, {b}");
-            var borderW = (int)(BorderWidth + 0.5);
-            base.OnLayout(changed, l + borderW, t + borderW, r - borderW, b - borderW);
-        }
-        */
-
-        /*
-        protected override void OnDraw(Canvas canvas)
-        {
-            
-            System.Diagnostics.Debug.WriteLine($"SegmentedControl.OnDraw({canvas.Width}, {canvas.Height})");
-            m_paint.Color = OutlineColor;
-            float r = (float)CornerRadius;
-            canvas.DrawRoundRect(
-                new RectF(0 + PaddingLeft, 0 + PaddingTop, canvas.Width - PaddingRight, canvas.Height - PaddingBottom),
-                r, r,
-                m_paint);
-            base.OnDraw(canvas);
-            
-        }
-        */
         public override void OnDrawForeground(Canvas canvas)
         {
             base.OnDrawForeground(canvas);
@@ -316,14 +267,12 @@ namespace P42.Native.Controls.Droid
             var borderInset = (float)BorderWidth / 2.0f;
             float r = (float)CornerRadius - borderInset;
             canvas.DrawRoundRect(
-                new RectF(PaddingLeft + borderInset, PaddingTop + borderInset, canvas.Width - PaddingRight - borderInset, canvas.Height - PaddingBottom - borderInset),
+                new Rect(0,0, canvas.Width, canvas.Height).Inflate(-Margin).Inflate(-borderInset).AsRectF(),
                 r, r,
                 m_paint);
 
-            System.Diagnostics.Debug.WriteLine($"SegmentedControl.OnDrawForeground: right: {canvas.Width - PaddingRight}  radius:{r}");
-
-            double cellWidth = canvas.Width - PaddingLeft - PaddingRight;
-            double cellHeight = canvas.Height - PaddingTop - PaddingBottom;
+            double cellWidth = canvas.Width - Margin.Horizontal;
+            double cellHeight = canvas.Height - Margin.Vertical;
 
             if (IsHorizontal && canvas.Width > 1)
                 cellWidth /= ChildCount;
@@ -334,9 +283,9 @@ namespace P42.Native.Controls.Droid
 
             if (IsHorizontal)
             {
-                double start = PaddingLeft;
-                var top = (float)(PaddingTop + BorderWidth);
-                var bottom = (float)(PaddingTop + cellHeight - BorderWidth);
+                double start = Margin.Left;
+                var top = (float)(Margin.Top + BorderWidth);
+                var bottom = (float)(Margin.Top + cellHeight - BorderWidth);
                 for (int i = 0; i < ChildCount - 1; i++)
                 {
                     start += cellWidth;
@@ -347,9 +296,9 @@ namespace P42.Native.Controls.Droid
             }
             else
             {
-                double start = PaddingTop;
-                var left = (float)(PaddingLeft + BorderWidth);
-                var right = (float)(PaddingLeft + cellWidth - BorderWidth);
+                double start = Margin.Top;
+                var left = (float)(Margin.Left + BorderWidth);
+                var right = (float)(Margin.Left + cellWidth - BorderWidth);
                 for (int i = 0; i < ChildCount -1; i++)
                 {
                     start += cellHeight;

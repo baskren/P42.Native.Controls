@@ -35,7 +35,7 @@ namespace Demo.Droid
 
             P42.Native.Controls.Droid.Platform.Init(this);
 
-            /*
+            
             var text1 = new Android.Widget.TextView(this)
             {
                 Text = "TEXT 1",
@@ -46,23 +46,27 @@ namespace Demo.Droid
             text1.SetMinHeight(10);
             text1.SetMinWidth(10);
             layout.AddView(text1);
-            */
-            /*
+
+            var bubbleText = new TextView(this)
+            {
+                Text = "CONTENT",
+                Gravity = GravityFlags.Bottom | GravityFlags.Right,
+                Background = new Android.Graphics.Drawables.ColorDrawable(Android.Graphics.Color.Pink),
+                LayoutParameters = new LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent),
+                Visibility = ViewStates.Visible
+            };
+            bubbleText.SetIncludeFontPadding(false);
             var bubble = new BubbleBorder
             {
                 PointerDirection = P42.Native.Controls.PointerDirection.None,
                 DipPadding = 10,
+                DipMargin = 10,
                 HorizontalAlignment = P42.Native.Controls.Alignment.Stretch,
                 DipHeight = 80,
-                Content = new TextView(this)
-                {
-                    Text = "CONTENT",
-                    Background = new Android.Graphics.Drawables.ColorDrawable(Android.Graphics.Color.Pink)
-                }
+                Content = bubbleText
             };
-
             layout.AddView(bubble);
-            */
+            
 
             var segment1 = new SegmentButton("LEFT");
             var segment2 = new SegmentButton("CENTER");
@@ -71,6 +75,9 @@ namespace Demo.Droid
             var segmentedControl = new SegmentedControl
             {
                 LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.WrapContent),
+                //DipPadding = 5,
+                DipMargin = 10,
+                //DipMargin = 10,
                 //OutlineColor = Android.Graphics.Color.Black.WithAlpha(0.25)
                 //BackgroundColor = Android.Graphics.Color.Transparent,
                 //TextColor = Android.Graphics.Color.Pink
@@ -78,7 +85,6 @@ namespace Demo.Droid
             segmentedControl.AddView(segment1);
             segmentedControl.AddView(segment2);
             segmentedControl.AddView(segment3);
-            segmentedControl.SetPadding(10, 10, 10, 10);
             segmentedControl.Background = new Android.Graphics.Drawables.ColorDrawable(Android.Graphics.Color.Pink);
             layout.AddView(segmentedControl);
 

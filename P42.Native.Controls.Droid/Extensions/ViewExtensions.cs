@@ -18,17 +18,14 @@ namespace P42.Native.Controls.Droid
             return children;
         }
 
-        public static void SetDipPadding(this View view, Thickness t)
-        {
-            var s = DisplayExtensions.Scale;
-            view.SetPadding((int)(t.Left * s), (int)(t.Top * s), (int)(t.Right * s), (int)(t.Bottom * s));
-        }
-
         public static double DipMeasuredWidth(this View view)
             => view.MeasuredWidth / DisplayExtensions.Scale;
 
         public static double DipMeasuredHeight(this View view)
             => view.MeasuredHeight / DisplayExtensions.Scale;
+
+        public static void SetPadding(this View view, Thickness t)
+            => view.SetPadding((int)(t.Left + 0.5), (int)(t.Top + 0.5), (int)(t.Right + 0.5), (int)(t.Bottom + 0.5));
 
         /* These need to be done together ... which doesn't work so well as an Extensions.  If I only had DependencyProprties!
         public static void SetDipWidth(this View view, double value)

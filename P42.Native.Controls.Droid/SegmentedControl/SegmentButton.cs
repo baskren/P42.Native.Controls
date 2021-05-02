@@ -9,22 +9,22 @@ using Android.Widget;
 
 namespace P42.Native.Controls.Droid
 {
-    public class SegmentButton : TextView
+    public partial class SegmentButton : TextView
     {
         #region Static Implmenetation
-        static ColorStateList sDefaultColorStateList = new ColorStateList(new int[][] { }, new int[] { });
-        internal static Thickness sDefaultDipPadding = new Thickness(5,2);
-        internal static Color s_defaultBackgroundColor = Color.White;
-        internal static Color s_defaultSelectedBackgroundColor = Color.DarkGray;
-        internal static Color s_defaultTextColor = Color.Gray;
-        internal static Color s_defaultSelectedTextColor = Color.White;
-        internal static float s_defaultCornerRadius = DisplayExtensions.DipToPx(5);
+        readonly static ColorStateList s_DefaultColorStateList = new ColorStateList(new int[][] { }, new int[] { });
+        internal static Thickness s_DefaultPadding = DisplayExtensions.DipToPx(new Thickness(5,2));
+        internal static Color s_DefaultBackgroundColor = Color.White;
+        internal static Color s_DefaultSelectedBackgroundColor = Color.DarkGray;
+        internal static Color s_DefaultTextColor = Color.Gray;
+        internal static Color s_DefaultSelectedTextColor = Color.White;
+        internal static float s_DefaultCornerRadius = DisplayExtensions.DipToPx(5);
 
         static SegmentButton()
         {
             var tv = new TextView(P42.Utils.Droid.Settings.Context);
             var colors = tv.TextColors;
-            s_defaultTextColor = colors.DefaultColor.ToColor();
+            s_DefaultTextColor = colors.DefaultColor.ToColor();
             //  android.R.attr.textColorSecondary
         }
         #endregion
@@ -53,19 +53,18 @@ namespace P42.Native.Controls.Droid
             }
         }
 
-        bool b_isHorizontal = true;
-        internal bool IsHorizontal
+        Android.Widget.Orientation b_Orientation;
+        public Android.Widget.Orientation Orientation
         {
-            get => b_isHorizontal;
+            get => b_Orientation;
             set
             {
-                if (b_isHorizontal != value)
-                {
-                    b_isHorizontal = value;
+                if (SetField(ref b_Orientation, value))
                     UpdateRadii();
-                }
             }
         }
+
+        internal bool IsHorizontal => b_Orientation == Android.Widget.Orientation.Horizontal;
 
         SegmentPosition b_Position;
         internal SegmentPosition Position
@@ -100,19 +99,19 @@ namespace P42.Native.Controls.Droid
         #region Corner Radius
         public double DipCornerRadius
         {
-            get => DisplayExtensions.PxToDip(b_cornerRadius);
+            get => DisplayExtensions.PxToDip(b_CornerRadius);
             set => CornerRadius = DisplayExtensions.DipToPx(value);
         }
 
-        double b_cornerRadius = s_defaultCornerRadius;
+        double b_CornerRadius = s_DefaultCornerRadius;
         internal double CornerRadius
         {
-            get => b_cornerRadius;
+            get => b_CornerRadius;
             set
             {
-                if (b_cornerRadius != value)
+                if (b_CornerRadius != value)
                 {
-                    b_cornerRadius = value;
+                    b_CornerRadius = value;
                     UpdateRadii();
                 }
             }
@@ -121,7 +120,7 @@ namespace P42.Native.Controls.Droid
 
 
         #region Color Properties
-        Color b_TextColor = s_defaultTextColor;
+        Color b_TextColor = s_DefaultTextColor;
         public Color TextColor
         {
             get => b_TextColor;
@@ -136,7 +135,7 @@ namespace P42.Native.Controls.Droid
             }
         }
 
-        Color b_SelectedTextColor = s_defaultSelectedTextColor;
+        Color b_SelectedTextColor = s_DefaultSelectedTextColor;
         public Color SelectedTextColor
         {
             get => b_SelectedTextColor;
@@ -151,7 +150,7 @@ namespace P42.Native.Controls.Droid
             }
         }
 
-        Color b_BackgroundColor = s_defaultBackgroundColor;
+        Color b_BackgroundColor = s_DefaultBackgroundColor;
         internal Color BackgroundColor
         {
             get => b_BackgroundColor;
@@ -166,7 +165,7 @@ namespace P42.Native.Controls.Droid
             }
         }
 
-        Color b_selectedBackgroundColor = s_defaultSelectedBackgroundColor;
+        Color b_selectedBackgroundColor = s_DefaultSelectedBackgroundColor;
         internal Color SelectedBackgroundColor
         {
             get => b_selectedBackgroundColor;
@@ -223,12 +222,12 @@ namespace P42.Native.Controls.Droid
 
         void Init()
         {
-            this.SetDipPadding(sDefaultDipPadding);
+            this.SetPadding(s_DefaultPadding);
             Click += OnClicked;
             TextAlignment = Android.Views.TextAlignment.Center;
             m_Background.SetShape(ShapeType.Rectangle);
             m_Background.SetColor(BackgroundColor);
-            Background = new RippleDrawable(sDefaultColorStateList, m_Background, null);
+            Background = new RippleDrawable(s_DefaultColorStateList, m_Background, null);
         }
         #endregion
 
@@ -264,25 +263,6 @@ namespace P42.Native.Controls.Droid
             }
             m_Background.SetCornerRadii(new float[] { tl, tl, tr, tr, br, br, bl, bl }); // TL, TR, BR, BL
         }
-
-        /*
-        protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
-        {
-            var availableWidth = MeasureSpec.GetSize(widthMeasureSpec);
-            var availableHeight = MeasureSpec.GetSize(heightMeasureSpec);
-
-            System.Diagnostics.Debug.WriteLine($"   Button availW:{availableWidth} availH:{availableHeight}");
-            System.Diagnostics.Debug.WriteLine($"   Button pL:{PaddingLeft} pT:{PaddingTop} pR:{PaddingRight} pB:{PaddingBottom}");
-            base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
-
-            System.Diagnostics.Debug.WriteLine($"   Button measureW:{MeasuredWidth} measuredH:{MeasuredHeight} ");
-        }
-        protected override void OnDraw(Canvas canvas)
-        {
-            base.OnDraw(canvas);
-            System.Diagnostics.Debug.WriteLine($"SegmentButton.OnDraw: radius:{CornerRadius}");
-        }
-        */
 
         #endregion
     }
