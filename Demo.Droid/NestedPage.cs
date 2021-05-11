@@ -28,7 +28,7 @@ namespace Demo.Droid
             {
                 RowCount = 1,
                 ColumnCount = 2,
-                LayoutParameters = new LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent)
+                LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent)
             };
             var backNumber = pageNumber - 1;
             var backButton = new Button(Context)
@@ -37,9 +37,11 @@ namespace Demo.Droid
                 Gravity = GravityFlags.Center,
                 Background = Color.Blue.AsDrawable(),
                 LayoutParameters = new GridLayout.LayoutParams(
-                    GridLayout.InvokeSpec(0),
-                    GridLayout.InvokeSpec(0))
+                    GridLayout.InvokeSpec(0, 1f),
+                    GridLayout.InvokeSpec(0, 1f))
             };
+            ((GridLayout.LayoutParams)backButton.LayoutParameters).SetGravity(GravityFlags.Center);
+            ((GridLayout.LayoutParams)backButton.LayoutParameters).SetMargins(10, 10, 10, 10);
             backButton.Click += OnBackButton_Click;
             grid.AddView(backButton);
 
@@ -51,9 +53,11 @@ namespace Demo.Droid
                 Gravity = GravityFlags.Center,
                 Background = Color.Blue.AsDrawable(),
                 LayoutParameters = new GridLayout.LayoutParams(
-                    GridLayout.InvokeSpec(0),
-                    GridLayout.InvokeSpec(1))
+                    GridLayout.InvokeSpec(0, 1f),
+                    GridLayout.InvokeSpec(1, 1f))
             };
+            ((GridLayout.LayoutParams)forewardButton.LayoutParameters).SetGravity(GravityFlags.Center);
+            ((GridLayout.LayoutParams)forewardButton.LayoutParameters).SetMargins(10, 10, 10, 10);
             forewardButton.Click += OnForewardButton_Click;
             grid.AddView(forewardButton);
 
