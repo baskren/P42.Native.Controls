@@ -14,7 +14,7 @@ namespace P42.Native.Controls.Droid
         public static App Current => _current;
 
         #region Properties
-        public Page CurrentPage => CurrentView as Page;
+        public IPage CurrentPage => CurrentView as IPage;
         #endregion
 
 
@@ -62,6 +62,7 @@ namespace P42.Native.Controls.Droid
                     InAnimation = options.ToPushAnimation();
                     StayPut.Duration = options.Duration;
                     OutAnimation = StayPut.ToPushAnimation();
+                    ((View)pushPage).Background = Android.Graphics.Color.Transparent.ToColorDrawable();
                     AddView(pushPage as View, new ViewGroup.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent));
                     ShowNext();
                     await Task.Delay(options.Duration);

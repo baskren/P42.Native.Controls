@@ -21,12 +21,7 @@ namespace P42.Native.Controls.Droid
             set
             {
                 if (SetField(ref b_Content, value))
-                {
-                    if (b_Content != null)
-                        m_BorderPopup = new Android.Widget.PopupWindow(b_Content, DisplayExtensions.Width, DisplayExtensions.Height, true);
-                    else
-                        m_BorderPopup = null;
-                }
+                    m_Border.Content = value;
             }
         }
 
@@ -121,21 +116,22 @@ namespace P42.Native.Controls.Droid
         #endregion
 
         #region Page Overlay Properties
-        PageOverlayMode b_PageOverlayMode;
+        PageOverlayMode b_PageOverlayMode = PageOverlayMode.TouchDismiss;
         public PageOverlayMode PageOverlayMode
         {
             get => b_PageOverlayMode;
             set => SetField(ref b_PageOverlayMode, value);
         }
 
-        Color b_PageOverlayColor;
+        Color b_PageOverlayColor = Color.Red.WithAlpha(0.5);
         public Color PageOverlayColor
         {
             get => b_PageOverlayColor;
             set
             {
                 if (SetField(ref b_PageOverlayColor, value))
-                    m_OverlayShape.Paint.Color = PageOverlayColor;
+                    //m_OverlayShape.Paint.Color = PageOverlayColor;
+                    m_Overlay.Background = PageOverlayColor.AsDrawable();
             }
         }
         #endregion
@@ -188,7 +184,7 @@ namespace P42.Native.Controls.Droid
         #region Fields
         Android.Widget.PopupWindow m_OverlayPopup;
         readonly Android.Views.View m_Overlay;
-        readonly Android.Graphics.Drawables.ShapeDrawable m_OverlayShape;
+        //readonly Android.Graphics.Drawables.ShapeDrawable m_OverlayShape;
 
         Android.Widget.PopupWindow m_BorderPopup;
         readonly BubbleBorder m_Border;
@@ -203,13 +199,10 @@ namespace P42.Native.Controls.Droid
         {
             Target = target;
 
-            m_OverlayShape = new Android.Graphics.Drawables.ShapeDrawable();
-            m_OverlayShape.Paint.Color = PageOverlayColor;
-
             m_Overlay = new Android.Views.View(P42.Utils.Droid.Settings.Context)
             {
                 LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent),
-                Background = m_OverlayShape
+                Background = PageOverlayColor.AsDrawable()
             };
 
             //m_OverlayPopup = new Android.Widget.PopupWindow(m_Overlay, DisplayExtensions.Width, DisplayExtensions.Height);
@@ -269,33 +262,58 @@ namespace P42.Native.Controls.Droid
             m_Border.Alpha = 0;
             _popupOpenedCompletionSource = new TaskCompletionSource<bool>();
 
-            UpdateMarginAndAlignment();
-
-            if (PageOverlayMode != PageOverlayMode.None)
+            //UpdateMarginAndAlignment();
+            
+            if (PageOverlayMode != PageOverlayMode.TouchTransparent || b_PageOverlayColor.A > 0 )
             {
                 m_OverlayPopup = new PopupWindow(m_Overlay, DisplayExtensions.Width, DisplayExtensions.Height, true);
-                m_OverlayPopup.ShowAtLocation(App.Current, GravityFlags.Top | GravityFlags.Left, 0, 0);
-                //if (PageOverlayMode == PageOverlayMode.TouchTransparent)
-
-                m_OverlayPopup.SetTouchInterceptor(new OverlayTouchListener((view, point) =>
+                if (PageOverlayMode == PageOverlayMode.TouchTransparent)
                 {
-                    if (PageOverlayMode == PageOverlayMode.TouchDismiss)
+                    m_OverlayPopup.Touchable = false;
+                    m_OverlayPopup.TouchModal = false;
+                }
+                else
+                    m_OverlayPopup.SetTouchInterceptor(new OverlayTouchListener((view, point) =>
                     {
-                        PopAsync(PopupPoppedCause.BackgroundTouch, null);
-                    }
-                    return b_PageOverlayMode != PageOverlayMode.TouchTransparent;
-                }));
+                        if (PageOverlayMode == PageOverlayMode.TouchDismiss)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"TargetedPopup: Overlay INTERCEPT");
+                            PopAsync(PopupPoppedCause.BackgroundTouch, null);
+                            return true;
+                        }
+                        return b_PageOverlayMode != PageOverlayMode.TouchTransparent;
+                    }));
+                m_OverlayPopup.ShowAtLocation(App.Current.CurrentView, GravityFlags.Top | GravityFlags.Left, 0, 0);
             }
 
             UpdateMarginAndAlignment();
 
             m_BorderPopup = new PopupWindow(m_Border, (int)(m_PopupFrame.Width + 0.5), (int)(m_PopupFrame.Height + 0.5), true);
-            m_BorderPopup.ShowAtLocation(App.Current, GravityFlags.Top | GravityFlags.Left, (int)(m_PopupFrame.Left + 0.5), (int)(m_PopupFrame.Top + 0.5));
-            //m_BorderPopup.Touchable = false;
+            //m_BorderPopup = new PopupWindow(m_Border, DisplayExtensions.Width, DisplayExtensions.Height, true);
+            //m_BorderPopup.ShowAtLocation(App.Current, GravityFlags.Top | GravityFlags.Left, 0, 0);
+            m_BorderPopup.Touchable = true;
+            m_BorderPopup.Focusable = false;
+            m_BorderPopup.OutsideTouchable = false;
+            //m_BorderPopup.TouchIntercepted += M_BorderPopup_TouchIntercepted;
+            m_BorderPopup.TouchModal = false;
+            m_BorderPopup.SetTouchInterceptor(null);
+            //m_BorderPopup.ClippingEnabled = false;
+            //m_BorderPopup.SetBackgroundDrawable(PageOverlayColor.AsDrawable());
+            /*
+            m_BorderPopup.SetTouchInterceptor(new OverlayTouchListener((view, point) =>
+            {
+                // return true if touch is within border
+                //return point.X >=0 && point.X < view.Width && point.Y >= 0 && point.Y < view.Height;
+                System.Diagnostics.Debug.WriteLine($"TargetedPopup.INTERCEPT");
 
+                // return: dismiss popup?
+                return true;
+            }));
+            */
             //_popup.IsOpen = true;
             //await Task.Delay(5);
             //_popup.InvalidateMeasure();
+            m_BorderPopup.ShowAtLocation(App.Current.CurrentView, GravityFlags.Top | GravityFlags.Left, (int)(m_PopupFrame.Left + 0.5), (int)(m_PopupFrame.Top + 0.5));
 
 
             if (IsAnimated)
@@ -323,6 +341,12 @@ namespace P42.Native.Controls.Droid
             Pushed?.Invoke(this, EventArgs.Empty);
             _pushCompletionSource?.TrySetResult(true);
 
+        }
+
+        private void M_BorderPopup_TouchIntercepted(object sender, View.TouchEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine($"TargetedPopup.INTERCEPT");
+            e.Handled = false;
         }
 
         public virtual async Task PopAsync(PopupPoppedCause cause = PopupPoppedCause.MethodCalled, [CallerMemberName] object trigger = null)
@@ -955,7 +979,7 @@ namespace P42.Native.Controls.Droid
                 var x = e.GetX();
                 var y = e.GetY();
                 System.Diagnostics.Debug.WriteLine($"PopupTouchListener.OnTouch {e.Action} [{x}, {y}]");
-                return Func?.Invoke(v, new Point(x, y)) ?? true;
+                return Func?.Invoke(v, new Point(x, y)) ?? false;
             }
         }
 

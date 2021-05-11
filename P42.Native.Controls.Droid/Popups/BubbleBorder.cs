@@ -194,7 +194,7 @@ namespace P42.Native.Controls.Droid
 
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
-            //System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout({changed}, {l}, {t}, {r}, {b}");
+            System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout({changed}, {l}, {t}, {r}, {b})  w:{r-l} h:{b-t}");
             if (Content != null)
             {
                 var cl = Margin.Left + BorderWidth + Padding.Left + (PointerDirection == PointerDirection.Right ? PointerLength : 0);

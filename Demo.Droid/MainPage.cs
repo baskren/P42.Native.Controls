@@ -101,6 +101,7 @@ namespace Demo.Droid
                 BorderColor = Color.Black,
                 DipBorderWidth = 2,
                 PreferredPointerDirection = P42.Native.Controls.PointerDirection.None,
+                PageOverlayMode = P42.Native.Controls.PageOverlayMode.TouchTransparent
             };
 
             await popup.PushAsync();
