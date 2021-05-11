@@ -22,9 +22,14 @@ namespace Demo.Droid
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            P42.Utils.Droid.Settings.Init(this);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            SetContentView(Resource.Layout.activity_main);
 
+            var mainPage = new MainPage();
+            SetContentView(new App(new NavigationPage(mainPage)));
+
+            /*
+            SetContentView(Resource.Layout.activity_main);
             var toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
@@ -62,7 +67,7 @@ namespace Demo.Droid
                 DipPadding = 10,
                 DipMargin = 10,
                 HorizontalAlignment = P42.Native.Controls.Alignment.Stretch,
-                DipHeight = 80,
+                DipRequestedHeight = 80,
                 Content = bubbleText
             };
             layout.AddView(bubble);
@@ -104,7 +109,7 @@ namespace Demo.Droid
             text2.SetMinWidth(10);
             layout.AddView(text2);
 
-
+            */
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -162,7 +167,7 @@ namespace Demo.Droid
                 LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent),
                 Background = shape
             };
-            var pageOverlay = new PopupWindow(view, windowSize.Width, windowSize.Height, true);
+            var pageOverlay = new PopupWindow(view, (int)windowSize.Width, (int)windowSize.Height, true);
             pageOverlay.ShowAtLocation(parent, GravityFlags.Top | GravityFlags.Left, 0, 0);
             pageOverlay.SetTouchInterceptor(new PopupTouchListener(pageOverlay));
 
@@ -174,7 +179,7 @@ namespace Demo.Droid
             var popupWindow = new PopupWindow(content, width, height, focusable);
 
 
-            popupWindow.ShowAtLocation(parent, GravityFlags.Top | GravityFlags.Left, (windowSize.Width - content.MeasuredWidth)/2, (windowSize.Height - content.MeasuredHeight)/2);
+            popupWindow.ShowAtLocation(parent, GravityFlags.Top | GravityFlags.Left, (int)((windowSize.Width - content.MeasuredWidth)/2 + 0.5), (int)((windowSize.Height - content.MeasuredHeight)/2 + 0.5));
             popupWindow.SetTouchInterceptor(new PopupTouchListener(popupWindow));
         }
 

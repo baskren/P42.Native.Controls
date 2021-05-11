@@ -7,10 +7,10 @@ using Newtonsoft.Json;
 
 namespace P42.Native.Controls.Droid
 {
-	public partial class BubbleBorder : INotifyPropertyChanged
+    public partial class Page : INotifyPropertyChanged
     {
         #region Property Change Handler
-        protected bool hasDrawn;
+        internal protected bool hasDrawn;
 
         [JsonIgnore]
         public bool HasChanged { get; set; }
@@ -45,7 +45,7 @@ namespace P42.Native.Controls.Droid
 
         protected bool SetLayoutField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
             => SetField(ref field, value, () => { if (hasDrawn) RequestLayout(); }, propertyName, callerPath);
-        #endregion
 
+        #endregion
     }
 }

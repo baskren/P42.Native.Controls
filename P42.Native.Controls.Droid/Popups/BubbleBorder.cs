@@ -263,6 +263,11 @@ namespace P42.Native.Controls.Droid
             
             base.OnDraw(canvas);
             hasDrawn = true;
+
+            ActualWidth = canvas.Width;
+            ActualHeight = canvas.Height;
+            SizeChanged?.Invoke(this, new Size(ActualWidth, ActualHeight));
+            hasDrawn = true;
         }
         #endregion
 

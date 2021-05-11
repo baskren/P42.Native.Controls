@@ -9,6 +9,7 @@
     <Folder Include="Properties\" />
     <Folder Include="SegmentedControl\" />
     <Folder Include="Popups\" />
+    <Folder Include="Grid\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\P42.Utils\P42.Utils\P42.Utils.csproj" />

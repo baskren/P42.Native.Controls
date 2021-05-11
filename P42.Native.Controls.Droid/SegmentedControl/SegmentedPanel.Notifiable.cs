@@ -32,7 +32,7 @@ namespace P42.Native.Controls.Droid
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
+        protected bool SetField<T>(ref T field, T value, Action action = null, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
         {
             if (EqualityComparer<T>.Default.Equals(field, value))
                 return false;
@@ -41,29 +41,17 @@ namespace P42.Native.Controls.Droid
 
             field = value;
             HasChanged = true;
+            action?.Invoke();
             OnPropertyChanged(propertyName);
             return true;
         }
 
         protected bool SetRedrawField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
-        {
-            if (SetField(ref field, value, propertyName, callerPath))
-            {
-                if (hasDrawn) PostInvalidate();
-                return true;
-            }
-            return false;
-        }
+            => SetField(ref field, value, () => { if (hasDrawn) PostInvalidate(); }, propertyName, callerPath);
 
         protected bool SetLayoutField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
-        {
-            if (SetField(ref field, value, propertyName, callerPath))
-            {
-                if (hasDrawn) RequestLayout();
-                return true;
-            }
-            return false;
-        }
+            => SetField(ref field, value, () => { if (hasDrawn) RequestLayout(); }, propertyName, callerPath);
+
         #endregion
     }
 }

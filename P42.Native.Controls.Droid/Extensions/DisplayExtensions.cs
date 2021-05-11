@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Drawing;
+using Java.Interop;
 
 namespace P42.Native.Controls.Droid
 {
@@ -9,7 +9,7 @@ namespace P42.Native.Controls.Droid
 
         public static int Height => P42.Utils.Droid.Settings.Context.Resources.DisplayMetrics.HeightPixels;
 
-        public static System.Drawing.Size Size => new System.Drawing.Size(Width, Height);
+        public static Size Size => new Size(Width, Height);
 
         public static Size DipSize
         {
@@ -55,5 +55,27 @@ namespace P42.Native.Controls.Droid
 
         public static Rect PxToDip(Rect r)
             => r / Scale;
+
+        public static double StatusBarHeight()
+        {
+            if (App.Current.CurrentView is Android.Views.View view)
+            {
+
+                var rect = new Android.Graphics.Rect();
+                var window = ((Android.App.Activity)view.Context).Window;
+                window.DecorView.GetWindowVisibleDisplayFrame(rect);
+
+                using var displayMetrics = new Android.Util.DisplayMetrics();
+
+                using var service = view.Context.GetSystemService(Android.Content.Context.WindowService);
+                using var windowManager = service?.JavaCast<Android.Views.IWindowManager>();
+
+                windowManager?.DefaultDisplay?.GetRealMetrics(displayMetrics);
+
+                var statusBarHeight = rect.Top / displayMetrics?.Density ?? 1;
+                return statusBarHeight;
+            }
+            return 0;
+        }
     }
 }

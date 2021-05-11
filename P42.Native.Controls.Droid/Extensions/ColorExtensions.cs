@@ -24,6 +24,7 @@ namespace P42.Native.Controls.Droid
         public static Android.Graphics.Color WithAlpha(this Android.Graphics.Color color, double alpha)
             => new Android.Graphics.Color(color.R, color.G, color.B, (int)(alpha * 255));
 
-
+        public static Android.Graphics.Drawables.ColorDrawable AsDrawable(this Android.Graphics.Color color)
+            => new Android.Graphics.Drawables.ColorDrawable(color);
     }
 }

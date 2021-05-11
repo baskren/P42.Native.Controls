@@ -4,48 +4,44 @@ namespace P42.Native.Controls.Droid
     public partial class BubbleBorder
     {
         #region FrameworkElement
-        public double b_dipWidth = -1;
-        public double DipWidth
+        public double DipRequestedWidth
         {
-            get => b_dipWidth;
-            set
-            {
-                if (SetField(ref b_dipWidth, value))
-                    UpdateLayoutParams();
-            }
+            get => DisplayExtensions.PxToDip(RequestedWidth);
+            set => RequestedWidth = DisplayExtensions.DipToPx(value);
         }
 
-        public double b_dipHeight = -1;
-        public double DipHeight
+        double b_RequestedWidth = -1;
+        public double RequestedWidth
         {
-            get => b_dipHeight;
-            set
-            {
-                if (SetField(ref b_dipHeight, value))
-                    UpdateLayoutParams();
-            }
+            get => b_RequestedWidth;
+            set => SetField(ref b_RequestedWidth, value, UpdateLayoutParams);
+        }
+
+        public double DipRequestedHeight
+        {
+            get => DisplayExtensions.PxToDip(RequestedHeight);
+            set => RequestedHeight = DisplayExtensions.DipToPx(value);
+        }
+
+        double b_RequestedHeight = -1;
+        public double RequestedHeight
+        {
+            get => b_RequestedHeight;
+            set => SetField(ref b_RequestedHeight, value, UpdateLayoutParams);
         }
 
         Alignment b_HorizontalAlignment = Alignment.Center;
         public Alignment HorizontalAlignment
         {
             get => b_HorizontalAlignment;
-            set
-            {
-                if (SetField(ref b_HorizontalAlignment, value))
-                    UpdateLayoutParams();
-            }
+            set => SetField(ref b_HorizontalAlignment, value, UpdateLayoutParams);
         }
 
         Alignment b_VerticalAlignment = Alignment.Center;
         public Alignment VerticalAlignment
         {
             get => b_VerticalAlignment;
-            set
-            {
-                if (SetField(ref b_VerticalAlignment, value))
-                    UpdateLayoutParams();
-            }
+            set => SetField(ref b_VerticalAlignment, value, UpdateLayoutParams);
         }
 
         Thickness b_Margin = 0;
@@ -65,11 +61,7 @@ namespace P42.Native.Controls.Droid
         public double MinWidth
         {
             get => b_MinWidth;
-            set
-            {
-                if (SetField(ref b_MinWidth, value))
-                    UpdateMinWidth();
-            }
+            set => SetField(ref b_MinWidth, value, UpdateMinWidth);
         }
 
         public double DipMinWidth
@@ -82,11 +74,7 @@ namespace P42.Native.Controls.Droid
         public double MinHeight
         {
             get => b_MinHeight;
-            set
-            {
-                if (SetField(ref b_MinHeight, value))
-                    UpdateMinHeight();
-            }
+            set => SetField(ref b_MinHeight, value, UpdateMinHeight);
         }
 
         public double DipMinHeight
@@ -134,11 +122,7 @@ namespace P42.Native.Controls.Droid
         public double ActualWidth
         {
             get => b_ActualWidth;
-            private set
-            {
-                if (SetField(ref b_ActualWidth, value))
-                    m_ActualWidthSet = true;
-            }
+            private set => SetField(ref b_ActualWidth, value, () => m_ActualWidthSet = true);
         }
 
         public double DipActualWidth => DisplayExtensions.PxToDip(b_ActualWidth);
@@ -148,63 +132,57 @@ namespace P42.Native.Controls.Droid
         public double ActualHeight
         {
             get => b_ActualHeight;
-            private set
-            {
-                if (SetField(ref b_ActualHeight, value))
-                    m_ActualHeightSet = true;
-            }
+            private set => SetField(ref b_ActualHeight, value, () => m_ActualHeightSet = true);
         }
 
         public double DipActualHeight => DisplayExtensions.PxToDip(b_ActualHeight);
 
         #endregion
 
-        #region Events
-        public event EventHandler<Size> SizeChanged;
-        #endregion
 
-
-        #region Property Change Handlers
-        void UpdateLayoutParams()
+        #region Control Property Change Handlers
+        protected virtual void UpdateLayoutParams()
         {
-            //LayoutParameters = new LayoutParams(Android.Views.ViewGroup.LayoutParams.WrapContent, Android.Views.ViewGroup.LayoutParams.WrapContent);
-
             LayoutParameters = new LayoutParams(
                     HorizontalAlignment == Alignment.Stretch
                         ? Android.Views.ViewGroup.LayoutParams.MatchParent
-                        : DipWidth < 0
+                        : RequestedWidth < 0
                             ? Android.Views.ViewGroup.LayoutParams.WrapContent
-                            : DipWidth < DipMinWidth
+                            : RequestedWidth < MinWidth
                                 ? (int)(MinWidth + 0.5)
-                                : DipWidth > DipMaxWidth
+                                : RequestedWidth > MaxWidth
                                     ? (int)(MaxWidth + 0.5)
-                                    : (int)(DisplayExtensions.DipToPx(DipWidth) + 0.5),
+                                    : (int)(RequestedWidth + 0.5),
                     VerticalAlignment == Alignment.Start
                         ? Android.Views.ViewGroup.LayoutParams.MatchParent
-                        : DipHeight < 0
+                        : RequestedHeight < 0
                             ? Android.Views.ViewGroup.LayoutParams.WrapContent
-                            : DipHeight < DipMinHeight
+                            : RequestedHeight < MinHeight
                                 ? (int)(MinHeight + 0.5)
-                                : DipHeight > DipMaxHeight
-                                    ? (int)(MaxHeight + 0.5)
-                                    : (int)(DisplayExtensions.DipToPx(DipHeight) + 0.5)
+                                : RequestedHeight > MaxHeight
+                                    ? (int)(Height + 0.5)
+                                    : (int)(RequestedHeight + 0.5)
                 );
             if (hasDrawn)
                 RequestLayout();
-
         }
 
-        void UpdateMinWidth()
+        protected virtual void UpdateMinWidth()
         {
             SetMinimumWidth((int)(b_MinWidth + 0.5));
             UpdateLayoutParams();
         }
 
-        void UpdateMinHeight()
+        protected virtual void UpdateMinHeight()
         {
             SetMinimumHeight((int)(b_MinHeight + 0.5));
             UpdateLayoutParams();
         }
+        #endregion
+
+
+        #region Events
+        public event EventHandler<Size> SizeChanged;
         #endregion
 
     }

@@ -124,9 +124,9 @@ namespace P42.Native.Controls.Droid
                     var size = P42.Native.Controls.Droid.DisplayExtensions.Size;
 
                     if (availableWidth < 0)
-                        availableWidth = size.Width;
+                        availableWidth = (int)(size.Width + 0.5);
                     if (availableHeight < 0)
-                        availableHeight = size.Height;
+                        availableHeight = (int)(size.Height + 0.5);
                 }
 
                 var hzMode = MeasureSpec.GetMode(widthMeasureSpec);
@@ -236,6 +236,17 @@ namespace P42.Native.Controls.Droid
                     }
                 }
             }
+        }
+
+        protected override void OnDraw(Canvas canvas)
+        {
+            base.OnDraw(canvas);
+
+            ActualWidth = canvas.Width;
+            ActualHeight = canvas.Height;
+            SizeChanged?.Invoke(this, new Size(ActualWidth, ActualHeight));
+
+            hasDrawn = true;
         }
         #endregion
 

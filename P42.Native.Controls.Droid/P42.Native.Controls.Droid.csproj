@@ -65,6 +65,19 @@
     <Compile Include="SegmentedControl\SegmentedPanel.FrameworkElement.cs" />
     <Compile Include="SegmentedControl\SegmentedPanel.Notifiable.cs" />
     <Compile Include="SegmentedControl\SegmentButton.Notifiable.cs" />
+    <Compile Include="Popups\TargetedPopup.cs" />
+    <Compile Include="Popups\TargetedPopup.FrameworkElement.cs" />
+    <Compile Include="Popups\TargetedPopup.Control.cs" />
+    <Compile Include="Navigation\Page.cs" />
+    <Compile Include="Navigation\Page.Notifiable.cs" />
+    <Compile Include="Navigation\NavigationPage.cs" />
+    <Compile Include="Navigation\Navigation.cs" />
+    <Compile Include="Extensions\PageAnimationExtensions.cs" />
+    <Compile Include="Navigation\NavPageWrapper.cs" />
+    <Compile Include="Navigation\NavPageWrapper.Notifiable.cs" />
+    <Compile Include="Navigation\App.cs" />
+    <Compile Include="Navigation\IPage.cs" />
+    <Compile Include="Navigation\NavigationPage.Notifiable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -80,6 +93,7 @@
     <Folder Include="SegmentedControl\" />
     <Folder Include="Popups\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Navigation\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\P42.Utils\P42.Utils\P42.Utils.csproj">
