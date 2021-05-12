@@ -64,16 +64,7 @@ namespace P42.Native.Controls.Droid
                 var rect = new Android.Graphics.Rect();
                 var window = ((Android.App.Activity)view.Context).Window;
                 window.DecorView.GetWindowVisibleDisplayFrame(rect);
-
-                using var displayMetrics = new Android.Util.DisplayMetrics();
-
-                using var service = view.Context.GetSystemService(Android.Content.Context.WindowService);
-                using var windowManager = service?.JavaCast<Android.Views.IWindowManager>();
-
-                windowManager?.DefaultDisplay?.GetRealMetrics(displayMetrics);
-
-                var statusBarHeight = rect.Top / displayMetrics?.Density ?? 1;
-                return statusBarHeight;
+                return rect.Top;
             }
             return 0;
         }

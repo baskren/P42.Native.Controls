@@ -70,6 +70,7 @@ namespace P42.Native.Controls.Droid
             set => MinWidth = DisplayExtensions.DipToPx(value);
         }
 
+
         double b_MinHeight = DisplayExtensions.DipToPx(50);
         public double MinHeight
         {

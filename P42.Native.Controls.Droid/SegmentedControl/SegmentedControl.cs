@@ -102,6 +102,23 @@ namespace P42.Native.Controls.Droid
         }
         #endregion
 
+
+        public List<int> SelectedIndexes
+        {
+            get
+            {
+                //var result = Segments.Where(s => s.IsSelected).Select(s => s.Index).ToList();
+                var result = new List<int>();
+                foreach (var child in this.Children())
+                {
+                    if (child is SegmentButton button &&
+                        button.Selected)
+                        result.Add(button.Index);
+                }
+                return result;
+            }
+        }
+
         #endregion
 
 

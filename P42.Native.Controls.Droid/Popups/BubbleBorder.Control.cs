@@ -8,7 +8,8 @@ namespace P42.Native.Controls.Droid
     public partial class BubbleBorder
     {
         #region Control
-        Thickness b_Padding = DisplayExtensions.DipToPx(10);
+        public static Thickness DefaultPadding = DisplayExtensions.DipToPx(10);
+        Thickness b_Padding = DefaultPadding;
         public Thickness Padding
         {
             get => b_Padding;
@@ -21,7 +22,8 @@ namespace P42.Native.Controls.Droid
             set => Padding = DisplayExtensions.DipToPx(value);
         }
 
-        double b_BorderWidth = DisplayExtensions.DipToPx(1);
+        public static double DefaultBorderWidth = DisplayExtensions.DipToPx(1);
+        double b_BorderWidth = DefaultBorderWidth;
         public double BorderWidth
         {
             get => b_BorderWidth;
@@ -34,14 +36,16 @@ namespace P42.Native.Controls.Droid
             set => BorderWidth = DisplayExtensions.DipToPx(value);
         }
 
-        Color b_BorderColor = Color.Black;
+        public static Color DefaultBorderColor = Color.Black;
+        Color b_BorderColor = DefaultBorderColor;
         public Color BorderColor
         {
             get => b_BorderColor;
             set => SetRedrawField(ref b_BorderColor, value);
         }
 
-        double b_cornerRadius = DisplayExtensions.DipToPx(5);
+        public static double DefaultCornerRadius = DisplayExtensions.DipToPx(5);
+        double b_cornerRadius = DefaultCornerRadius;
         public double CornerRadius
         {
             get => b_cornerRadius;
@@ -54,13 +58,30 @@ namespace P42.Native.Controls.Droid
             set => CornerRadius = DisplayExtensions.DipToPx(value);
         }
 
-        Color b_BackgroundColor = Color.Gray.WithAlpha(0.5);
+        public static Color DefaultBackgroundColor = Color.Gray.WithAlpha(0.5);
+        Color b_BackgroundColor = DefaultBorderColor;
         public Color BackgroundColor
         {
             get => b_BackgroundColor;
             set => SetRedrawField(ref b_BackgroundColor, value);
         }
         #endregion
+
+
+        Alignment b_HorizontalContentAlignment = Alignment.Center;
+        public Alignment HorizontalContentAlignment
+        {
+            get => b_HorizontalContentAlignment;
+            set => SetField(ref b_HorizontalContentAlignment, value);
+        }
+
+        Alignment b_VerticalContentAlignment = Alignment.Center;
+        public Alignment VerticalContentAlignment
+        {
+            get => b_VerticalContentAlignment;
+            set => SetField(ref b_VerticalContentAlignment, value);
+        }
+
 
     }
 }

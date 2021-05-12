@@ -99,6 +99,13 @@ namespace P42.Native.Controls
 			}
 		}
 
+		public double HoriztonalCenter => x + width / 2;
+
+		public double VerticalCenter => y + height / 2;
+
+		public Point Center
+			=> new Point(HoriztonalCenter, VerticalCenter);
+
 		public Rect(double x, double y, double width, double height)
 		{
 			this.x = x;

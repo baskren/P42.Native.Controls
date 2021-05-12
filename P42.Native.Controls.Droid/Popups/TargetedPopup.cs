@@ -65,11 +65,15 @@ namespace P42.Native.Controls.Droid
             set => SetField(ref b_PointerBias, value);
         }
 
-        double b_PointerCornerRadius;
+        double b_PointerCornerRadius = BubbleBorder.DefaultPointerCornerRadius;
         public double PointerCornerRadius
         {
             get => b_PointerCornerRadius;
-            set => SetField(ref b_PointerCornerRadius, value);
+            set
+            {
+                if (SetField(ref b_PointerCornerRadius, value))
+                    m_Border.PointerCornerRadius = PointerCornerRadius;
+            }
         }
 
         PointerDirection b_ActualPointerDirection;
@@ -93,18 +97,22 @@ namespace P42.Native.Controls.Droid
             set => SetField(ref b_FallbackPointerDirection, value);
         }
 
-        double b_PointerLength;
+        double b_PointerLength = BubbleBorder.DefaultPointerLength;
         public double PointerLength
         {
             get => b_PointerLength;
             set => SetField(ref b_PointerLength, value);
         }
 
-        double b_PointerTipRadius;
+        double b_PointerTipRadius = BubbleBorder.DefaultPointerTipRadius;
         public double PointerTipRadius
         {
             get => b_PointerTipRadius;
-            set => SetField(ref b_PointerTipRadius, value);
+            set
+            {
+                if (SetField(ref b_PointerTipRadius, value))
+                    m_Border.PointerTipRadius = PointerTipRadius;
+            }
         }
 
         double b_PointerMargin;
@@ -283,7 +291,7 @@ namespace P42.Native.Controls.Droid
                         }
                         return b_PageOverlayMode != PageOverlayMode.TouchTransparent;
                     }));
-                m_OverlayPopup.ShowAtLocation(App.Current.CurrentView, GravityFlags.Top | GravityFlags.Left, 0, 0);
+                m_OverlayPopup.ShowAtLocation(App.Current, GravityFlags.Top | GravityFlags.Left, 0, 0);
             }
 
             UpdateMarginAndAlignment();
@@ -313,7 +321,7 @@ namespace P42.Native.Controls.Droid
             //_popup.IsOpen = true;
             //await Task.Delay(5);
             //_popup.InvalidateMeasure();
-            m_BorderPopup.ShowAtLocation(App.Current.CurrentView, GravityFlags.Top | GravityFlags.Left, (int)(m_PopupFrame.Left + 0.5), (int)(m_PopupFrame.Top + 0.5));
+            m_BorderPopup.ShowAtLocation(App.Current, GravityFlags.Top | GravityFlags.Left, (int)(m_PopupFrame.Left + 0.5), (int)(m_PopupFrame.Top + 0.5));
 
 
             if (IsAnimated)
@@ -473,6 +481,8 @@ namespace P42.Native.Controls.Droid
             var windowSize = Droid.DisplayExtensions.Size;
             if (windowSize.Width < 1 || windowSize.Height < 1)
                 return;
+            windowSize.Height -= DisplayExtensions.StatusBarHeight();
+
             var windowWidth = windowSize.Width - Margin.Horizontal;
             var windowHeight = windowSize.Height - Margin.Vertical;
             var cleanSize = MeasureBorder(new Size(windowWidth, windowHeight));
@@ -485,8 +495,8 @@ namespace P42.Native.Controls.Droid
             }
 
             var target = TargetBounds();
+            System.Diagnostics.Debug.WriteLine(GetType() + ".UpdateBorderMarginAndAlignment targetBounds:["+target+"]");
 
-            //System.Diagnostics.Debug.WriteLine(GetType() + ".UpdateBorderMarginAndAlignment targetBounds:["+targetBounds+"]");
             var availableSpace = AvailableSpace(target);
             var stats = BestFit(availableSpace, cleanSize);
 
@@ -522,15 +532,15 @@ namespace P42.Native.Controls.Droid
                 }
                 else if (VerticalAlignment == Alignment.Center)
                 {
-                    margin.Top = Math.Max(Margin.Top, (target.Top + target.Bottom) / 2.0 - stats.BorderSize.Height / 2.0);
+                    margin.Top = Math.Max(Margin.Top, target.VerticalCenter - stats.BorderSize.Height / 2.0);
                     vtAlign = Alignment.Start;
                 }
                 else if (VerticalAlignment == Alignment.End)
                 {
-                    margin.Bottom = Math.Max(Margin.Bottom, windowSize.Height - target.Bottom);
+                    margin.Bottom = Math.Max(Margin.Bottom, windowSize.Height  - target.Bottom);
                 }
 
-                if (margin.Top + stats.BorderSize.Height > windowSize.Height - Margin.Bottom)
+                if (margin.Top + stats.BorderSize.Height > windowSize.Height  - Margin.Bottom)
                     margin.Top = windowSize.Height - Margin.Bottom - stats.BorderSize.Height;
 
                 if (VerticalAlignment == Alignment.End)
@@ -554,11 +564,18 @@ namespace P42.Native.Controls.Droid
                 }
 
                 if (HorizontalAlignment == Alignment.Start)
+                {
                     margin.Left = Math.Max(Margin.Left, target.Left);
+                }
                 else if (HorizontalAlignment == Alignment.Center)
-                    margin.Left = Math.Max(Margin.Left, (target.Left + target.Right) / 2.0 - stats.BorderSize.Width / 2.0);
+                {
+                    margin.Left = Math.Max(Margin.Left, target.HoriztonalCenter - stats.BorderSize.Width / 2.0);
+                    hzAlign = Alignment.Start;
+                }
                 else if (HorizontalAlignment == Alignment.End)
+                {
                     margin.Right = Math.Max(Margin.Right, windowSize.Width - target.Right);
+                }
 
                 if (margin.Left + stats.BorderSize.Width > windowSize.Width - Margin.Right)
                     margin.Left = windowSize.Width - Margin.Right - stats.BorderSize.Width;
@@ -720,7 +737,7 @@ namespace P42.Native.Controls.Droid
 
         Rect TargetBounds()
         {
-            var targetBounds = Target is null ? Rect.Empty : Target.GetBounds();
+            var targetBounds = Target is null ? Rect.Empty : Target.GetBoundsRelativeTo(App.Current);
 
             double targetLeft = (Target is null ? TargetPoint.X : targetBounds.Left) - PointerMargin;
             double targetRight = (Target is null ? TargetPoint.X : targetBounds.Right) + PointerMargin;
@@ -924,9 +941,9 @@ namespace P42.Native.Controls.Droid
             if (IsEmpty)
                 return new Size(
                     this.HasPrescribedWidth()
-                        ? width : 50 + Padding.Horizontal,
+                        ? width : MinWidth + Padding.Horizontal,
                     this.HasPrescribedHeight()
-                        ? height : 50 + Padding.Vertical
+                        ? height : MinHeight + Padding.Vertical
                     );
 
             var hasBorder = (BorderWidth > 0) && BorderColor.A > 0;
@@ -939,10 +956,11 @@ namespace P42.Native.Controls.Droid
                 var hzSpec = Android.Views.ViewGroup.MeasureSpec.MakeMeasureSpec((int)(availableWidth + 0.5), HorizontalAlignment.AsMeasureSpecMode());
                 var vtSpec = Android.Views.ViewGroup.MeasureSpec.MakeMeasureSpec((int)(availableHeight + 0.5), VerticalAlignment.AsMeasureSpecMode());
                 Content.Measure(hzSpec, vtSpec);
+                System.Diagnostics.Debug.WriteLine($"TargetedPopup.MeasureBorder Content.Size:{Content.MeasuredWidth}, {Content.MeasuredHeight} Padding:{Padding}");
                 //var result = _contentPresenter.DesiredSize;
                 //System.Diagnostics.Debug.WriteLine("TargetedPopup.MeasureBorder  _contentPresenter.DesiredSize:[" + _contentPresenter.DesiredSize + "]");
-                var resultWidth = Content.MeasuredWidth + Padding.Horizontal + border;
-                var resultHeight = Content.MeasuredHeight +  Padding.Vertical + border;
+                var resultWidth = Math.Min(Math.Max(Content.MeasuredWidth + Padding.Horizontal + border, MinWidth), MaxWidth);
+                var resultHeight = Math.Min(Math.Max(Content.MeasuredHeight + Padding.Vertical + border, MinHeight), MaxHeight);
 
 
 

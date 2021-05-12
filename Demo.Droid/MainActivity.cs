@@ -22,13 +22,14 @@ namespace Demo.Droid
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            P42.Utils.Droid.Settings.Init(this);
+            P42.Native.Controls.Droid.Platform.Init(this);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
 
             var mainPage = new MainPage();
             SetContentView(new App(new NavigationPage(mainPage)));
 
             /*
+            
             SetContentView(Resource.Layout.activity_main);
             var toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
@@ -38,14 +39,13 @@ namespace Demo.Droid
 
             var layout = FindViewById<Android.Widget.LinearLayout>(Resource.Id.relativeLayout1);
 
-            P42.Native.Controls.Droid.Platform.Init(this);
 
             
             var text1 = new Android.Widget.TextView(this)
             {
                 Text = "TEXT 1",
                 Background = new Android.Graphics.Drawables.ColorDrawable(Android.Graphics.Color.Yellow),
-                LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.WrapContent)
+                LayoutParameters = new LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent)
             };
             text1.SetPadding(0, 0, 0, 0);
             text1.SetMinHeight(10);
@@ -66,8 +66,9 @@ namespace Demo.Droid
                 PointerDirection = P42.Native.Controls.PointerDirection.None,
                 DipPadding = 10,
                 DipMargin = 10,
-                HorizontalAlignment = P42.Native.Controls.Alignment.Stretch,
-                DipRequestedHeight = 80,
+                HorizontalAlignment = P42.Native.Controls.Alignment.Start,
+                VerticalAlignment = P42.Native.Controls.Alignment.Start,
+                //DipRequestedHeight = 80,
                 Content = bubbleText
             };
             layout.AddView(bubble);

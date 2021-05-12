@@ -6,7 +6,7 @@ namespace P42.Native.Controls.Droid
     public partial class TargetedPopup
     {
         #region Control
-        Thickness b_Padding = DisplayExtensions.DipToPx(10);
+        Thickness b_Padding = BubbleBorder.DefaultPadding;
         public Thickness Padding
         {
             get => b_Padding;
@@ -19,7 +19,7 @@ namespace P42.Native.Controls.Droid
             set => Padding = DisplayExtensions.DipToPx(value);
         }
 
-        double b_BorderWidth = DisplayExtensions.DipToPx(1);
+        double b_BorderWidth = BubbleBorder.DefaultBorderWidth;
         public double BorderWidth
         {
             get => b_BorderWidth;
@@ -32,14 +32,14 @@ namespace P42.Native.Controls.Droid
             set => BorderWidth = DisplayExtensions.DipToPx(value);
         }
 
-        Color b_BorderColor = Color.Black;
+        Color b_BorderColor = BubbleBorder.DefaultBorderColor;
         public Color BorderColor
         {
             get => b_BorderColor;
             set => SetField(ref b_BorderColor, value, () => { m_Border.BorderColor = BorderColor; });
         }
 
-        double b_cornerRadius = DisplayExtensions.DipToPx(5);
+        double b_cornerRadius = BubbleBorder.DefaultCornerRadius;
         public double CornerRadius
         {
             get => b_cornerRadius;
@@ -52,12 +52,28 @@ namespace P42.Native.Controls.Droid
             set => CornerRadius = DisplayExtensions.DipToPx(value);
         }
 
-        Color b_BackgroundColor = Color.Gray.WithAlpha(0.5);
+        Color b_BackgroundColor = BubbleBorder.DefaultBackgroundColor;
         public Color BackgroundColor
         {
             get => b_BackgroundColor;
             set => SetField(ref b_BackgroundColor, value, ()=> { m_Border.BackgroundColor = BackgroundColor; });
         }
         #endregion
+
+
+        public Alignment HorizontalContentAlignment
+        {
+            get => m_Border.HorizontalContentAlignment;
+            set => m_Border.HorizontalContentAlignment = value;
+        }
+
+        public Alignment VerticalContentAlignment
+        {
+            get => m_Border.VerticalContentAlignment;
+            set => m_Border.VerticalContentAlignment = value;
+        }
+
+
+
     }
 }

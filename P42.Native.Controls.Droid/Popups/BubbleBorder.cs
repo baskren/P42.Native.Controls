@@ -44,7 +44,8 @@ namespace P42.Native.Controls.Droid
         }
         */
 
-        double b_PointerLength = DisplayExtensions.DipToPx(10);
+        public static double DefaultPointerLength = DisplayExtensions.DipToPx(10);
+        double b_PointerLength = DefaultPointerLength;
         public double PointerLength
         {
             get => b_PointerLength;
@@ -57,7 +58,8 @@ namespace P42.Native.Controls.Droid
             set => PointerLength = DisplayExtensions.DipToPx(value);
         }
 
-        double b_PointerTipRadius = DisplayExtensions.DipToPx(2);
+        public static double DefaultPointerTipRadius = DisplayExtensions.DipToPx(2);
+        double b_PointerTipRadius = DefaultPointerTipRadius;
         public double PointerTipRadius
         {
             get => b_PointerTipRadius;
@@ -70,7 +72,8 @@ namespace P42.Native.Controls.Droid
             set => PointerTipRadius = DisplayExtensions.DipToPx(value);
         }
 
-        double b_PointerAxialPosition = 0.5;
+        public static double DefaultPointerAxialPosition = 0.5; 
+        double b_PointerAxialPosition = DefaultPointerAxialPosition;
         public double PointerAxialPosition
         {
             get => b_PointerAxialPosition;
@@ -89,7 +92,8 @@ namespace P42.Native.Controls.Droid
             }
         }
 
-        PointerDirection b_PointerDirection = PointerDirection.Any;
+        public static PointerDirection DefaultPointerDirection = PointerDirection.Any;
+        PointerDirection b_PointerDirection = DefaultPointerDirection;
         public PointerDirection PointerDirection
         {
             get => b_PointerDirection;
@@ -102,7 +106,8 @@ namespace P42.Native.Controls.Droid
             }
         }
 
-        double b_PointerCornerRadius = DisplayExtensions.DipToPx(2);
+        public static double DefaultPointerCornerRadius = DisplayExtensions.DipToPx(2);
+        double b_PointerCornerRadius = DefaultPointerCornerRadius;
         public double PointerCornerRadius
         {
             get => b_PointerCornerRadius;
@@ -197,51 +202,49 @@ namespace P42.Native.Controls.Droid
             System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout({changed}, {l}, {t}, {r}, {b})  w:{r-l} h:{b-t}");
             if (Content != null)
             {
-                var cl = Margin.Left + BorderWidth + Padding.Left + (PointerDirection == PointerDirection.Right ? PointerLength : 0);
-                var ct = Margin.Top + BorderWidth + Padding.Top + (PointerDirection == PointerDirection.Up ? PointerLength : 0);
-                var cr = (r - l) - (Margin.Right + BorderWidth + Padding.Right + (PointerDirection == PointerDirection.Left ? PointerLength : 0));
-                var cb = (b - t) - (Margin.Bottom + BorderWidth + Padding.Bottom + (PointerDirection == PointerDirection.Down ? PointerLength : 0));
+                var borderWidth = 0.0;
+                if (BorderColor.A > 0 && BorderWidth > 0)
+                    borderWidth = (float)BorderWidth;
+                System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout: Margin:{Margin} Padding:{Padding} BorderWidth:{BorderWidth} PointerDir:{PointerDirection} PointerLen:{PointerLength}");
+                var cl = l + Margin.Left + borderWidth + Padding.Left + (PointerDirection == PointerDirection.Left ? PointerLength : 0);
+                var ct = t + Margin.Top + borderWidth + Padding.Top + (PointerDirection == PointerDirection.Up ? PointerLength : 0);
+                var cr = r - (Margin.Right + borderWidth + Padding.Right + (PointerDirection == PointerDirection.Right ? PointerLength : 0));
+                var cb = b - (Margin.Bottom + borderWidth + Padding.Bottom + (PointerDirection == PointerDirection.Down ? PointerLength : 0));
+                System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout Content.Layout({(int)(cl + 0.5)}, {(int)(ct + 0.5)}, {(int)(cr + 0.5)}, {(int)(cb + 0.5)}) w:{cr - cl} h:{cb - ct}");
 
-                var type = Content.GetType();
-
-                if (P42.Utils.ReflectionExtensions.GetPropertyInfo(type, "Gravity") is PropertyInfo propertyInfo)
+                    
+                var contentWidthSpec = MeasureSpec.MakeMeasureSpec((int)(cr - cl + 0.5), Android.Views.MeasureSpecMode.AtMost);
+                var contentHeightSpec = MeasureSpec.MakeMeasureSpec((int)(cb - ct + 0.5), Android.Views.MeasureSpecMode.AtMost);
+                Content.Measure(contentWidthSpec, contentHeightSpec);
+                if (VerticalContentAlignment == Alignment.End)
                 {
-                    var gravity = (Android.Views.GravityFlags)propertyInfo.GetValue(Content);
-                    if (gravity != Android.Views.GravityFlags.Fill && gravity != Android.Views.GravityFlags.NoGravity)
-                    {
-                        var contentWidthSpec = MeasureSpec.MakeMeasureSpec((int)(cr - cl + 0.5), Android.Views.MeasureSpecMode.AtMost);
-                        var contentHeightSpec = MeasureSpec.MakeMeasureSpec((int)(cb - ct + 0.5), Android.Views.MeasureSpecMode.AtMost);
-                        Content.Measure(contentWidthSpec, contentHeightSpec);
-                        if ((gravity & Android.Views.GravityFlags.Bottom) == Android.Views.GravityFlags.Bottom)
-                        {
-                            ct = cb - Content.MeasuredHeight;
-                        }
-                        else if ((gravity & Android.Views.GravityFlags.Top) == Android.Views.GravityFlags.Top || (gravity & Android.Views.GravityFlags.VerticalGravityMask) == 0)
-                        {
-                            cb = ct + Content.MeasuredHeight;
-                        }
-                        else if ((gravity & Android.Views.GravityFlags.CenterVertical) == Android.Views.GravityFlags.CenterVertical)
-                        {
-                            ct += +(cb - ct) / 2 - (Content.MeasuredHeight / 2.0);
-                            cb = ct + Content.MeasuredHeight;
-                        }
-
-                        if ((gravity & Android.Views.GravityFlags.Right) == Android.Views.GravityFlags.Right)
-                        {
-                            cl = cr - Content.MeasuredWidth;
-                        }
-                        else if ((gravity & Android.Views.GravityFlags.Left) == Android.Views.GravityFlags.Left || (gravity & Android.Views.GravityFlags.HorizontalGravityMask) == 0)
-                        {
-                            cr = cl + Content.MeasuredWidth;
-                        }
-                        else if ((gravity & Android.Views.GravityFlags.CenterHorizontal) == Android.Views.GravityFlags.CenterHorizontal)
-                        {
-                            cl += (cr - cl) / 2 - (Content.MeasuredWidth / 2.0);
-                            cr = cl + Content.MeasuredWidth;
-                        }
-                    }
+                    ct = cb - Content.MeasuredHeight;
+                }
+                else if (VerticalContentAlignment == Alignment.Start)
+                {
+                    cb = ct + Content.MeasuredHeight;
+                }
+                else if (VerticalContentAlignment == Alignment.Center)
+                {
+                    ct += +(cb - ct) / 2 - (Content.MeasuredHeight / 2.0);
+                    cb = ct + Content.MeasuredHeight;
                 }
 
+                if (HorizontalContentAlignment == Alignment.End)
+                {
+                    cl = cr - Content.MeasuredWidth;
+                }
+                else if (HorizontalContentAlignment == Alignment.Start)
+                {
+                    cr = cl + Content.MeasuredWidth;
+                }
+                else if (HorizontalContentAlignment == Alignment.Center)
+                {
+                    cl += (cr - cl) / 2 - (Content.MeasuredWidth / 2.0);
+                    cr = cl + Content.MeasuredWidth;
+                }
+
+                System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout Content.Layout({(int)(cl + 0.5)}, {(int)(ct + 0.5)}, {(int)(cr+0.5)}, {(int)(cb+0.5)}) w:{cr-cl} h:{cb-ct}");
                 Content.Layout((int)(cl+0.5), (int)(ct+0.5), (int)(cr+0.5), (int)(cb+0.5));
             }
 
@@ -256,11 +259,14 @@ namespace P42.Native.Controls.Droid
             m_paint.SetStyle(Paint.Style.Fill);
             canvas.DrawPath(p, m_paint);
 
-            m_paint.StrokeWidth = (float)BorderWidth;
-            m_paint.Color = BorderColor;
-            m_paint.SetStyle(Paint.Style.Stroke);
-            canvas.DrawPath(p, m_paint);
-            
+            if (BorderWidth > 0 && BorderColor.A > 0)
+            {
+                m_paint.StrokeWidth = (float)BorderWidth;
+                m_paint.Color = BorderColor;
+                m_paint.SetStyle(Paint.Style.Stroke);
+                canvas.DrawPath(p, m_paint);
+            }
+
             base.OnDraw(canvas);
             hasDrawn = true;
 
@@ -441,7 +447,7 @@ namespace P42.Native.Controls.Droid
                     //var reverse = new Path();
                     //reverse.AddPathReverse(result);
                     //return reverse;
-                    result.ToggleInverseFillType();
+                    //result.ToggleInverseFillType();
                 }
             }
             else
@@ -535,7 +541,7 @@ namespace P42.Native.Controls.Droid
                     //var reverse = new Path();
                     //reverse.AddPathReverse(result);
                     //return reverse;
-                    result.ToggleInverseFillType();
+                    //result.ToggleInverseFillType();
                 }
             }
             return result;

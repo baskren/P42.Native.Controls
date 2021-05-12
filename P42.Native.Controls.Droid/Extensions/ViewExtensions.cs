@@ -45,8 +45,21 @@ namespace P42.Native.Controls.Droid
             => view.LayoutParameters.Height > -1;
 
 
-        public static Rect GetBounds(this View view)
-            => new Rect(view.GetX(), view.GetY(), view.Width, view.Height);
+        public static Rect GetBoundsRelativeTo(this View view, View relativeToView)
+        //            => new Rect(view.GetX(), view.GetY(), view.Width, view.Height);
+        {
+            var viewLocation = new int[2];
+            view.GetLocationOnScreen(viewLocation);
+
+            var relativeToViewLocation = new int[2];
+            relativeToView.GetLocationOnScreen(relativeToViewLocation);
+
+            var result = new Rect(viewLocation[0] - relativeToViewLocation[0],
+                                    viewLocation[1] - relativeToViewLocation[1],
+                                    view.Width, view.Height);
+
+            return result;
+        }
 
         public static MeasureSpecMode AsMeasureSpecMode(this Alignment alignment)
         {
