@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="MSBuild.Sdk.Extras/3.0.22">
+
+  <PropertyGroup>
+    <TargetFrameworks>MonoAndroid10.0;</TargetFrameworks>
+  </PropertyGroup>
+
+  <!-- WASM -->
+  <Import Project=".\P42.Native.Controls.WASM.props" Condition=" $(TargetFramework.StartsWith('netstandard2.')) " />
+
+  <!-- UWP -->
+  <Import Project=".\P42.Native.Controls.UWP.props" Condition=" $(TargetFramework.StartsWith('uap10.0')) " />
+
+  <!-- ANDROID -->
+  <Import Project=".\P42.Native.Controls.Android.props" Condition=" $(TargetFramework.StartsWith('MonoAndroid')) " />
+
+  <!-- IOS -->
+  <Import Project=".\P42.Native.Controls.iOS.props" Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) " />
+
+  <!-- MACOS -->
+  <Import Project=".\P42.Native.Controls.MacOS.props" Condition=" $(TargetFramework.StartsWith('Xamarin.Mac20')) " />
+
+  <!-- REFERENCES -->
+  <ItemGroup>
+    <ProjectReference Include="..\P42.Utils\P42.Utils.Uno\P42.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Interfaces\IPage.shared.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>

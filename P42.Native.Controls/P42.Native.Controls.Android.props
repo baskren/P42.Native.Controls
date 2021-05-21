@@ -1,0 +1,22 @@
+<Project ToolsVersion="15.0">
+
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);__ANDROID__</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+
+    <Compile Include="**\*.Android.cs" />
+    <Compile Include="**\*.Android.*.cs" />
+
+    <AndroidResource Include="Resources\xml\*.xml" />
+    <ProjectReference Include="..\P42.Utils\P42.Utils.Droid\P42.Utils.Droid.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.2.0.5" />
+    <PackageReference Include="Xamarin.AndroidX.RecyclerView" Version="1.2.0"/>
+    <PackageReference Include="Xamarin.AndroidX.RecyclerView.Selection" Version="1.1.0.1"/>
+  </ItemGroup>
+
+</Project>

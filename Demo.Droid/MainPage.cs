@@ -2,7 +2,7 @@
 using Android.Widget;
 using Android.Views;
 using Android.Graphics;
-using P42.Native.Controls.Droid;
+using P42.Native.Controls;
 using System.Linq;
 
 namespace Demo.Droid
@@ -40,7 +40,7 @@ namespace Demo.Droid
             {
                 RowCount = 5,
                 ColumnCount = 1,
-                LayoutParameters = new LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent),
+                LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent),
             };
             grid.SetBackgroundColor(Color.Pink);
 
@@ -80,7 +80,7 @@ namespace Demo.Droid
                 LayoutParameters = new GridLayout.LayoutParams(GridLayout.InvokeSpec(1, 1f), GridLayout.InvokeSpec(0, 1f))
             };
             */
-            var showPopupButton = new P42.Native.Controls.Droid.SegmentedControl(Context)
+            var showPopupButton = new SegmentedControl(Context)
             {
                 LayoutParameters = new GridLayout.LayoutParams(GridLayout.InvokeSpec(2, 1f), GridLayout.InvokeSpec(0, 1f)),
             };
@@ -169,12 +169,11 @@ namespace Demo.Droid
                     Background = Color.Orange.AsDrawable(),
                     Gravity = GravityFlags.Center
                 };
-                var popup = new P42.Native.Controls.Droid.TargetedPopup(sender as SegmentButton)
+                var popup = new P42.Native.Controls.TargetedPopup(sender as SegmentButton)
                 {
                     Content = content,
                     BackgroundColor = Color.Aquamarine,
                     BorderColor = Color.Transparent,
-                    DipBorderWidth = 2,
                     PreferredPointerDirection = segment.Text == "UP"
                     ? P42.Native.Controls.PointerDirection.Up
                     : segment.Text == "DOWN"
@@ -184,6 +183,7 @@ namespace Demo.Droid
                             : P42.Native.Controls.PointerDirection.Left
                     //PageOverlayMode = P42.Native.Controls.PageOverlayMode.TouchTransparent
                 };
+                ((IControl)popup).DipBorderWidth = 2;
 
                 var hzSelected = HzAlign.Children().Where(c => c is SegmentButton).Cast<SegmentButton>().FirstOrDefault(s => s.Selected)?.Text;
                 popup.HorizontalAlignment = hzSelected == "START"
@@ -214,15 +214,15 @@ namespace Demo.Droid
                 Background = Color.Orange.AsDrawable(),
                 Gravity = GravityFlags.Center
             };
-            var popup = new P42.Native.Controls.Droid.TargetedPopup(sender as Button)
+            var popup = new P42.Native.Controls.TargetedPopup(sender as Button)
             {
                 Content = content,
                 BackgroundColor = Color.Aquamarine,
                 BorderColor = Color.Transparent,
-                DipBorderWidth = 2,
                 PreferredPointerDirection = P42.Native.Controls.PointerDirection.Up,
                 //PageOverlayMode = P42.Native.Controls.PageOverlayMode.TouchTransparent
             };
+            ((IControl)popup).DipBorderWidth = 2;
 
             await popup.PushAsync();
         }

@@ -51,7 +51,6 @@
     <Compile Include="SegmentedControl\SegmentButton.cs" />
     <Compile Include="SegmentedControl\SegmentedControl.cs" />
     <Compile Include="SegmentedControl\SegmentedPanel.cs" />
-    <Compile Include="Platform.cs" />
     <Compile Include="Popups\BubbleBorder.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\ViewExtensions.cs" />
@@ -63,7 +62,6 @@
     <Compile Include="Extensions\RectExtensions.cs" />
     <Compile Include="SegmentedControl\SegmentedPanel.Control.cs" />
     <Compile Include="SegmentedControl\SegmentedPanel.FrameworkElement.cs" />
-    <Compile Include="SegmentedControl\SegmentedPanel.Notifiable.cs" />
     <Compile Include="SegmentedControl\SegmentButton.Notifiable.cs" />
     <Compile Include="Popups\TargetedPopup.cs" />
     <Compile Include="Popups\TargetedPopup.FrameworkElement.cs" />
@@ -78,12 +76,23 @@
     <Compile Include="Navigation\App.cs" />
     <Compile Include="Navigation\IPage.cs" />
     <Compile Include="Navigation\NavigationPage.Notifiable.cs" />
+    <Compile Include="ContentAndDetailPresenter\ContentAndDetailPresenter.Notification.cs" />
+    <Compile Include="ContentAndDetailPresenter\ContentAndDetailPresenter.FrameworkElement.cs" />
+    <Compile Include="ContentAndDetailPresenter\ContentAndDetailPresenter.Control.cs" />
+    <Compile Include="ContentAndDetailPresenter\ContentAndDetailPresenter.cs" />
+    <Compile Include="ListView\ListView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.2.0.5" />
+    <PackageReference Include="Xamarin.AndroidX.RecyclerView">
+      <Version>1.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.AndroidX.RecyclerView.Selection">
+      <Version>1.1.0.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\strings.xml" />
@@ -94,6 +103,8 @@
     <Folder Include="Popups\" />
     <Folder Include="Extensions\" />
     <Folder Include="Navigation\" />
+    <Folder Include="ContentAndDetailPresenter\" />
+    <Folder Include="ListView\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\P42.Utils\P42.Utils\P42.Utils.csproj">
@@ -103,10 +114,6 @@
     <ProjectReference Include="..\P42.Utils\P42.Utils.Droid\P42.Utils.Droid.csproj">
       <Project>{25F52C0B-8C1B-4245-AFF1-2EEB263C49E9}</Project>
       <Name>P42.Utils.Droid</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\P42.Native.Controls.Common\P42.Native.Controls.Shared.csproj">
-      <Project>{5E97ED9F-8590-430B-B710-31DB17933CDE}</Project>
-      <Name>P42.Native.Controls.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

@@ -7,7 +7,7 @@ using AndroidX.AppCompat.Widget;
 using AndroidX.AppCompat.App;
 using Google.Android.Material.FloatingActionButton;
 using Google.Android.Material.Snackbar;
-using P42.Native.Controls.Droid;
+using P42.Native.Controls;
 using static Android.Views.ViewGroup;
 using Android.Graphics.Drawables;
 using Android.Widget;
@@ -27,6 +27,7 @@ namespace Demo.Droid
 
             var mainPage = new MainPage();
             SetContentView(new App(new NavigationPage(mainPage)));
+            //SetContentView(new App(mainPage));
 
             /*
             
@@ -159,7 +160,7 @@ namespace Demo.Droid
 
         void ShowPopup(View content, View parent)
         {
-            var windowSize = P42.Native.Controls.Droid.DisplayExtensions.Size;
+            var windowSize = P42.Native.Controls.DisplayExtensions.PxSize();
 
             var shape = new ShapeDrawable();
             shape.Paint.Color = Android.Graphics.Color.DarkGray.WithAlpha(0.2);

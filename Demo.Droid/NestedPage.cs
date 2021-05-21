@@ -2,7 +2,7 @@
 using Android.Widget;
 using Android.Views;
 using Android.Graphics;
-using P42.Native.Controls.Droid;
+using P42.Native.Controls;
 
 namespace Demo.Droid
 {
