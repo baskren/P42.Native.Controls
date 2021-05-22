@@ -9,14 +9,14 @@ namespace P42.Native.Controls
         public double DipRequestedWidth
         {
             get => DisplayExtensions.PxToDip(RequestedWidth);
-            set => RequestedWidth = DisplayExtensions.DipToPx(value);
+            set => RequestedWidth = value.DipToPx();
         }
 
         int RequestedHeight { get; set;}
         public double DipRequestedHeight
         {
             get => DisplayExtensions.PxToDip(RequestedHeight);
-            set => RequestedHeight = DisplayExtensions.DipToPx(value);
+            set => RequestedHeight = value.DipToPx();
         }
 
         public Alignment HorizontalAlignment { get; set;}
@@ -28,7 +28,7 @@ namespace P42.Native.Controls
         public virtual Thickness DipMargin
         {
             get => DisplayExtensions.PxToDip(Margin);
-            set => Margin = DisplayExtensions.DipToPx(value);
+            set => Margin = value.DipToPx();
         }
 
 
@@ -36,7 +36,7 @@ namespace P42.Native.Controls
         public virtual double DipMinWidth
         {
             get => DisplayExtensions.PxToDip(MinWidth);
-            set => MinWidth = DisplayExtensions.DipToPx(value);
+            set => MinWidth = value.DipToPx();
         }
 
 
@@ -44,33 +44,34 @@ namespace P42.Native.Controls
         public virtual double DipMinHeight
         {
             get => DisplayExtensions.PxToDip(MinHeight);
-            set => MinHeight = DisplayExtensions.DipToPx(value);
+            set => MinHeight = value.DipToPx();
         }
-
 
 
         int MaxWidth { get; set;}
         public virtual double DipMaxWidth
         {
             get => DisplayExtensions.PxToDip(MaxWidth);
-            set => MaxWidth = DisplayExtensions.DipToPx(value);
+            set => MaxWidth = value.DipToPx();
         }
 
         int MaxHeight { get; set;}
         public virtual double DipMaxHeight
         {
             get => DisplayExtensions.PxToDip(MaxHeight);
-            set => MaxHeight = DisplayExtensions.DipToPx(value);
+            set => MaxHeight = value.DipToPx();
         }
 
         int ActualWidth { get; }
-        public double DipActualWidth => DisplayExtensions.PxToDip(ActualWidth);
+        public double DipActualWidth => ActualWidth.PxToDip();
 
         int ActualHeight { get; }
-        public virtual double DipActualHeight => DisplayExtensions.PxToDip(ActualHeight);
+        public virtual double DipActualHeight => ActualHeight.PxToDip();
 
         SizeI ActualSize { get; }
-        public virtual Size DipActualSize => DisplayExtensions.PxToDip(ActualSize);
+        public virtual Size DipActualSize => ActualSize.PxToDip();
+
+        object DataContext { get; set; }
         #endregion
 
 
@@ -79,6 +80,10 @@ namespace P42.Native.Controls
         #endregion
 
 
-
+        #region Methods
+        public void OnDataContextChanged()
+        {
+        }
+        #endregion
     }
 }

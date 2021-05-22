@@ -17,21 +17,21 @@ namespace P42.Native.Controls
         public virtual Thickness DipPadding
         {
             get => DisplayExtensions.PxToDip(Padding);
-            set => Padding = DisplayExtensions.DipToPx(value);
+            set => Padding = value.DipToPx();
         }
 
         double BorderWidth { get; set; }
         public virtual double DipBorderWidth
         {
             get => DisplayExtensions.PxToDip(BorderWidth);
-            set => BorderWidth = DisplayExtensions.DipToPx(value);
+            set => BorderWidth = value.DipToPxD();
         }
 
         double CornerRadius { get; set; }
         public virtual double DipCornerRadius
         {
             get => DisplayExtensions.PxToDip(CornerRadius);
-            set => CornerRadius = DisplayExtensions.DipToPx(value);
+            set => CornerRadius = value.DipToPxD();
         }
 
         Color BorderColor { get; set; }

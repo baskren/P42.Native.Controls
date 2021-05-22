@@ -4,7 +4,7 @@ using Android.Views;
 
 namespace P42.Native.Controls
 {
-    public partial class BubbleBorder : IFrameworkElement, INotifiable
+    public partial class Cell : IFrameworkElement, INotifiable
     {
         #region FrameworkElement
 
@@ -99,7 +99,6 @@ namespace P42.Native.Controls
             private set => ((INotifiable)this).SetField(ref b_ActualHeight, value, () => m_ActualHeightSet = true);
         }
 
-
         internal protected SizeI b_ActualSize;
         public virtual SizeI ActualSize
         {
@@ -120,7 +119,7 @@ namespace P42.Native.Controls
         public object DataContext
         {
             get => b_DataContext;
-            set => ((INotifiable)this).SetField(ref b_DataContext, value, ((IFrameworkElement)this).OnDataContextChanged);
+            set => ((INotifiable)this).SetField(ref b_DataContext, value,((IFrameworkElement)this).OnDataContextChanged);
         }
         #endregion
 
@@ -168,8 +167,8 @@ namespace P42.Native.Controls
             SetMinimumHeight(MinHeight);
             UpdateLayoutParams();
         }
-
         #endregion
+
 
     }
 }

@@ -29,5 +29,17 @@
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Interfaces\IPage.shared.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Extensions\IControlMarkupExtensions.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Extensions\IFrameworkElementMarkupExtensions.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="ListView\IDataViewFactory.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="ListView\ListViewAdapter.Android.cs">
+      <SubType></SubType>
+    </Compile>
   </ItemGroup>
 </Project>

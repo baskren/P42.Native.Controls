@@ -24,39 +24,6 @@ namespace P42.Native.Controls
 
 
 
-        public static partial int DipToPx(double dip)
-            => (int)Math.Round(dip * Scale());
-
-        public static partial double DipToPxD(double dip)
-            =>  dip * Scale();
-
-        public static partial double PxToDip(double px)
-            => px / Scale();
-
-        public static partial PointI DipToPx(Point pt)
-            => PointI.Round(pt * Scale());
-
-        public static partial Point PxToDip(PointI pt)
-            => Point.Divide(pt, Scale());
-
-        public static partial SizeI DipToPx(Size sz)
-            => SizeI.Round(sz * Scale());
-
-        public static partial Size PxToDip(SizeI sz)
-            => sz / Scale();
-
-        public static partial RectI DipToPx(Rect r)
-            => RectI.Round(r * Scale());
-
-        public static partial Rect PxToDip(RectI r)
-            => r / Scale();
-
-        public static partial ThicknessI DipToPx(Thickness t)
-            => ThicknessI.Round(t * Scale());
-
-        public static partial Thickness PxToDip(ThicknessI t)
-            => t / Scale();
-
 
 
         public static partial int StatusBarHeight()

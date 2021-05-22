@@ -107,6 +107,13 @@ namespace P42.Native.Controls
                 }
             }
         }
+
+        object b_DataContext;
+        public object DataContext
+        {
+            get => b_DataContext;
+            set => ((INotifiable)this).SetField(ref b_DataContext, value, ((IFrameworkElement)this).OnDataContextChanged);
+        }
         #endregion
 
 
