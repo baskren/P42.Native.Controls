@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P42.Utils.Droid", "P42.Util
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P42.Native.Controls", "P42.Native.Controls\P42.Native.Controls.csproj", "{64A97E71-5586-4CA0-9B63-011814059666}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P42.Uno.Xamarin.Essentials.Android", "Xamarin.Essentials\Xamarin.Essentials\P42.Uno.Xamarin.Essentials.Android.csproj", "{9EA88531-F229-40CF-898D-6A1EDD6517EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{64A97E71-5586-4CA0-9B63-011814059666}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64A97E71-5586-4CA0-9B63-011814059666}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64A97E71-5586-4CA0-9B63-011814059666}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EA88531-F229-40CF-898D-6A1EDD6517EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EA88531-F229-40CF-898D-6A1EDD6517EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EA88531-F229-40CF-898D-6A1EDD6517EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EA88531-F229-40CF-898D-6A1EDD6517EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
