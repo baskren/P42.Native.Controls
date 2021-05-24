@@ -69,6 +69,7 @@
     <Compile Include="MainPage.cs" />
     <Compile Include="NestedPage.cs" />
     <Compile Include="ContentAndDetailPresenterPage.cs" />
+    <Compile Include="TextCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace P42.Native.Controls
 {
-    public interface IFrameworkElement : INotifiable
+    public interface IElement : INotifiable
     {
         #region FrameworkElement
         int RequestedWidth { get; set;}
@@ -72,6 +73,10 @@ namespace P42.Native.Controls
         public virtual Size DipActualSize => ActualSize.PxToDip();
 
         object DataContext { get; set; }
+
+        double Opacity { get; set; }
+
+        bool IsVisible { get; set; }
         #endregion
 
 
@@ -84,6 +89,8 @@ namespace P42.Native.Controls
         public void OnDataContextChanged()
         {
         }
+
+        Task WaitForDrawComplete();
         #endregion
     }
 }

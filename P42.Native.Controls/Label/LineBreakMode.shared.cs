@@ -1,12 +1,12 @@
 namespace P42.Native.Controls
 {
-    public enum LineBreadMode
+    public enum LineBreakMode
     {
         NoWrap,
         WordWrap,
         CharacterWrap,
-        HeadTrunaction,
+        HeadTruncation,
         TailTruncation,
-        MiddleTrunacation
+        MiddleTruncation
     }
 }

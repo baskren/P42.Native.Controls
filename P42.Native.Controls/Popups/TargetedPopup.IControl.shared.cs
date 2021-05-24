@@ -10,35 +10,35 @@ namespace P42.Native.Controls
         public ThicknessI Padding
         {
             get => b_Padding;
-            set => ((INotifiable)this).SetField(ref b_Padding, value, ()=> { m_Border.Padding = Padding; });
+            set => ((INotifiable)this).SetField(ref b_Padding, value);
         }
 
         double b_BorderWidth = BubbleBorder.DefaultBorderWidth;
         public double BorderWidth
         {
             get => b_BorderWidth;
-            set => ((INotifiable)this).SetField(ref b_BorderWidth, value, () => { m_Border.BorderWidth = BorderWidth; });
+            set => ((INotifiable)this).SetField(ref b_BorderWidth, value);
         }
 
         Color b_BorderColor = BubbleBorder.DefaultBorderColor;
         public Color BorderColor
         {
             get => b_BorderColor;
-            set => ((INotifiable)this).SetField(ref b_BorderColor, value, () => { m_Border.BorderColor = BorderColor; });
+            set => ((INotifiable)this).SetField(ref b_BorderColor, value);
         }
 
         double b_cornerRadius = BubbleBorder.DefaultCornerRadius;
         public double CornerRadius
         {
             get => b_cornerRadius;
-            set => ((INotifiable)this).SetField(ref b_cornerRadius, value, ()=> { m_Border.CornerRadius = CornerRadius; });
+            set => ((INotifiable)this).SetField(ref b_cornerRadius, value);
         }
 
         Color b_BackgroundColor = BubbleBorder.DefaultBackgroundColor;
         public Color BackgroundColor
         {
             get => b_BackgroundColor;
-            set => ((INotifiable)this).SetField(ref b_BackgroundColor, value, ()=> { m_Border.BackgroundColor = BackgroundColor; });
+            set => ((INotifiable)this).SetField(ref b_BackgroundColor, value);
         }
         #endregion
 

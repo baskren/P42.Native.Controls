@@ -19,6 +19,10 @@ namespace P42.Native.Controls
             Click += OnClicked;
 
             SetWillNotDraw(false);
+
+            SetBackgroundColor(Color.Gold);
+
+            LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
         }
 
         bool _disposed;
@@ -62,25 +66,34 @@ namespace P42.Native.Controls
         }
         #endregion
 
-        #region INotifiable
-
-        #region Events
-        public event PropertyChangedEventHandler PropertyChanged;
-        public event PropertyChangingEventHandler PropertyChanging;
-        #endregion
-
-
-        #region Fields
-        public bool HasDrawn { get; set; }
-        public bool HasChanged { get; set; }
-        #endregion
-
 
         #region Android Measure / Layout / Draw
+        protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
+        {
+
+            MeasureChildren(widthMeasureSpec, heightMeasureSpec);
+
+            var height = 0;
+            var width = 0;
+
+            foreach (var child in this.Children())
+            {
+                width = Math.Max(child.MeasuredWidth, width) ;
+                height = Math.Max(child.MeasuredHeight, height);
+            }
+
+            System.Diagnostics.Debug.WriteLine($"Cell.OnMeasure : height = {height}");
+
+            SetMeasuredDimension(width, height);
+        }
+
+        int yOffset = -1;
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
-            if (Child is View view)
-                view.Layout(l, t, r, b);
+            yOffset = t;
+            System.Diagnostics.Debug.WriteLine($"Cell.OnLayout({l}, {t}, {r}, {b})");
+            foreach (var child in this.Children())
+                child.Layout(0, 0, r-l, b-t);
         }
 
         protected override void OnDraw(Canvas canvas)
@@ -88,37 +101,104 @@ namespace P42.Native.Controls
             base.OnDraw(canvas);
             HasDrawn = true;
             ActualSize = new SizeI(canvas.Width, canvas.Height);
+
+            System.Diagnostics.Debug.WriteLine($"Cell OnDraw: ActualSize: " + ActualSize );
+
+            if (yOffset + canvas.Height >= ListView.ActualHeight)
+            {
+                ListView.OnDrawCellsComplete();
+            }
         }
+
+
+        TaskCompletionSource<bool> HasDrawnTaskCompletionSource;
+        public async Task WaitForDrawComplete()
+        {
+            if (HasDrawn)
+                return;
+            HasDrawnTaskCompletionSource = HasDrawnTaskCompletionSource ?? new TaskCompletionSource<bool>();
+            await HasDrawnTaskCompletionSource.Task;
+        }
+
         #endregion
 
+
+        #region INotifiable
 
         #region Methods
         public virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
         {
-            if (propertyName == nameof(Child))
-            {
-                if (Child is View view)
-                    RemoveView(view);
-            }
             PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
         }
 
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (propertyName == nameof(Child))
-            {
-                if (Child is View view)
-                    AddView(view);
-            }
+            if (propertyName == nameof(RequestedWidth) ||
+                propertyName == nameof(RequestedHeight) ||
+                propertyName == nameof(HorizontalAlignment) ||
+                propertyName == nameof(VerticalAlignment))
+                UpdateLayoutParams();
+            else if (propertyName == nameof(MinWidth))
+                UpdateMinWidth();
+            else if (propertyName == nameof(MinHeight))
+                UpdateMinHeight();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public void RedrawElement() => PostInvalidate();
 
         public void RelayoutElement() => RequestLayout();
+
         #endregion
 
         #endregion
+
+
+        #region Support Methods
+        void UpdateLayoutParams()
+        {
+            /*
+            LayoutParameters = new LayoutParams(
+                    HorizontalAlignment == Alignment.Stretch
+                        ? LayoutParams.MatchParent
+                        : RequestedWidth < 0
+                            ? LayoutParams.WrapContent
+                            : RequestedWidth < MinWidth
+                                ? MinWidth
+                                : RequestedWidth > MaxWidth
+                                    ? MaxWidth
+                                    : RequestedWidth,
+                    VerticalAlignment == Alignment.Start
+                        ? LayoutParams.MatchParent
+                        : RequestedHeight < 0
+                            ? LayoutParams.WrapContent
+                            : RequestedHeight < MinHeight
+                                ? MinHeight
+                                : RequestedHeight > MaxHeight
+                                    ? MaxHeight
+                                    : RequestedHeight
+                );
+            */
+            if (HasDrawn)
+                RequestLayout();
+        }
+
+        void UpdateMinWidth()
+        {
+            //SetMinimumWidth(MinWidth);
+            UpdateLayoutParams();
+        }
+
+        void UpdateMinHeight()
+        {
+            //SetMinimumHeight(MinHeight);
+            UpdateLayoutParams();
+        }
+
+
+        #endregion
+
+
 
     }
 }

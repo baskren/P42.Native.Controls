@@ -3,9 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-#if __ANDROID__
-using UIElement = Android.Views.View;
-#endif
 
 namespace P42.Native.Controls
 {
@@ -19,9 +16,9 @@ namespace P42.Native.Controls
 
         public object ClickedItem { get; private set; }
 
-        public UIElement CellElement { get; private set; }
+        public Cell CellElement { get; private set; }
 
-        internal ItemClickEventArgs(object simpleListView, object clickedItem, UIElement cellElement)
+        internal ItemClickEventArgs(object simpleListView, object clickedItem, Cell cellElement)
         {
             OriginalSource = simpleListView;
             ClickedItem = clickedItem;

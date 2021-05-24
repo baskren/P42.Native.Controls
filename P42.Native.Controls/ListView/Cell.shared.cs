@@ -7,14 +7,14 @@ using UIElement = Android.Views.View;
 
 namespace P42.Native.Controls
 {
-    public partial class Cell : P42.Native.Controls.IFrameworkElement
+    public partial class Cell : P42.Native.Controls.IElement
     {
 
         #region  Properties
         public bool IsSelected
             => DataContext is null
             ? false
-            : ListView?.SelectedItems.Contains(DataContext) ?? false;
+            : ListView?.b_SelectedItems.Contains(DataContext) ?? false;
 
         bool b_IsEnabled;
         public bool IsEnabled
@@ -30,19 +30,13 @@ namespace P42.Native.Controls
             internal set => ((INotifiable)this).SetField(ref b_Index, value, UpdateSelection);
         }
 
-        Color b_SelectedColor;
+        Color b_SelectedColor = Color.Blue;
         public Color SelectedColor
         {
             get => b_SelectedColor;
             internal set => ((INotifiable)this).SetField(ref b_SelectedColor, value, UpdateSelection);
         }
 
-        IFrameworkElement b_Child;
-        public IFrameworkElement Child
-        {
-            get => b_Child;
-            internal set => ((INotifiable)this).SetField(ref b_Child, value);
-        }
         #endregion
 
 
@@ -55,14 +49,14 @@ namespace P42.Native.Controls
         void BuildCommon(ListView listView)
         {
             ListView = listView;
-            ListView.SelectedItems.CollectionChanged += OnSelectedItems_CollectionChanged;
+            ListView.b_SelectedItems.CollectionChanged += OnSelectedItems_CollectionChanged;
             SizeChanged += OnSizeChanged;
         }
 
         void DisposeCommon()
         {
             SizeChanged -= OnSizeChanged;
-            ListView.SelectedItems.CollectionChanged -= OnSelectedItems_CollectionChanged;
+            ListView.b_SelectedItems.CollectionChanged -= OnSelectedItems_CollectionChanged;
             ListView = null;
         }
         #endregion
@@ -74,8 +68,10 @@ namespace P42.Native.Controls
 
         public virtual void OnDataContextChanged()
         {
-            if (Child is IFrameworkElement element)
-                element.DataContext = DataContext;
+            UpdateSelection();
+            foreach (var child in this.Children())
+                if (child is IElement element)
+                    element.DataContext = DataContext;
         }
 
         private void OnSelectedItems_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -89,14 +85,14 @@ namespace P42.Native.Controls
             {
                 if (ActualHeight > -1 && DataContext != null)
                 {
-                    if (Index < listView.NativeCellHeights.Count)
+                    if (Index < listView.PxCellHeights.Count)
                     {
-                        listView.NativeCellHeights[Index] = ActualHeight;
+                        listView.PxCellHeights[Index] = ActualHeight;
                         return;
                     }
-                    while (Index > listView.NativeCellHeights.Count)
-                        listView.NativeCellHeights.Add(0);
-                    listView.NativeCellHeights.Add(ActualHeight);
+                    while (Index > listView.PxCellHeights.Count)
+                        listView.PxCellHeights.Add(0);
+                    listView.PxCellHeights.Add(ActualHeight);
                 }
             }
         }

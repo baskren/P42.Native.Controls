@@ -191,7 +191,7 @@ namespace P42.Native.Controls
 
 
         #region Constructors / Initialization
-        public SegmentButton(string text) : this(P42.Utils.Droid.Settings.Context)
+        public SegmentButton(Context context, string text) : this(context)
         {
             Text = text;
         }

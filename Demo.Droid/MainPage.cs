@@ -4,6 +4,7 @@ using Android.Views;
 using Android.Graphics;
 using P42.Native.Controls;
 using System.Linq;
+using Android.Content;
 
 namespace Demo.Droid
 {
@@ -12,6 +13,11 @@ namespace Demo.Droid
         SegmentedControl HzAlign, VtAlign;
 
         public MainPage()
+        {
+            Build();
+        }
+
+        public MainPage(Context context) : base(context)
         {
             Build();
         }
@@ -38,7 +44,7 @@ namespace Demo.Droid
 
             var grid = new GridLayout(Context)
             {
-                RowCount = 5,
+                RowCount = 6,
                 ColumnCount = 1,
                 LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent),
             };
@@ -152,6 +158,16 @@ namespace Demo.Droid
             ((GridLayout.LayoutParams)VtAlign.LayoutParameters).SetGravity(GravityFlags.Center);
             ((GridLayout.LayoutParams)VtAlign.LayoutParameters).SetMargins(10, 10, 10, 10);
             grid.AddView(VtAlign);
+
+            var cdPageButton = new Button(Context)
+            {
+                Text = "C&D Page",
+                LayoutParameters = new GridLayout.LayoutParams(GridLayout.InvokeSpec(5, 1f), GridLayout.InvokeSpec(0, 1f)),
+            };
+            ((GridLayout.LayoutParams)cdPageButton.LayoutParameters).SetGravity(GravityFlags.Center);
+            ((GridLayout.LayoutParams)cdPageButton.LayoutParameters).SetMargins(10, 10, 10, 10);
+            cdPageButton.Click += async (s, e) => await this.PushAsync(new ContentAndDetailPresenterPage());
+            grid.AddView(cdPageButton);
 
             Content = grid;
             

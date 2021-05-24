@@ -30,7 +30,6 @@ namespace P42.Native.Controls
         {
             if (App.Current.CurrentView is Android.Views.View view)
             {
-
                 var rect = new Android.Graphics.Rect();
                 var window = ((Android.App.Activity)view.Context).Window;
                 window.DecorView.GetWindowVisibleDisplayFrame(rect);

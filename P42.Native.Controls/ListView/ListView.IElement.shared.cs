@@ -1,10 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Android.Views;
 
 namespace P42.Native.Controls
 {
-    public partial class ListView : IFrameworkElement, INotifiable
+    public partial class ListView : IElement, INotifiable
     {
         #region FrameworkElement
 
@@ -110,7 +111,7 @@ namespace P42.Native.Controls
                     ActualWidth = value.Width;
                     ActualHeight = value.Height;
                     OnPropertyChanged();
-                    SizeChanged?.Invoke(this, ((IFrameworkElement)this).DipActualSize);
+                    SizeChanged?.Invoke(this, ((IElement)this).DipActualSize);
                 }
             }
         }
@@ -119,7 +120,19 @@ namespace P42.Native.Controls
         public object DataContext
         {
             get => b_DataContext;
-            set => ((INotifiable)this).SetField(ref b_DataContext, value, ((IFrameworkElement)this).OnDataContextChanged);
+            set => ((INotifiable)this).SetField(ref b_DataContext, value, ((IElement)this).OnDataContextChanged);
+        }
+
+        public double Opacity
+        {
+            get => _nativeListView.Alpha;
+            set => _nativeListView.Alpha = (float)value;
+        }
+
+        public bool IsVisible
+        {
+            get => Visibility == ViewStates.Visible;
+            set => Visibility = value ? ViewStates.Visible : ViewStates.Gone;
         }
         #endregion
 
@@ -129,46 +142,25 @@ namespace P42.Native.Controls
         #endregion
 
 
-        #region Support Methods
-        void UpdateLayoutParams()
-        {
-            LayoutParameters = new LayoutParams(
-                    HorizontalAlignment == Alignment.Stretch
-                        ? LayoutParams.MatchParent
-                        : RequestedWidth < 0
-                            ? LayoutParams.WrapContent
-                            : RequestedWidth < MinWidth
-                                ? MinWidth
-                                : RequestedWidth > MaxWidth
-                                    ? MaxWidth
-                                    : RequestedWidth,
-                    VerticalAlignment == Alignment.Start
-                        ? LayoutParams.MatchParent
-                        : RequestedHeight < 0
-                            ? LayoutParams.WrapContent
-                            : RequestedHeight < MinHeight
-                                ? MinHeight
-                                : RequestedHeight > MaxHeight
-                                    ? MaxHeight
-                                    : RequestedHeight
-                );
-            if (HasDrawn)
-                RequestLayout();
-        }
+        #region INotifiable
 
-        void UpdateMinWidth()
-        {
-            SetMinimumWidth(MinWidth);
-            UpdateLayoutParams();
-        }
-
-        void UpdateMinHeight()
-        {
-            SetMinimumHeight(MinHeight);
-            UpdateLayoutParams();
-        }
+        #region Events
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangingEventHandler PropertyChanging;
         #endregion
 
 
+        #region Fields
+        bool b_HasDrawn;
+        public bool HasDrawn
+        {
+            get => b_HasDrawn;
+            set => ((INotifiable)this).SetField(ref b_HasDrawn, value);
+        }
+
+        public bool HasChanged { get; set; }
+        #endregion
+
+        #endregion
     }
 }

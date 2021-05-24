@@ -50,6 +50,9 @@ namespace P42.Native.Controls
           
             UpdateTitle();
             UpdateBackButton();
+
+            Background = Android.Graphics.Color.Red.ToColorDrawable();
+
         }
 
         /*
@@ -153,57 +156,60 @@ namespace P42.Native.Controls
 
         #region Android Measure / Layout / Draw
 
-        int NavBarHeight => (int)Math.Max(m_BackButton?.MeasuredHeight + (m_Paint.StrokeWidth + 0.5) ?? 0, m_TitleTextView?.MeasuredHeight + 1 ?? 0);
+        int NavBarHeight => (int)Math.Min(Math.Max(m_BackButton?.MeasuredHeight ?? 0, m_TitleTextView?.MeasuredHeight ?? 0),DisplayExtensions.DipToPx(30));
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
             //base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
             var availableWidth = MeasureSpec.GetSize(widthMeasureSpec);
             var availableHeight = MeasureSpec.GetSize(heightMeasureSpec);
+            var pageAvailableHeight = availableHeight;
             var hzMode = MeasureSpec.GetMode(widthMeasureSpec);
             var vtMode = MeasureSpec.GetMode(heightMeasureSpec);
 
 
-            if (Page is Page page && page.HasNavigationBar)
+            if (Parent is NavigationPage navPage && Page is Page page && page.HasNavigationBar)
             {
                 m_TitleTextView?.Measure(MeasureSpec.MakeMeasureSpec(availableWidth, MeasureSpecMode.AtMost), MeasureSpec.MakeMeasureSpec(availableHeight, MeasureSpecMode.AtMost));
                 m_BackButton?.Measure(MeasureSpec.MakeMeasureSpec(availableWidth, MeasureSpecMode.AtMost), MeasureSpec.MakeMeasureSpec(availableHeight, MeasureSpecMode.AtMost));
-                availableHeight -= NavBarHeight + (int)(m_Paint.StrokeWidth + 0.5);
+                pageAvailableHeight -= NavBarHeight;// + (int)(m_Paint.StrokeWidth + 0.5);
             }
 
-            pageView?.Measure(MeasureSpec.MakeMeasureSpec(availableWidth, hzMode), MeasureSpec.MakeMeasureSpec(availableHeight, vtMode));
+            pageView?.Measure(MeasureSpec.MakeMeasureSpec(availableWidth, hzMode), MeasureSpec.MakeMeasureSpec(pageAvailableHeight, vtMode));
             SetMeasuredDimension(availableWidth, availableHeight);
         }
 
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
-            var nbh = 0;
-            if (Page is Page page && page.HasNavigationBar)
+            var navBarHt = 0;
+            if (Parent is NavigationPage navPage && Page is Page page && page.HasNavigationBar)
             {
-                nbh = NavBarHeight;
-                var t1 = t + (nbh - m_BackButton.MeasuredHeight) / 2;
-                if (page.HasBackButton && Parent is NavigationPage navPage && navPage.GetChildAt(0) != this)
+                navBarHt = NavBarHeight;
+                var t1 = t + (navBarHt - m_BackButton.MeasuredHeight) / 2;
+                if (page.HasBackButton && navPage.GetChildAt(0) != this)
                 {
-                    var p = (int)(DisplayExtensions.DipToPx(5)+0.5);
+                    var p = DisplayExtensions.DipToPx(5);
                     m_BackButton.Layout(l + p, t1, l + p + m_BackButton.MeasuredWidth, t1 + m_BackButton.MeasuredHeight);
                 }
-                var l1 = l + ((r - l) - m_TitleTextView.MeasuredWidth) / 2;
-                t1 = t + (nbh - m_TitleTextView.MeasuredHeight) / 2;
-                m_TitleTextView.Layout(l1, t1, l1 + m_TitleTextView.MeasuredWidth, t1 + m_TitleTextView.MeasuredHeight);
+                if (m_TitleTextView is View ttv)
+                {
+                    var l1 = l + ((r - l) - ttv.MeasuredWidth) / 2;
+                    t1 = t + (navBarHt - ttv.MeasuredHeight) / 2;
+                    ttv.Layout(l1, t1, l1 + ttv.MeasuredWidth, t1 + ttv.MeasuredHeight);
+                }
             }
-            pageView?.Layout(l, t + nbh, r, b);
+            pageView?.Layout(l, t + navBarHt + (int)(m_Paint.StrokeWidth + 0.5), r, b);
         }
 
         protected override void OnDraw(Canvas canvas)
         {
             base.OnDraw(canvas);
 
-            var nbh = NavBarHeight;
-            if (Page is Page page && page.HasNavigationBar && nbh > 0)
+            if (Parent is NavigationPage navPage && Page is Page page && page.HasNavigationBar)
             {
                 var path = new Path();
-                path.MoveTo(0, nbh);
-                path.LineTo(canvas.Width, nbh);
+                path.MoveTo(0, NavBarHeight);
+                path.LineTo(canvas.Width, NavBarHeight);
                 canvas.DrawPath(path, m_Paint);
             }
         }

@@ -20,11 +20,7 @@ namespace P42.Native.Controls
         public virtual ThicknessI Padding
         {
             get => b_Padding;
-            set
-            {
-                if (((INotifiable)this).SetField(ref b_Padding, value))
-                    SetPadding((int)(b_Padding.Left + 0.5), (int)(b_Padding.Top + 0.5), (int)(b_Padding.Right + 0.5), (int)(b_Padding.Bottom +0.5));
-            }
+            set => ((INotifiable)this).SetField(ref b_Padding, value);
         }
 
 

@@ -6,22 +6,9 @@ using Color = Android.Graphics.Color;
 
 namespace P42.Native.Controls
 {
-    public partial class Label : IFrameworkElement
+    public partial class Label : IElement, ILabel
     {
         #region Properties
-
-        ThicknessI b_Padding;
-        public ThicknessI Padding
-        {
-            get => b_Padding;
-            set => ((INotifiable)this).SetField(ref b_Padding, value);
-        }
-
-        public Thickness DipPadding
-        {
-            get => Padding.PxToDip();
-            set => Padding = value.DipToPx();
-        }
 
         string b_FontFamily;
         public string FontFamily
@@ -29,7 +16,6 @@ namespace P42.Native.Controls
             get => b_FontFamily;
             set => ((INotifiable)this).SetField(ref b_FontFamily, value);
         }
-
 
         double b_FontSize;
         public double FontSize
@@ -44,6 +30,7 @@ namespace P42.Native.Controls
             get => b_FontStyle;
             set => ((INotifiable)this).SetField(ref b_FontStyle, value);
         }
+
 
         Color b_TextColor;
         public Color TextColor
@@ -66,8 +53,9 @@ namespace P42.Native.Controls
             set => ((INotifiable)this).SetField(ref b_Text, value);
         }
 
-        LineBreadMode b_LineBreakMode;
-        public LineBreadMode LineBreakMode
+
+        LineBreakMode b_LineBreakMode;
+        public LineBreakMode LineBreakMode
         {
             get => b_LineBreakMode;
             set => ((INotifiable)this).SetField(ref b_LineBreakMode, value);
@@ -87,12 +75,16 @@ namespace P42.Native.Controls
             set => ((INotifiable)this).SetField(ref b_VerticalTextAlignment, value);
         }
 
+        /* will implement this and Lines when it's time to start working at STRETCH
         double b_MinFontSize = -1;
         public double MinFontSize
         {
             get => b_MinFontSize;
             set => ((INotifiable)this).SetField(ref b_MinFontSize, value);
         }
+        */
+
+
         #endregion
     }
 }

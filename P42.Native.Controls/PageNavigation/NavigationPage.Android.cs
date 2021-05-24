@@ -29,12 +29,13 @@ namespace P42.Native.Controls
 
 
         #region Constructors
-        public NavigationPage(IPage iPage) : base(P42.Utils.Droid.Settings.Context)
+        public NavigationPage(IPage page) : this(P42.Utils.Droid.Settings.Context, page) { }
+
+        public NavigationPage(Context context, IPage iPage) : base(context)
         {
             Build();
             if (iPage is View page)
                 AddView(new NavPageWrapper(iPage), new ViewGroup.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent));
-                //AddView(page, new ViewGroup.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent));
         }
 
         public NavigationPage(Context context) : base(context)

@@ -1,6 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.Runtime;
@@ -12,7 +15,7 @@ using UIElement = Android.Views.View;
 
 namespace P42.Native.Controls
 {
-    public partial class ListView : IFrameworkElement
+    public partial class ListView : IElement
     {
 
         #region Properties
@@ -38,36 +41,47 @@ namespace P42.Native.Controls
             set => ((INotifiable)this).SetField(ref b_IsItemClickEnabled, value);
         }
 
-        ObservableCollection<object> b_SelectedItems = new ObservableCollection<object>();
-        public ObservableCollection<object> SelectedItems
+        internal ObservableCollection<object> b_SelectedItems = new ObservableCollection<object>();
+        public IEnumerable SelectedItems
         {
             get => b_SelectedItems;
-            //set => SetField(ref b_SelectedItems, value);
+            set
+            {
+                var deleteItems = b_SelectedItems.ToList();
+                foreach (var item in value)
+                {
+                    if (!b_SelectedItems.Contains(item))
+                        b_SelectedItems.Add(item);
+                    deleteItems.Remove(item);
+                }
+                foreach (var item in deleteItems)
+                    b_SelectedItems.Remove(item);
+            }
         }
 
         SelectionMode b_SelectionMode;
         public SelectionMode SelectionMode
         {
             get => b_SelectionMode;
-            set => ((INotifiable)this).SetField(ref b_SelectionMode, value);
+            set => ((INotifiable)this).SetField(ref b_SelectionMode, value, UpdateSelectionMode);
         }
 
         int b_SelectedIndex;
         public int SelectedIndex
         {
             get => b_SelectedIndex;
-            set => ((INotifiable)this).SetField(ref b_SelectedIndex, value);
+            set => SelectIndex(value);
         }
 
         object b_SelectedItem;
         public object SelectedItem
         {
             get => b_SelectedItem;
-            set => ((INotifiable)this).SetField(ref b_SelectedItem, value);
+            set => SelectItem(value);
         }
 
-        ObservableCollection<object> b_ItemsSource;
-        public ObservableCollection<object> ItemsSource
+        IEnumerable b_ItemsSource;
+        public IEnumerable ItemsSource
         {
             get => b_ItemsSource;
             set => ((INotifiable)this).SetField(ref b_ItemsSource, value);
@@ -77,15 +91,15 @@ namespace P42.Native.Controls
         public Type ItemViewType
         {
             get => b_ItemViewType;
-            set => ((INotifiable)this).SetField(ref b_ItemViewType, value);
+            set => ((INotifiable)this).SetField(ref b_ItemViewType, value, UpdateNativeListView);
         }
 
 
-        IItemViewFactory b_ItemViewFactory;
-        public IItemViewFactory ItemViewFactory
+        IItemTypeSelector b_ItemViewTypeSelector;
+        public IItemTypeSelector ItemViewTypeSelector
         {
-            get => b_ItemViewFactory;
-            set => ((INotifiable)this).SetField(ref b_ItemViewFactory, value);
+            get => b_ItemViewTypeSelector;
+            set => ((INotifiable)this).SetField(ref b_ItemViewTypeSelector, value, UpdateNativeListView);
         }
         #endregion
 
@@ -102,9 +116,115 @@ namespace P42.Native.Controls
             VerticalAlignment = Alignment.Stretch;
         }
 
-        internal async Task OnCellTapped(Cell cell)
-        {
+        #region Scroll
+        public partial Task ScrollIntoView(object item, ScrollIntoViewAlignment alignment);
 
+        #endregion
+
+        #region Selection
+        internal partial Task OnCellTapped(Cell cell);
+
+        private void UpdateSelectionMode()
+        {
+            if (SelectionMode == SelectionMode.None)
+                b_SelectedItems.Clear();
+            else if (SelectionMode != SelectionMode.Multi)
+            {
+                if (b_SelectedItems.FirstOrDefault() is object first && first != null)
+                {
+                    var items = b_SelectedItems.ToArray();
+                    foreach (var item in items)
+                        if (item != first)
+                            b_SelectedItems.Remove(item);
+                }
+            }
         }
+
+        public void SelectAll()
+        {
+            if (SelectionMode == SelectionMode.Multi)
+            {
+                foreach (var item in ItemsSource)
+                {
+                    if (!b_SelectedItems.Contains(item))
+                        b_SelectedItems.Add(item);
+                }
+            }
+        }
+
+        public void DeselectAll()
+        {
+            b_SelectedItems.Clear();
+        }
+
+        void SelectIndex(int index)
+        {
+            if (SelectionMode != SelectionMode.None)
+            {
+                if (ItemsSource is IList collection)
+                {
+                    SelectedItem = collection[index];
+                    return;
+                }
+                int i = 0;
+                foreach (var item in ItemsSource)
+                {
+                    if (i == index)
+                    {
+                        SelectItem(item);
+                        return;
+                    }
+                    i++;
+                }
+            }
+        }
+
+        void SelectItem(object item)
+        {
+            if (SelectionMode != SelectionMode.None)
+            {
+                if (_repondingToSelectedItemsCollectionChanged)
+                    return;
+                if (SelectionMode == SelectionMode.Single)
+                {
+                    if (!b_SelectedItems.Contains(item))
+                    {
+                        b_SelectedItems.Clear();
+                        b_SelectedItems.Add(item);
+                    }
+                }
+                else if (SelectionMode == SelectionMode.Multi)
+                {
+                    if (b_SelectedItems.Contains(item))
+                        b_SelectedItems.Remove(item);
+                    else
+                        b_SelectedItems.Add(item);
+                }
+            }
+        }
+
+        bool _repondingToSelectedItemsCollectionChanged;
+        private void OnSelectedItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            _repondingToSelectedItemsCollectionChanged = true;
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                case NotifyCollectionChangedAction.Remove:
+                case NotifyCollectionChangedAction.Replace:
+                case NotifyCollectionChangedAction.Reset:
+                    if (e.NewItems?.Any() ?? false)
+                        SelectedItem = e.NewItems[0];
+                    else if (SelectedItem != null && (e.OldItems?.Contains(SelectedItem) ?? false))
+                        SelectedItem = null;
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(this, e.OldItems, e.NewItems));
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                default:
+                    break;
+            }
+            _repondingToSelectedItemsCollectionChanged = false;
+        }
+        #endregion
     }
 }

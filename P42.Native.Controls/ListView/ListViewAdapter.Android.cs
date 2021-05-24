@@ -7,17 +7,17 @@ using Android.Views;
 using Android.Runtime;
 using Android.Content;
 using Android.Util;
+using static AndroidX.RecyclerView.Widget.RecyclerView;
 
 namespace P42.Native.Controls
 {
 
     class ListViewAdapter : Android.Widget.BaseAdapter<object>
     {
-        IEnumerable<object> Items;
+        IEnumerable Items;
         Type ItemViewType => ListView.ItemViewType;
-        IItemViewFactory TemplateSelector => ListView.ItemViewFactory;
+        IItemTypeSelector TemplateSelector => ListView.ItemViewTypeSelector;
         ListView ListView;
-        //List<DataTemplate> Templates = new List<DataTemplate>();
 
         public ListViewAdapter(ListView listView)
         {
@@ -25,7 +25,7 @@ namespace P42.Native.Controls
             SetItems(ListView.ItemsSource);
         }
 
-        public void SetItems(IEnumerable<object> items)
+        public void SetItems(IEnumerable items)
         {
             if (items != Items)
             {
@@ -75,47 +75,41 @@ namespace P42.Native.Controls
             if (ItemViewType != null || TemplateSelector is null)
                 return 0;
             if (TemplateSelector?.GetViewType(this[position]) is Type viewType)
-                return TemplateSelector.ViewTypes.IndexOf(viewType) + 1;
+            {
+                var index = 1;
+                foreach (var type in TemplateSelector.ViewTypes)
+                {
+                    if (type == viewType)
+                        return index;
+                    index++;
+                }
+            }
             return 0;
         }
 
         // ALWAYS SET INDEX BEFORE DATACONTEXT
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            if (convertView is CellWrapper wrapper)
+            Cell cell = convertView as Cell;
+            if (cell is null)
             {
-                wrapper.Index = position;
-                wrapper.DataContext = this[position];
-                return convertView;
+                Type cellType = null;
+                if (TemplateSelector?.GetViewType(this[position]) is Type t1 && typeof(Cell).IsAssignableFrom(t1))
+                    cellType = t1;
+                else if (ItemViewType is Type t2 && typeof(Cell).IsAssignableFrom(t2))
+                    cellType = t2;
+                if (cellType != null)
+                    cell = (Cell)Activator.CreateInstance(cellType, new object[] { ListView });
             }
 
-            if (ItemTemplate?.LoadContent() is FrameworkElement newElement)
-            {
-                return new CellWrapper(ListView)
-                {
-                    Child = newElement,
-                    Index = position,
-                    DataContext = this[position]
-                };
-            }
+            if (cell is null)
+                cell = new TextCell(ListView);
 
-            if (TemplateSelector?.SelectTemplate(this[position]) is DataTemplate template)
-            {
-                if (template.LoadContent() is FrameworkElement newSelectedElement)
-                    return new CellWrapper(ListView)
-                    {
-                        Child = newSelectedElement,
-                        Index = position,
-                        DataContext = this[position]
-                    };
-            }
-
-            return new CellWrapper(ListView)
-            {
-                Child = new Cell(),
-                Index = position,
-                DataContext = this[position],
-            };
+            cell.Index = position;
+            cell.DataContext = this[position];
+            cell.Background = new Android.Graphics.Drawables.ColorDrawable(Android.Graphics.Color.Orange);
+            cell.Invalidate();
+            return cell;
         }
 
     }
@@ -123,16 +117,18 @@ namespace P42.Native.Controls
 
     partial class TextCell : Cell
     {
-
+        Label Label;
 
         public TextCell(ListView listView) : base(listView)
         {
-
+            Label = new Label(Context);
+            AddView(Label);
         }
 
         public override void OnDataContextChanged()
         {
             base.OnDataContextChanged();
+            Label.Text = DataContext.ToString();
         }
     }
 

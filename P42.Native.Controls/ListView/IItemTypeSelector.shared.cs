@@ -8,12 +8,9 @@ using UIElement = Android.Views.View;
 
 namespace P42.Native.Controls
 {
-    public interface IItemViewFactory : IDisposable
+    public interface IItemTypeSelector : IDisposable
     {
-        UIElement GetUIElement(object item);
-
         Type GetViewType(object item);
-        //void RecycleElement(Element element); // may have to implement when we get to iOS?
 
         IEnumerable<Type> ViewTypes { get; }
     }

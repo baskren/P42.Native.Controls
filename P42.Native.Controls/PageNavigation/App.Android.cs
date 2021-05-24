@@ -19,12 +19,16 @@ namespace P42.Native.Controls
 
 
         #region Constructors
-        public App(Page page) : base(P42.Utils.Droid.Settings.Context)
+        public App(Page page) : this(P42.Utils.Droid.Settings.Context, page) { }
+
+        public App(Context context, Page page) : base(context)
         {
             Build(page);
         }
 
-        public App(NavigationPage page) : base(P42.Utils.Droid.Settings.Context)
+        public App(NavigationPage page) : this(P42.Utils.Droid.Settings.Context, page) { }
+
+        public App(Context context, NavigationPage page) : base(context)
         {
             Build(page);
         }

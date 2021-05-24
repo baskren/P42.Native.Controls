@@ -14,9 +14,22 @@ namespace Demo.Droid
                 "Item A1", "Item B1", "Item C1", "Item D1", "Item E1", "Item F1", "Item G1", "Item H1", "Item I1", "Item J1", "Item K1", "Item L1", "Item M1", "Item N1", "Item O1", "Item P1", "Item Q1", "Item R1", "Item S1", "Item T1", "Item U1", "Item V1", "Item W1", "Item X1", "Item Y1", "Item Z1",
         };
 
+        ListView _listView;
+
         public ContentAndDetailPresenterPage()
         {
-            //var _listView = new Android.Widget.ListView
+            Content = new ListView()
+                .Assign(out _listView)
+                .ItemViewType(typeof(TextCell))
+                .ItemsSource(items)
+                .SelectionMode(SelectionMode.Single);
+
+            _listView.SelectionChanged += OnSelectionChanged;
+        }
+
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine($"ContentAndDetailPresenterPage.OnSelectionChanged: " + e.ToString());
         }
     }
 }

@@ -10,7 +10,7 @@ using Color = Android.Graphics.Color;
 
 namespace P42.Native.Controls
 {
-    public interface IControl : IFrameworkElement
+    public interface IControl : IElement
     {
         #region Control
         ThicknessI Padding { get; set; }

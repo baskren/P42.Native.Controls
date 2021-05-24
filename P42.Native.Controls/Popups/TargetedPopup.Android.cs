@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Android.Content;
 using Android.Graphics;
 using Android.Views;
 using Android.Widget;
@@ -191,11 +192,11 @@ namespace P42.Native.Controls
 
 
         #region Fields
-        Android.Widget.PopupWindow m_OverlayPopup;
-        readonly Android.Views.View m_Overlay;
+        PopupWindow m_OverlayPopup;
+        readonly View m_Overlay;
         //readonly Android.Graphics.Drawables.ShapeDrawable m_OverlayShape;
 
-        Android.Widget.PopupWindow m_BorderPopup;
+        PopupWindow m_BorderPopup;
         readonly BubbleBorder m_Border;
 
         PointI m_PopupOffset = new PointI();
@@ -204,11 +205,13 @@ namespace P42.Native.Controls
 
 
         #region Construction / Disposal
-        public TargetedPopup(Android.Views.View target = null)
+        public TargetedPopup(View target = null) : this(P42.Utils.Droid.Settings.Context, target) { }
+
+        public TargetedPopup(Context context, Android.Views.View target = null)
         {
             Target = target;
 
-            m_Overlay = new Android.Views.View(P42.Utils.Droid.Settings.Context)
+            m_Overlay = new View(context)
             {
                 LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent),
                 Background = PageOverlayColor.AsDrawable()
@@ -216,7 +219,7 @@ namespace P42.Native.Controls
 
             //m_OverlayPopup = new Android.Widget.PopupWindow(m_Overlay, DisplayExtensions.Width, DisplayExtensions.Height);
 
-            m_Border = new BubbleBorder
+            m_Border = new BubbleBorder(context)
             {
                 BorderColor = BorderColor,
                 BackgroundColor = BackgroundColor
@@ -324,7 +327,6 @@ namespace P42.Native.Controls
             //_popup.InvalidateMeasure();
             m_BorderPopup.ShowAtLocation(App.Current, GravityFlags.Top | GravityFlags.Left, (int)(m_PopupFrame.Left + 0.5), (int)(m_PopupFrame.Top + 0.5));
 
-
             if (IsAnimated)
             {
                 Action<double> action = percent => m_Border.Alpha = (float)percent;
@@ -334,6 +336,9 @@ namespace P42.Native.Controls
 
             //_border.Bind(BubbleBorder.OpacityProperty, this, nameof(Opacity));
             m_Border.Alpha = 1;
+
+            await ((IElement)m_Border).WaitForDrawComplete();
+            HasDrawn = true;
 
             if (PopAfter > default(TimeSpan))
             {
@@ -350,6 +355,16 @@ namespace P42.Native.Controls
             Pushed?.Invoke(this, EventArgs.Empty);
             _pushCompletionSource?.TrySetResult(true);
 
+        }
+
+
+        TaskCompletionSource<bool> HasDrawnTaskCompletionSource;
+        public async Task WaitForDrawComplete()
+        {
+            if (HasDrawn)
+                return;
+            HasDrawnTaskCompletionSource = HasDrawnTaskCompletionSource ?? new TaskCompletionSource<bool>();
+            await HasDrawnTaskCompletionSource.Task;
         }
 
         private void M_BorderPopup_TouchIntercepted(object sender, View.TouchEventArgs e)
@@ -996,27 +1011,29 @@ namespace P42.Native.Controls
         #region INotifiable
 
 
-        #region Events
-        public event PropertyChangedEventHandler PropertyChanged;
-        public event PropertyChangingEventHandler PropertyChanging;
-        #endregion
-
-
-        #region Fields
-        public bool HasDrawn { get; set; }
-        public bool HasChanged { get; set; }
-        #endregion
 
 
         #region Methods
-        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         public virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
         {
             PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
+        }
+
+        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            if (propertyName == nameof(Padding))
+                m_Border.Padding = Padding;
+            else if (propertyName == nameof(BorderWidth))
+                m_Border.BorderWidth = BorderWidth;
+            else if (propertyName == nameof(BorderColor))
+                m_Border.BorderColor = BorderColor;
+            else if (propertyName == nameof(CornerRadius))
+                m_Border.CornerRadius = CornerRadius;
+            else if (propertyName == nameof(BackgroundColor))
+                m_Border.BackgroundColor = BackgroundColor;
+            else if (propertyName == nameof(HasDrawn) && HasDrawn)
+                HasDrawnTaskCompletionSource?.TrySetResult(true);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public void RedrawElement() => m_Border.PostInvalidate();
@@ -1028,7 +1045,14 @@ namespace P42.Native.Controls
         #endregion
 
         #endregion
+
+
+
+
     }
+
+
+
 
 
 }
