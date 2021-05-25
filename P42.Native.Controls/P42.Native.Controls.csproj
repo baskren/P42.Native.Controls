@@ -3,6 +3,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>MonoAndroid10.0;</TargetFrameworks>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
   <!-- WASM -->
@@ -25,51 +26,4 @@
     <ProjectReference Include="..\P42.Utils\P42.Utils.Uno\P42.Utils.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="IElement.cs">
-      <DependentUpon>IElement.tt</DependentUpon>
-      <SubType></SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Extensions.Markup\IElementMarkupExtensions.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Interfaces\IElement.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="ListView\ListView.IElement.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="ListView\Cell.IElement.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Label\Label.IElement.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Popups\BubbleBorder.IControl.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Popups\BubbleBorder.IElement.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Popups\TargetedPopup.IControl.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Popups\TargetedPopup.IElement.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="SegmentedControl\SegmentedPanel.IControl.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="SegmentedControl\SegmentedPanel.IElement.shared.cs">
-      <SubType></SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="IElement.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>IElement.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  </Project>
+</Project>
