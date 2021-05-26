@@ -10,7 +10,6 @@ using SmartTraitsDefs;
 
 namespace P42.Native.Controls
 {
-    [AddTrait(typeof(TControl))]
     public partial class SegmentedPanel : ViewGroup
     {
         #region Properties
@@ -253,16 +252,6 @@ namespace P42.Native.Controls
             ActualSize = new SizeI(canvas.Width, canvas.Height);
         }
 
-        #endregion
-
-
-
-        #region PropertyChange Methods
-
-
-        public void RedrawElement() => PostInvalidate();
-
-        public void RelayoutElement() => RequestLayout();
         #endregion
 
     }

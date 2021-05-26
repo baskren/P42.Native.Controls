@@ -13,6 +13,59 @@ namespace P42.Native.Controls
 
 #if __ANDROID__
         Android.Views.View BaseView { get; set; }
+
+        void UpdateLayoutParams()
+        {
+            BaseView.LayoutParameters = new ViewGroup.LayoutParams(
+                    HorizontalAlignment == Alignment.Stretch
+                        ? ViewGroup.LayoutParams.MatchParent
+                        : RequestedWidth < 0
+                            ? ViewGroup.LayoutParams.WrapContent
+                            : RequestedWidth < MinWidth
+                                ? MinWidth
+                                : RequestedWidth > MaxWidth
+                                    ? MaxWidth
+                                    : RequestedWidth,
+                    VerticalAlignment == Alignment.Start
+                        ? ViewGroup.LayoutParams.MatchParent
+                        : RequestedHeight < 0
+                            ? ViewGroup.LayoutParams.WrapContent
+                            : RequestedHeight < MinHeight
+                                ? MinHeight
+                                : RequestedHeight > MaxHeight
+                                    ? MaxHeight
+                                    : RequestedHeight
+                );
+            if (HasDrawn)
+                BaseView.RequestLayout();
+        }
+
+        void UpdateMinWidth()
+        {
+            BaseView.SetMinimumWidth(MinWidth);
+            UpdateLayoutParams();
+        }
+
+        void UpdateMinHeight()
+        {
+            BaseView.SetMinimumHeight(MinHeight);
+            UpdateLayoutParams();
+        }
+
+        public void RedrawElement()
+            => BaseView.PostInvalidate();
+
+        public void RelayoutElement()
+            => BaseView.RequestLayout();
+
+#else
+
+        void UpdateLayoutParams() {}
+        void UpdateMinWidth(){}
+        void UpdateMinHeight() {}
+        public void RedrawElement();
+        public void RelayoutElement();
+
 #endif
 
         int b_RequestedWidth = -1;
@@ -194,60 +247,6 @@ namespace P42.Native.Controls
 
 
 
-#if __ANDROID__
-        void UpdateLayoutParams()
-        {
-            BaseView.LayoutParameters = new ViewGroup.LayoutParams(
-                    HorizontalAlignment == Alignment.Stretch
-                        ? ViewGroup.LayoutParams.MatchParent
-                        : RequestedWidth < 0
-                            ? ViewGroup.LayoutParams.WrapContent
-                            : RequestedWidth < MinWidth
-                                ? MinWidth
-                                : RequestedWidth > MaxWidth
-                                    ? MaxWidth
-                                    : RequestedWidth,
-                    VerticalAlignment == Alignment.Start
-                        ? ViewGroup.LayoutParams.MatchParent
-                        : RequestedHeight < 0
-                            ? ViewGroup.LayoutParams.WrapContent
-                            : RequestedHeight < MinHeight
-                                ? MinHeight
-                                : RequestedHeight > MaxHeight
-                                    ? MaxHeight
-                                    : RequestedHeight
-                );
-            if (HasDrawn)
-                BaseView.RequestLayout();
-        }
-
-        void UpdateMinWidth()
-        {
-            BaseView.SetMinimumWidth(MinWidth);
-            UpdateLayoutParams();
-        }
-
-        void UpdateMinHeight()
-        {
-            BaseView.SetMinimumHeight(MinHeight);
-            UpdateLayoutParams();
-        }
-
-        public void RedrawElement()
-            => BaseView.PostInvalidate();
-
-        public void RelayoutElement()
-            => BaseView.RequestLayout();
-
-#else
-
-        void UpdateLayoutParams() {}
-        void UpdateMinWidth(){}
-        void UpdateMinHeight() {}
-        public void RedrawElement();
-        public void RelayoutElement();
-
-#endif
 
         [Overrideable]
         public virtual void OnDataContextChanged() { }

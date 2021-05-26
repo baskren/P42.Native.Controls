@@ -15,10 +15,13 @@ namespace P42.Native.Controls
     {
         #region Control
         ThicknessI Padding { get; set; }
+        Thickness DipPadding { get; set; }
 
         double BorderWidth { get; set; }
+        double DipBorderWidth { get; set; }
 
         double CornerRadius { get; set; }
+        double DipCornerRadius { get; set; }
 
         Color BorderColor { get; set; }
 

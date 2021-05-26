@@ -8,12 +8,10 @@ using Android.Graphics.Drawables;
 using Android.Runtime;
 using Android.Util;
 using Android.Widget;
-using SmartTraitsDefs;
 
 namespace P42.Native.Controls
 {
-    [AddTrait(typeof(TNotifiable))]
-    public partial class SegmentButton : TextView, INotifiable
+    public partial class SegmentButton : TextView
     {
         #region Static Implmenetation
         readonly static ColorStateList s_DefaultColorStateList = new ColorStateList(new int[][] { }, new int[] { });
