@@ -17,7 +17,7 @@ using Newtonsoft.Json;
 
 namespace P42.Native.Controls
 {
-    public class SegmentedControl : SegmentedPanel, INotifyPropertyChanged
+    public class SegmentedControl : SegmentedPanel
     {
 
         static double s_DefaultBorderThickness = DisplayExtensions.DipToPxD(1);

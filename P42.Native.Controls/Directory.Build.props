@@ -27,6 +27,9 @@
 
     <DebugType>portable</DebugType>
 
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles> 
+    <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\GeneratedFiles</CompilerGeneratedFilesOutputPath>
+
   </PropertyGroup>
  
   <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">

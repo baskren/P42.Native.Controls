@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
-using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
 using Android.Runtime;
@@ -11,10 +6,12 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
+using SmartTraitsDefs;
 
 namespace P42.Native.Controls
 {
-    public partial class SegmentedPanel : ViewGroup, IControl, INotifiable
+    [AddTrait(typeof(TControl))]
+    public partial class SegmentedPanel : ViewGroup
     {
         #region Properties
 
@@ -23,7 +20,7 @@ namespace P42.Native.Controls
         public virtual double Spacing
         {
             get => b_Spacing;
-            set => ((INotifiable)this).SetRedrawField(ref b_Spacing, value);
+            set => SetRedrawField(ref b_Spacing, value);
         }
 
         public virtual double DipSpacing
@@ -117,6 +114,7 @@ namespace P42.Native.Controls
 
         void Build()
         {
+            BaseView = this;
             SetWillNotDraw(false);
         }
         #endregion
@@ -255,81 +253,12 @@ namespace P42.Native.Controls
             ActualSize = new SizeI(canvas.Width, canvas.Height);
         }
 
-        TaskCompletionSource<bool> HasDrawnTaskCompletionSource;
-        public async Task WaitForDrawComplete()
-        {
-            if (HasDrawn)
-                return;
-            HasDrawnTaskCompletionSource = HasDrawnTaskCompletionSource ?? new TaskCompletionSource<bool>();
-            await HasDrawnTaskCompletionSource.Task;
-        }
         #endregion
 
-
-        #region Support Methods
-        void UpdateLayoutParams()
-        {
-            LayoutParameters = new LayoutParams(
-                    HorizontalAlignment == Alignment.Stretch
-                        ? LayoutParams.MatchParent
-                        : RequestedWidth < 0
-                            ? LayoutParams.WrapContent
-                            : RequestedWidth < MinWidth
-                                ? MinWidth
-                                : RequestedWidth > MaxWidth
-                                    ? MaxWidth
-                                    : RequestedWidth,
-                    VerticalAlignment == Alignment.Start
-                        ? LayoutParams.MatchParent
-                        : RequestedHeight < 0
-                            ? LayoutParams.WrapContent
-                            : RequestedHeight < MinHeight
-                                ? MinHeight
-                                : RequestedHeight > MaxHeight
-                                    ? MaxHeight
-                                    : RequestedHeight
-                );
-            if (HasDrawn)
-                RequestLayout();
-        }
-
-        void UpdateMinWidth()
-        {
-            SetMinimumWidth(MinWidth);
-            UpdateLayoutParams();
-        }
-
-        void UpdateMinHeight()
-        {
-            SetMinimumHeight(MinHeight);
-            UpdateLayoutParams();
-        }
-        #endregion
 
 
         #region PropertyChange Methods
-        public virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
-        }
 
-        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            if (propertyName == nameof(RequestedWidth) ||
-                propertyName == nameof(RequestedHeight) ||
-                propertyName == nameof(HorizontalAlignment) ||
-                propertyName == nameof(VerticalAlignment))
-                UpdateLayoutParams();
-            else if (propertyName == nameof(MinWidth))
-                UpdateMinWidth();
-            else if (propertyName == nameof(MinHeight))
-                UpdateMinHeight();
-            else if (propertyName == nameof(Padding))
-                SetPadding((int)(b_Padding.Left + 0.5), (int)(b_Padding.Top + 0.5), (int)(b_Padding.Right + 0.5), (int)(b_Padding.Bottom + 0.5));
-            else if (propertyName == nameof(HasDrawn) && HasDrawn)
-                HasDrawnTaskCompletionSource?.TrySetResult(true);
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         public void RedrawElement() => PostInvalidate();
 

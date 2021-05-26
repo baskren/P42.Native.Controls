@@ -8,9 +8,11 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using SmartTraitsDefs;
 
 namespace P42.Native.Controls
 {
+    [AddTrait(typeof(TNotifiable))]
     public partial class NavigationPage : ViewFlipper, IPage
     {
 
@@ -161,36 +163,5 @@ namespace P42.Native.Controls
         #endregion
 
 
-        #region INotifiable
-
-        #region Events
-        public event PropertyChangedEventHandler PropertyChanged;
-        public event PropertyChangingEventHandler PropertyChanging;
-        #endregion
-
-
-        #region Fields
-        public bool HasDrawn { get; set; }
-        public bool HasChanged { get; set; }
-        #endregion
-
-
-        #region Methods
-        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
-        }
-
-        public void RedrawElement() => PostInvalidate();
-
-        public void RelayoutElement() => RequestLayout();
-        #endregion
-
-        #endregion
     }
 }

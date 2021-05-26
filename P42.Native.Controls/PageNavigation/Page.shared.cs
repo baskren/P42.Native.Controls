@@ -8,9 +8,11 @@ using Android.Widget;
 using Android.Graphics;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using SmartTraitsDefs;
 
 namespace P42.Native.Controls
 {
+    [AddTrait(typeof(TNotifiable))]
     public partial class Page : IPage
     {
         #region Properties
@@ -83,21 +85,6 @@ namespace P42.Native.Controls
         #endregion
 
 
-        #region INotifiable
-
-        #region Events
-        public event PropertyChangedEventHandler PropertyChanged;
-        public event PropertyChangingEventHandler PropertyChanging;
-        #endregion
-
-
-        #region Fields
-        public bool HasDrawn { get; set; }
-        public bool HasChanged { get; set; }
-        #endregion
-
-
-        #endregion
 
     }
 }

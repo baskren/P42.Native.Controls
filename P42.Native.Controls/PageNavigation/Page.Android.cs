@@ -73,30 +73,6 @@ namespace P42.Native.Controls
 
 
 
-        #region INotifiable
-
-
-        #region Methods
-        public virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
-        {
-            if (propertyName == nameof(Content))
-                RemoveView(Content);
-            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
-        }
-
-        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            if (propertyName == nameof(Content))
-                AddView(Content, LayoutParameters = new LinearLayout.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public void RedrawElement() => PostInvalidate();
-
-        public void RelayoutElement() => RequestLayout();
-        #endregion
-
-        #endregion
 
     }
 }
