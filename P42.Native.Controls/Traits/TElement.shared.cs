@@ -10,7 +10,7 @@ namespace P42.Native.Controls
     [Trait]
     abstract partial class TElement : TNotifiable, IElement
     {
-        #region Properties
+
 #if __ANDROID__
         Android.Views.View BaseView { get; set; }
 #endif
@@ -188,25 +188,11 @@ namespace P42.Native.Controls
 
 #endif
 
-        #endregion
 
 
-        #region Events
         public event EventHandler<Size> SizeChanged;
-        #endregion
 
 
-        #region Support Methods
-
-
-        [Overrideable]
-        public virtual void OnDataContextChanged() { }
-
-        public bool SetRedrawField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
-            => SetField(ref field, value, () => { if (HasDrawn) RedrawElement(); }, propertyName, callerPath);
-
-        public bool SetLayoutField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
-            => SetField(ref field, value, () => { if (HasDrawn) RelayoutElement(); }, propertyName, callerPath);
 
 #if __ANDROID__
         void UpdateLayoutParams()
@@ -263,7 +249,15 @@ namespace P42.Native.Controls
 
 #endif
 
-        #endregion
+        [Overrideable]
+        public virtual void OnDataContextChanged() { }
+
+        public bool SetRedrawField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
+            => SetField(ref field, value, () => { if (HasDrawn) RedrawElement(); }, propertyName, callerPath);
+
+        public bool SetLayoutField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
+            => SetField(ref field, value, () => { if (HasDrawn) RelayoutElement(); }, propertyName, callerPath);
+
 
 
 

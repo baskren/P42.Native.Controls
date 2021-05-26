@@ -11,15 +11,15 @@ namespace P42.Native.Controls
     [Trait]
     abstract partial class TNotifiable : INotifiable
     {
-        #region INotifiable
 
-        #region Events
+
+
         public event PropertyChangedEventHandler PropertyChanged;
         public event PropertyChangingEventHandler PropertyChanging;
-        #endregion
 
 
-        #region Fields
+
+
         bool b_HasDrawn;
         public bool HasDrawn
         {
@@ -32,13 +32,11 @@ namespace P42.Native.Controls
         }
 
         public bool HasChanged { get; set; }
-        #endregion
 
 
 
 
 
-        #region Methods
         TaskCompletionSource<bool> HasDrawnTaskCompletionSource;
         public async Task WaitForDrawComplete()
         {
@@ -75,12 +73,6 @@ namespace P42.Native.Controls
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             return true;
         }
-
-
-        #endregion
-
-
-        #endregion
 
     }
 }

@@ -9,7 +9,22 @@ namespace P42.Native.Controls
     [Trait]
     abstract partial class TControl : TElement, IControl
     {
-        #region Control
+
+#if __ANDROID__
+
+        void UpdatePadding()
+        {
+            BaseView.SetPadding((int)(b_Padding.Left + 0.5), (int)(b_Padding.Top + 0.5), (int)(b_Padding.Right + 0.5), (int)(b_Padding.Bottom + 0.5));
+        }
+
+        [SmartTraitsDefs.TraitIgnore]
+        Android.Views.View BaseView { get; set; }
+#else
+
+        void UpdatePadding() {}
+
+#endif
+
         internal protected ThicknessI b_Padding = (ThicknessI)DisplayExtensions.DipToPx(10);
         public virtual ThicknessI Padding
         {
@@ -66,23 +81,6 @@ namespace P42.Native.Controls
 
 
 
-        #endregion
-
-
-#if __ANDROID__
-
-        void UpdatePadding()
-        {
-            BaseView.SetPadding((int)(b_Padding.Left + 0.5), (int)(b_Padding.Top + 0.5), (int)(b_Padding.Right + 0.5), (int)(b_Padding.Bottom + 0.5));
-        }
-
-        [SmartTraitsDefs.TraitIgnore]
-        Android.Views.View BaseView { get; set; }
-#else
-
-        void UpdatePadding() {}
-
-#endif
 
 
     }
