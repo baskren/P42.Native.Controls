@@ -37,18 +37,4 @@
 
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="obj\P42.Native.Controls\GeneratedFiles\SmartTraits\SmartTraits.SmartTraitsGenerator\SmartTraitsGenerator.SegmentedPanel.Android.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="obj\P42.Native.Controls\GeneratedFiles\SmartTraits\SmartTraits.SmartTraitsGenerator\SmartTraitsGenerator.NavigationPage.Android.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="obj\P42.Native.Controls\GeneratedFiles\SmartTraits\SmartTraits.SmartTraitsGenerator\SmartTraitsGenerator.SegmentButton.Android.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="obj\P42.Native.Controls\GeneratedFiles\SmartTraits\SmartTraits.SmartTraitsGenerator\SmartTraitsGenerator.NavPageWrapper.Android.cs">
-      <SubType></SubType>
-    </Compile>
-  </ItemGroup>
 </Project>
