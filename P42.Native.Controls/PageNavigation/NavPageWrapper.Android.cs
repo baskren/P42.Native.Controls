@@ -8,18 +8,13 @@ using Android.Widget;
 using Android.Graphics;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using SmartTraitsDefs;
 
 namespace P42.Native.Controls
 {
-    [AddTrait(typeof(TNotifiable))]
-    public partial class NavPageWrapper : ViewGroup, INotifiable
+    public partial class NavPageWrapper : ViewGroup
     {
         #region Properties
 
-        string Title => Page?.Title;
-
-        internal readonly IPage Page;
         internal readonly View pageView;
 
         #endregion

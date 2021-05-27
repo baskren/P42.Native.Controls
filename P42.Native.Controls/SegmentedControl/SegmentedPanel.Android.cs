@@ -35,7 +35,7 @@ namespace P42.Native.Controls
         public virtual Orientation Orientation
         {
             get => b_Orientation;
-            set => ((INotifiable)this).SetField(ref b_Orientation, value);
+            set => SetField(ref b_Orientation, value);
         }
 
         protected bool IsHorizontal => Orientation == Orientation.Horizontal;
@@ -47,7 +47,7 @@ namespace P42.Native.Controls
         public virtual bool ExceedsAvailableSpace
         {
             get => b_ExceedsAvailableSpace;
-            private set => ((INotifiable)this).SetField(ref b_ExceedsAvailableSpace, value);
+            private set => SetField(ref b_ExceedsAvailableSpace, value);
         }
         #endregion
 

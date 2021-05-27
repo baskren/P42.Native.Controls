@@ -2,22 +2,23 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Android.Content;
+using SmartTraitsDefs;
 
 namespace P42.Native.Controls
 {
-    public interface IPage : INotifiable
+    public interface IPage : DINotifiable
     {
-        string Title { get; }
+        public string Title { get; }
 
-        Context Context { get; }
+        public Context Context { get; }
 
-        Task OnAppeared(IPage fromPage);
+        public Task OnAppeared(IPage fromPage);
 
-        Task<bool> OnAppearing(IPage fromPage);
+        public Task<bool> OnAppearing(IPage fromPage);
 
-        Task OnDisappeared(IPage toPage);
+        public Task OnDisappeared(IPage toPage);
 
-        Task<bool> OnDisappearing(IPage toPage);
+        public Task<bool> OnDisappearing(IPage toPage);
 
     }
 }

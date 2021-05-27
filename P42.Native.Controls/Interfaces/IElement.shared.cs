@@ -1,65 +1,65 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using SmartTraitsDefs;
 
 namespace P42.Native.Controls
 {
-    [SmartTraitsDefs.TraitInterface]
-    public interface IElement : INotifiable
+    [TraitInterface]
+    public interface IElement : DINotifiable
     {
         #region FrameworkElement
-        
-        int RequestedWidth { get; set;}
-        double DipRequestedWidth { get; set; }
 
-        int RequestedHeight { get; set;}
-        double DipRequestedHeight { get; set; }
+        public int RequestedWidth { get; set;}
+        public double DipRequestedWidth { get; set; }
+
+        public int RequestedHeight { get; set;}
+        public double DipRequestedHeight { get; set; }
 
         public Alignment HorizontalAlignment { get; set;}
 
         public Alignment VerticalAlignment { get; set;}
 
-        ThicknessI Margin { get; set;}
-        Thickness DipMargin { get; set; }
+        public ThicknessI Margin { get; set;}
+        public Thickness DipMargin { get; set; }
 
-        int MinWidth { get; set; }
-        double DipMinWidth { get; set;}
+        public int MinWidth { get; set; }
+        public double DipMinWidth { get; set;}
 
-        int MinHeight { get; set; }
-        double DipMinHeight { get; set;}
+        public int MinHeight { get; set; }
+        public double DipMinHeight { get; set;}
 
-        int MaxWidth { get; set; }
-        double DipMaxWidth { get; set;}
+        public int MaxWidth { get; set; }
+        public double DipMaxWidth { get; set;}
 
-        int MaxHeight { get; set;}
-        double DipMaxHeight { get; set; }
+        public int MaxHeight { get; set;}
+        public double DipMaxHeight { get; set; }
 
-        int ActualWidth { get; }
-        double DipActualWidth { get; }
+        public int ActualWidth { get; }
+        public double DipActualWidth { get; }
 
-        int ActualHeight { get; }
-        double DipActualHeight { get; }
+        public int ActualHeight { get; }
+        public double DipActualHeight { get; }
 
-        SizeI ActualSize { get; }
-        Size DipActualSize { get; }
+        public SizeI ActualSize { get; }
+        public Size DipActualSize { get; }
 
-        object DataContext { get; set; }
+        public object DataContext { get; set; }
 
-        double Opacity { get; set; }
+        public double Opacity { get; set; }
 
-        bool IsVisible { get; set; }
+        public bool IsVisible { get; set; }
         #endregion
 
 
         #region Events
-        event EventHandler<Size> SizeChanged;
+        public event EventHandler<Size> SizeChanged;
         #endregion
 
 
         #region Methods
-        void OnDataContextChanged() { }
+        public void OnDataContextChanged() { }
 
-        Task WaitForDrawComplete();
+        public Task WaitForDrawComplete();
         #endregion
 
 

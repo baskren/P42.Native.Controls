@@ -1,12 +1,17 @@
-using System;
+﻿using System;
+using SmartTraitsDefs;
 
 #if __ANDROID__
 using Color = Android.Graphics.Color;
 using UIElement = Android.Views.View;
 #endif
 
+
 namespace P42.Native.Controls
 {
+    [AddTrait(typeof(TControl))]
+    [AddTrait(typeof(TElement))]
+    [AddTrait(typeof(TNotifiable))]
     public partial class Cell : P42.Native.Controls.IElement
     {
 
@@ -20,21 +25,21 @@ namespace P42.Native.Controls
         public bool IsEnabled
         {
             get => b_IsEnabled;
-            set => ((INotifiable)this).SetField(ref b_IsEnabled, value, OnIsEnabledChanged);
+            set => SetField(ref b_IsEnabled, value, OnIsEnabledChanged);
         }
 
         int b_Index;
         public int Index
         {
             get => b_Index;
-            internal set => ((INotifiable)this).SetField(ref b_Index, value, UpdateSelection);
+            internal set => SetField(ref b_Index, value, UpdateSelection);
         }
 
         Color b_SelectedColor = Color.Blue;
         public Color SelectedColor
         {
             get => b_SelectedColor;
-            internal set => ((INotifiable)this).SetField(ref b_SelectedColor, value, UpdateSelection);
+            internal set => SetField(ref b_SelectedColor, value, UpdateSelection);
         }
 
         #endregion

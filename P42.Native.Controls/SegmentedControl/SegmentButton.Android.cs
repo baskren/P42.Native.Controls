@@ -60,7 +60,7 @@ namespace P42.Native.Controls
             get => b_Orientation;
             set
             {
-                if (((INotifiable)this).SetField(ref b_Orientation, value))
+                if (SetField(ref b_Orientation, value))
                     UpdateRadii();
             }
         }

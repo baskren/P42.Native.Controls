@@ -16,114 +16,6 @@ namespace P42.Native.Controls
     public partial class BubbleBorder : Android.Views.ViewGroup
     {
 
-        #region Properties
-
-        Android.Views.View b_Content;
-        public Android.Views.View Content
-        {
-            get => b_Content;
-            set
-            {
-                if (b_Content != value)
-                {
-                    if (b_Content != null)
-                        RemoveView(b_Content);
-                    if (value != null)
-                        AddView(value);
-                    ((INotifiable)this).SetField(ref b_Content, value);
-                }
-            }
-        }
-
-        #region Pointer
-        /*
-        double b_PointerBias;
-        public double PointerBias
-        {
-            get => b_PointerBias;
-            set => SetRedrawField(ref b_PointerBias, value);
-        }
-        */
-
-        public static int DefaultPointerLength = DisplayExtensions.DipToPx(10);
-        int b_PointerLength = DefaultPointerLength;
-        public int PointerLength
-        {
-            get => b_PointerLength;
-            set => ((INotifiable)this).SetLayoutField(ref b_PointerLength, value);
-        }
-
-        public double DipPointerLength
-        {
-            get => DisplayExtensions.PxToDip(b_PointerLength);
-            set => PointerLength = DisplayExtensions.DipToPx(value);
-        }
-
-        public static double DefaultPointerTipRadius = DisplayExtensions.DipToPx(2);
-        double b_PointerTipRadius = DefaultPointerTipRadius;
-        public double PointerTipRadius
-        {
-            get => b_PointerTipRadius;
-            set => ((INotifiable)this).SetRedrawField(ref b_PointerTipRadius, value);
-        }
-
-        public double DipPointerTipRadius
-        {
-            get => DisplayExtensions.PxToDip(b_PointerTipRadius);
-            set => PointerTipRadius = DisplayExtensions.DipToPx(value);
-        }
-
-        public static double DefaultPointerAxialPosition = 0.5; 
-        double b_PointerAxialPosition = DefaultPointerAxialPosition;
-        public double PointerAxialPosition
-        {
-            get => b_PointerAxialPosition;
-            set => ((INotifiable)this).SetRedrawField(ref b_PointerAxialPosition, value);
-        }
-
-        public double DipPointerAxialPosition
-        {
-            get => DisplayExtensions.PxToDip(b_PointerAxialPosition);
-            set
-            {
-                if (value <= 1)
-                    PointerAxialPosition = value;
-                else
-                    PointerAxialPosition = DisplayExtensions.DipToPx(value);
-            }
-        }
-
-        public static PointerDirection DefaultPointerDirection = PointerDirection.Any;
-        PointerDirection b_PointerDirection = DefaultPointerDirection;
-        public PointerDirection PointerDirection
-        {
-            get => b_PointerDirection;
-            set
-            {
-                if (PointerDirection.IsHorizontal() == value.IsHorizontal())
-                    ((INotifiable)this).SetRedrawField(ref b_PointerDirection, value);
-                else
-                    ((INotifiable)this).SetLayoutField(ref b_PointerDirection, value);
-            }
-        }
-
-        public static double DefaultPointerCornerRadius = DisplayExtensions.DipToPx(2);
-        double b_PointerCornerRadius = DefaultPointerCornerRadius;
-        public double PointerCornerRadius
-        {
-            get => b_PointerCornerRadius;
-            set => ((INotifiable)this).SetField(ref b_PointerCornerRadius, value);
-        }
-
-        public double DipPointerCornerRadius
-        {
-            get => DisplayExtensions.PxToDip(b_PointerCornerRadius);
-            set => PointerCornerRadius = DisplayExtensions.DipToPx(value);
-        }
-        #endregion
-
-        #endregion
-
 
         #region Fields
         readonly Paint m_paint = new Paint(PaintFlags.AntiAlias);
@@ -273,21 +165,6 @@ namespace P42.Native.Controls
             ActualSize = new SizeI(canvas.Width, canvas.Height);
         }
 
-
-        TaskCompletionSource<bool> HasDrawnTaskCompletionSource;
-        public async Task WaitForDrawComplete()
-        {
-            if (HasDrawn)
-                return;
-
-            if (Content is IElement content)
-                await content.WaitForDrawComplete();
-            else
-            {
-                HasDrawnTaskCompletionSource = HasDrawnTaskCompletionSource ?? new TaskCompletionSource<bool>();
-                await HasDrawnTaskCompletionSource.Task;
-            }
-        }
         #endregion
 
 
@@ -562,76 +439,23 @@ namespace P42.Native.Controls
         #endregion
 
 
-        #region Support Methods
-        void UpdateLayoutParams()
-        {
-            LayoutParameters = new LayoutParams(
-                    HorizontalAlignment == Alignment.Stretch
-                        ? LayoutParams.MatchParent
-                        : RequestedWidth < 0
-                            ? LayoutParams.WrapContent
-                            : RequestedWidth < MinWidth
-                                ? MinWidth
-                                : RequestedWidth > MaxWidth
-                                    ? MaxWidth
-                                    : RequestedWidth,
-                    VerticalAlignment == Alignment.Start
-                        ? LayoutParams.MatchParent
-                        : RequestedHeight < 0
-                            ? LayoutParams.WrapContent
-                            : RequestedHeight < MinHeight
-                                ? MinHeight
-                                : RequestedHeight > MaxHeight
-                                    ? MaxHeight
-                                    : RequestedHeight
-                );
-            if (HasDrawn)
-                RequestLayout();
-        }
-
-        void UpdateMinWidth()
-        {
-            SetMinimumWidth(MinWidth);
-            UpdateLayoutParams();
-        }
-
-        void UpdateMinHeight()
-        {
-            SetMinimumHeight(MinHeight);
-            UpdateLayoutParams();
-        }
-        #endregion
 
 
-        #region INotifiable
+        #region DINotifiable
 
         #region Methods
-        public virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
         {
-            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
+            if (propertyName == nameof(Content) && Content != null)
+                RemoveView(b_Content);
         }
 
-        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (propertyName == nameof(RequestedWidth) ||
-                propertyName == nameof(RequestedHeight) ||
-                propertyName == nameof(HorizontalAlignment) ||
-                propertyName == nameof(VerticalAlignment))
-                UpdateLayoutParams();
-            else if (propertyName == nameof(MinWidth))
-                UpdateMinWidth();
-            else if (propertyName == nameof(MinHeight))
-                UpdateMinHeight();
-            else if (propertyName == nameof(Padding))
-                SetPadding((int)(b_Padding.Left + 0.5), (int)(b_Padding.Top + 0.5), (int)(b_Padding.Right + 0.5), (int)(b_Padding.Bottom + 0.5));
-            else if (propertyName == nameof(HasDrawn) && HasDrawn)
-                HasDrawnTaskCompletionSource?.TrySetResult(true);
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (propertyName == nameof(Content) && Content != null)
+                AddView(b_Content);
         }
 
-        public void RedrawElement() => PostInvalidate();
-
-        public void RelayoutElement() => RequestLayout();
         #endregion
 
         #endregion

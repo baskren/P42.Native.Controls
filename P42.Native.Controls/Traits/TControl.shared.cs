@@ -1,4 +1,4 @@
-
+using System;
 using SmartTraitsDefs;
 #if __ANDROID__
 using Color = Android.Graphics.Color;
@@ -25,7 +25,21 @@ namespace P42.Native.Controls
 
 #endif
 
-        internal protected ThicknessI b_Padding = (ThicknessI)DisplayExtensions.DipToPx(10);
+        #region Defaults
+        [Overrideable]
+        public static ThicknessI DefaultPadding = (ThicknessI)DisplayExtensions.DipToPx(10);
+        [Overrideable]
+        public static double DefaultBorderWidth = DisplayExtensions.DipToPxD(1);
+        [Overrideable]
+        public static Color DefaultBorderColor = Color.Black;
+        [Overrideable]
+        public static double DefaultCornerRadius = DisplayExtensions.DipToPxD(5);
+        [Overrideable]
+        public static Color DefaultBackgroundColor = Color.Gray;
+        #endregion
+
+
+        internal protected ThicknessI b_Padding = DefaultPadding;
         public virtual ThicknessI Padding
         {
             get => b_Padding;
@@ -38,7 +52,7 @@ namespace P42.Native.Controls
         }
 
 
-        internal protected double b_BorderWidth = DisplayExtensions.DipToPxD(1);
+        internal protected double b_BorderWidth = DefaultBorderWidth;
         public virtual double BorderWidth
         {
             get => b_BorderWidth;
@@ -52,14 +66,14 @@ namespace P42.Native.Controls
 
 
 
-        internal protected Color b_BorderColor = Color.Black;
+        internal protected Color b_BorderColor = DefaultBackgroundColor;
         public virtual Color BorderColor
         {
             get => b_BorderColor;
             set => SetRedrawField(ref b_BorderColor, value);
         }
 
-        internal protected double b_CornerRadius = DisplayExtensions.DipToPxD(5);
+        internal protected double b_CornerRadius = DefaultCornerRadius;
         public virtual double CornerRadius
         {
             get => b_CornerRadius;
@@ -72,7 +86,7 @@ namespace P42.Native.Controls
         }
 
 
-        internal protected Color b_BackgroundColor = Color.Gray.WithAlpha(0.5);
+        internal protected Color b_BackgroundColor = DefaultBackgroundColor;
         public virtual Color BackgroundColor
         {
             get => b_BackgroundColor;

@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
-using Newtonsoft.Json;
+using SmartTraitsDefs;
 
 namespace P42.Native.Controls
 {
-    [SmartTraitsDefs.TraitInterface]
-    public interface INotifiable : INotifyPropertyChanged, INotifyPropertyChanging
+    public interface DINotifiable : INotifyPropertyChanged, INotifyPropertyChanging
     {
-        bool SetField<T>(ref T field, T value, Action action = null, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null);
+
+        void OnPropertyChanging([CallerMemberName] string propertyName = null) { }
+
+        void OnPropertyChanged([CallerMemberName] string propertyName = null) { }
 
     }
 }

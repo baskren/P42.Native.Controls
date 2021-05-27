@@ -37,4 +37,90 @@
 
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Popups\TargetedPopup.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Popups\BubbleBorder.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="ListView\ListView.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="ListView\Cell.Android.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="ListView\ListView.Android.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="ListView\EventHandlers.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="ListView\ScrollIntoViewAlignment.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="ListView\IItemTypeSelector.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="ListView\ListViewAdapter.Android.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="ListView\Cell.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Fonts\FontExtensions.Android.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Fonts\FontStyle.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Fonts\FontRegistrar.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Fonts\EmbeddedFontLoader.Android.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Fonts\ExportFontAttribute.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Fonts\FontFile.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Fonts\EmbeddedFont.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Fonts\IEmbeddedFontLoader.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Extensions.Markup\ListViewMarkupExtensions.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Label\TextType.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Label\LineBreakMode.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Label\Label.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Label\Label.Android.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Interfaces\ILabel.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Extensions.Markup\LabelMarkupExtensions.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Traits\TLabel.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="PageNavigation\NavigationPage.shared.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="PageNavigation\NavPageWrapper.shared.cs">
+      <SubType></SubType>
+    </Compile>
+  </ItemGroup>
 </Project>

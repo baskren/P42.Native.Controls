@@ -52,9 +52,11 @@ namespace P42.Native.Controls
             UpdateLayoutParams();
         }
 
+        [Overrideable]
         public void RedrawElement()
             => BaseView.PostInvalidate();
 
+        [Overrideable]
         public void RelayoutElement()
             => BaseView.RequestLayout();
 
@@ -67,6 +69,25 @@ namespace P42.Native.Controls
         public void RelayoutElement();
 
 #endif
+
+
+        #region Defaults
+        [Overrideable]
+        public static Alignment DefaultHorizontalAlignment = Alignment.Center;
+        [Overrideable]
+        public static Alignment DefaultVerticalAlignment = Alignment.Center;
+        [Overrideable]
+        public static ThicknessI DefaultMargin = (ThicknessI)0;
+        [Overrideable]
+        public static int DefaultMinWidth = DisplayExtensions.DipToPx(50);
+        [Overrideable]
+        public static int DefaultMinHeight = DisplayExtensions.DipToPx(50);
+        [Overrideable]
+        public static int DefaultMaxWidth = DisplayExtensions.PxWidth();
+        [Overrideable]
+        public static int DefaultMaxHeight = DisplayExtensions.PxHeight();
+        #endregion
+
 
         int b_RequestedWidth = -1;
         public virtual int RequestedWidth
@@ -92,21 +113,21 @@ namespace P42.Native.Controls
             set => RequestedHeight = value.DipToPx();
         }
 
-        Alignment b_HorizontalAlignment = Alignment.Center;
+        Alignment b_HorizontalAlignment = DefaultHorizontalAlignment;
         public virtual Alignment HorizontalAlignment
         {
             get => b_HorizontalAlignment;
             set => SetField(ref b_HorizontalAlignment, value, UpdateLayoutParams);
         }
 
-        Alignment b_VerticalAlignment = Alignment.Center;
+        Alignment b_VerticalAlignment = DefaultVerticalAlignment;
         public virtual Alignment VerticalAlignment
         {
             get => b_VerticalAlignment;
             set => SetField(ref b_VerticalAlignment, value, UpdateLayoutParams);
         }
 
-        internal protected ThicknessI b_Margin = (ThicknessI)0;
+        internal protected ThicknessI b_Margin = DefaultMargin;
         public virtual ThicknessI Margin
         {
             get => b_Margin;
@@ -119,7 +140,7 @@ namespace P42.Native.Controls
         }
 
 
-        internal protected int b_MinWidth = DisplayExtensions.DipToPx(50);
+        internal protected int b_MinWidth = DefaultMinWidth;
         public virtual int MinWidth
         {
             get => b_MinWidth;
@@ -132,7 +153,7 @@ namespace P42.Native.Controls
         }
 
 
-        internal protected int b_MinHeight = DisplayExtensions.DipToPx(50);
+        internal protected int b_MinHeight = DefaultMinHeight;
         public virtual int MinHeight
         {
             get => b_MinHeight;
@@ -145,7 +166,7 @@ namespace P42.Native.Controls
         }
 
 
-        internal protected int b_MaxWidth = DisplayExtensions.PxWidth();
+        internal protected int b_MaxWidth = DefaultMaxWidth;
         public virtual int MaxWidth
         {
             get => b_MaxWidth;
@@ -161,7 +182,7 @@ namespace P42.Native.Controls
             set => MaxWidth = value.DipToPx();
         }
 
-        internal protected int b_MaxHeight = DisplayExtensions.PxHeight();
+        internal protected int b_MaxHeight = DefaultMaxHeight;
         public virtual int MaxHeight
         {
             get => b_MaxHeight;

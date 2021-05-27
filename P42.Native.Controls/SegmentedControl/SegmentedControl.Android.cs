@@ -33,7 +33,7 @@ namespace P42.Native.Controls
             get => b_TextColor;
             set
             {
-                if (((INotifiable)this).SetField(ref b_TextColor, value))
+                if (SetField(ref b_TextColor, value))
                     UpdateSegments(s => s.TextColor = value);
             }
         }
@@ -44,7 +44,7 @@ namespace P42.Native.Controls
             get => b_SelectedTextColor;
             set
             {
-                if (((INotifiable)this).SetField(ref b_SelectedTextColor, value))
+                if (SetField(ref b_SelectedTextColor, value))
                     UpdateSegments(s => s.SelectedTextColor = value);
             }
         }
@@ -54,7 +54,7 @@ namespace P42.Native.Controls
             get => b_BackgroundColor;
             set
             {
-                if (((INotifiable)this).SetField(ref b_BackgroundColor, value))
+                if (SetField(ref b_BackgroundColor, value))
                     UpdateSegments(s => s.BackgroundColor = value);
             }
         }
@@ -65,7 +65,7 @@ namespace P42.Native.Controls
             get => b_SelectedBackgroundColor;
             set
             {
-                if (((INotifiable)this).SetField(ref b_SelectedBackgroundColor, value))
+                if (SetField(ref b_SelectedBackgroundColor, value))
                     UpdateSegments(s => s.SelectedBackgroundColor = value);
             }
         }
@@ -74,7 +74,7 @@ namespace P42.Native.Controls
         public Color OutlineColor
         {
             get => b_OutlineColor;
-            set => ((INotifiable)this).SetField(ref b_OutlineColor, value);
+            set => SetField(ref b_OutlineColor, value);
         }
         #endregion
 
@@ -84,7 +84,7 @@ namespace P42.Native.Controls
             get => b_CornerRadius;
             set
             {
-                if (((INotifiable)this).SetField(ref b_CornerRadius, value))
+                if (SetField(ref b_CornerRadius, value))
                     UpdateRadii();
             }
         }
@@ -96,7 +96,7 @@ namespace P42.Native.Controls
             get => b_Padding;
             set
             {
-                if (((INotifiable)this).SetField(ref b_Padding, value))
+                if (SetField(ref b_Padding, value))
                     UpdateSegments(s => s.SetPadding(b_Padding));
             }
         }

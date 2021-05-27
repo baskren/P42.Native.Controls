@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,37 +8,41 @@ using System.Threading.Tasks;
 using Android.Content;
 using Android.Runtime;
 using Android.Util;
+using SmartTraitsDefs;
 
 #if __ANDROID__
-using UIElement = Android.Views.View;
+using Element = Android.Views.View;
 #endif
 
 namespace P42.Native.Controls
 {
+    [AddTrait(typeof(TControl))]
+    [AddTrait(typeof(TElement))]
+    [AddTrait(typeof(TNotifiable))]
     public partial class ListView : IElement
     {
 
         #region Properties
 
-        UIElement b_Header;
-        public UIElement Header
+        Element b_Header;
+        public Element Header
         {
             get => b_Header;
-            set => ((INotifiable)this).SetField(ref b_Header, value);
+            set => SetField(ref b_Header, value);
         }
 
-        UIElement b_Footer;
-        public UIElement Footer
+        Element b_Footer;
+        public Element Footer
         {
             get => b_Footer;
-            set => ((INotifiable)this).SetField(ref b_Footer, value);
+            set => SetField(ref b_Footer, value);
         }
 
         bool b_IsItemClickEnabled;
         public bool IsItemClickEnabled
         {
             get => b_IsItemClickEnabled;
-            set => ((INotifiable)this).SetField(ref b_IsItemClickEnabled, value);
+            set => SetField(ref b_IsItemClickEnabled, value);
         }
 
         internal ObservableCollection<object> b_SelectedItems = new ObservableCollection<object>();
@@ -63,7 +67,7 @@ namespace P42.Native.Controls
         public SelectionMode SelectionMode
         {
             get => b_SelectionMode;
-            set => ((INotifiable)this).SetField(ref b_SelectionMode, value, UpdateSelectionMode);
+            set => SetField(ref b_SelectionMode, value, UpdateSelectionMode);
         }
 
         int b_SelectedIndex;
@@ -84,14 +88,14 @@ namespace P42.Native.Controls
         public IEnumerable ItemsSource
         {
             get => b_ItemsSource;
-            set => ((INotifiable)this).SetField(ref b_ItemsSource, value);
+            set => SetField(ref b_ItemsSource, value);
         }
 
         Type b_ItemViewType;
         public Type ItemViewType
         {
             get => b_ItemViewType;
-            set => ((INotifiable)this).SetField(ref b_ItemViewType, value, UpdateNativeListView);
+            set => SetField(ref b_ItemViewType, value, UpdateNativeListView);
         }
 
 
@@ -99,7 +103,7 @@ namespace P42.Native.Controls
         public IItemTypeSelector ItemViewTypeSelector
         {
             get => b_ItemViewTypeSelector;
-            set => ((INotifiable)this).SetField(ref b_ItemViewTypeSelector, value, UpdateNativeListView);
+            set => SetField(ref b_ItemViewTypeSelector, value, UpdateNativeListView);
         }
         #endregion
 

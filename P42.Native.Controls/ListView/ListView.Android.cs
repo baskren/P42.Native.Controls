@@ -251,15 +251,6 @@ namespace P42.Native.Controls
             HasDrawn = true;
         }
 
-        TaskCompletionSource<bool> HasDrawnTaskCompletionSource;
-        public async Task WaitForDrawComplete()
-        {
-            if (HasDrawn)
-                return;
-            HasDrawnTaskCompletionSource = HasDrawnTaskCompletionSource ?? new TaskCompletionSource<bool>();
-            await HasDrawnTaskCompletionSource.Task;
-        }
-
         protected override void OnAttachedToWindow()
         {
             base.OnAttachedToWindow();
@@ -275,30 +266,20 @@ namespace P42.Native.Controls
 
 
 
-        #region INotifiable
+        #region DINotifiable
 
         #region Methods
-        public virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
         {
             if (propertyName == nameof(Header))
                 RemoveHeader();
             else if (propertyName == nameof(Footer))
                 RemoveFooter();
-            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
         }
 
-        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (propertyName == nameof(RequestedWidth) ||
-                propertyName == nameof(RequestedHeight) ||
-                propertyName == nameof(HorizontalAlignment) ||
-                propertyName == nameof(VerticalAlignment))
-                UpdateLayoutParams();
-            else if (propertyName == nameof(MinWidth))
-                UpdateMinWidth();
-            else if (propertyName == nameof(MinHeight))
-                UpdateMinHeight();
-            else if (propertyName == nameof(Header))
+            if (propertyName == nameof(Header))
                 AddHeader();
             else if (propertyName == nameof(Footer))
                 AddFooter();
@@ -306,57 +287,9 @@ namespace P42.Native.Controls
                 SelectItem(SelectedItem);
             else if (propertyName == nameof(ItemsSource))
                 _adapter.SetItems(ItemsSource);
-            else if (propertyName == nameof(HasDrawn) && HasDrawn)
-                HasDrawnTaskCompletionSource?.TrySetResult(true);
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        public void RedrawElement() => PostInvalidate();
-
-        public void RelayoutElement() => RequestLayout();
         #endregion
 
-        #endregion
-
-
-        #region Support Methods
-        void UpdateLayoutParams()
-        {
-            LayoutParameters = new LayoutParams(
-                    HorizontalAlignment == Alignment.Stretch
-                        ? LayoutParams.MatchParent
-                        : RequestedWidth < 0
-                            ? LayoutParams.WrapContent
-                            : RequestedWidth < MinWidth
-                                ? MinWidth
-                                : RequestedWidth > MaxWidth
-                                    ? MaxWidth
-                                    : RequestedWidth,
-                    VerticalAlignment == Alignment.Start
-                        ? LayoutParams.MatchParent
-                        : RequestedHeight < 0
-                            ? LayoutParams.WrapContent
-                            : RequestedHeight < MinHeight
-                                ? MinHeight
-                                : RequestedHeight > MaxHeight
-                                    ? MaxHeight
-                                    : RequestedHeight
-                );
-            if (HasDrawn)
-                RequestLayout();
-        }
-
-        void UpdateMinWidth()
-        {
-            SetMinimumWidth(MinWidth);
-            UpdateLayoutParams();
-        }
-
-        void UpdateMinHeight()
-        {
-            SetMinimumHeight(MinHeight);
-            UpdateLayoutParams();
-        }
         #endregion
 
 

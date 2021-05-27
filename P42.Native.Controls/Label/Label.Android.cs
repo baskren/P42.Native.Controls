@@ -79,15 +79,6 @@ namespace P42.Native.Controls
 			HasDrawn = true;
 			ActualSize = new SizeI(canvas.Width, canvas.Height);
 		}
-
-		TaskCompletionSource<bool> HasDrawnTaskCompletionSource;
-		public async Task WaitForDrawComplete()
-		{
-			if (HasDrawn)
-				return;
-			HasDrawnTaskCompletionSource = HasDrawnTaskCompletionSource ?? new TaskCompletionSource<bool>();
-			await HasDrawnTaskCompletionSource.Task;
-		}
 		#endregion
 
 
@@ -148,24 +139,15 @@ namespace P42.Native.Controls
 
 
 
-		#region INotifiable
+		#region DINotifiable
 
 		#region Methods
-		public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			if (_disposed)
 				return;
 
-			if (propertyName == nameof(RequestedWidth) ||
-				propertyName == nameof(RequestedHeight) ||
-				propertyName == nameof(HorizontalAlignment) ||
-				propertyName == nameof(VerticalAlignment))
-				UpdateLayoutParams();
-			else if (propertyName == nameof(MinWidth))
-				UpdateMinWidth();
-			else if (propertyName == nameof(MinHeight))
-				UpdateMinHeight();
-			else if (propertyName == nameof(FontFamily) || propertyName == nameof(FontStyle))
+			if (propertyName == nameof(FontFamily) || propertyName == nameof(FontStyle))
 				Typeface = FontExtensions.ToTypeface(FontFamily, FontStyle);
 			else if (propertyName == nameof(FontSize))
 				SetTextSize(ComplexUnitType.Sp, (float)FontSize);
@@ -181,65 +163,12 @@ namespace P42.Native.Controls
 				SetPadding(Margin.Left, Margin.Top, Margin.Right, Margin.Bottom);
 			else if (propertyName == nameof(HasDrawn) && HasDrawn)
 				HasDrawnTaskCompletionSource?.TrySetResult(true);
-
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
-		public virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
-		{
-			if (_disposed)
-				return;
-
-			PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
-		}
-
-		public void RedrawElement() => PostInvalidate();
-
-		public void RelayoutElement() => RequestLayout();
 		#endregion
 
 		#endregion
 
-
-		#region Support Methods
-		void UpdateLayoutParams()
-		{
-			LayoutParameters = new ViewGroup.LayoutParams(
-					HorizontalAlignment == Alignment.Stretch
-						? ViewGroup.LayoutParams.MatchParent
-						: RequestedWidth < 0
-							? ViewGroup.LayoutParams.WrapContent
-							: RequestedWidth < MinWidth
-								? MinWidth
-								: RequestedWidth > MaxWidth
-									? MaxWidth
-									: RequestedWidth,
-					VerticalAlignment == Alignment.Start
-						? ViewGroup.LayoutParams.MatchParent
-						: RequestedHeight < 0
-							? ViewGroup.LayoutParams.WrapContent
-							: RequestedHeight < MinHeight
-								? MinHeight
-								: RequestedHeight > MaxHeight
-									? MaxHeight
-									: RequestedHeight
-				);
-			if (HasDrawn)
-				RequestLayout();
-		}
-
-		void UpdateMinWidth()
-		{
-			SetMinimumWidth(MinWidth);
-			UpdateLayoutParams();
-		}
-
-		void UpdateMinHeight()
-		{
-			SetMinimumHeight(MinHeight);
-			UpdateLayoutParams();
-		}
-		#endregion
 
 
 	}

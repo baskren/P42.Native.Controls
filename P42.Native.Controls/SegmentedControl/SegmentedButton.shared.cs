@@ -6,7 +6,7 @@ using SmartTraitsDefs;
 namespace P42.Native.Controls
 {
     [AddTrait(typeof(TNotifiable))]
-    public partial class SegmentedButton : INotifiable
+    public partial class SegmentedButton : DINotifiable
     {
     }
 }

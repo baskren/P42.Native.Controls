@@ -9,14 +9,11 @@ using SmartTraitsDefs;
 namespace P42.Native.Controls
 {
     [Trait]
-    abstract partial class TNotifiable : INotifiable
+    abstract partial class TNotifiable : DINotifiable
     {
-
-
 
         public event PropertyChangedEventHandler PropertyChanged;
         public event PropertyChangingEventHandler PropertyChanging;
-
 
 
 
@@ -35,8 +32,6 @@ namespace P42.Native.Controls
 
 
 
-
-
         TaskCompletionSource<bool> HasDrawnTaskCompletionSource;
         public async Task WaitForDrawComplete()
         {
@@ -51,13 +46,7 @@ namespace P42.Native.Controls
         internal void OnDeserializedMethod(StreamingContext context)
             => HasChanged = false;
 
-        [Overrideable]
-        public virtual void OnPropertyChanging([CallerMemberName] string propertyName = null) { }
-
-        [Overrideable]
-        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) { }
-
-        public bool SetField<T>(ref T field, T value, Action action = null, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
+        protected bool SetField<T>(ref T field, T value, Action action = null, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
         {
             if (EqualityComparer<T>.Default.Equals(field, value))
                 return false;
