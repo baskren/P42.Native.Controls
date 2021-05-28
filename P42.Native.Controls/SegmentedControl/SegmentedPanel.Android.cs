@@ -81,7 +81,7 @@ namespace P42.Native.Controls
 
 
         #region Constructors
-        public SegmentedPanel() : base(P42.Utils.Droid.Settings.Context)
+        public SegmentedPanel() : base(global::P42.Utils.Droid.Settings.Context)
         {
             Build();
         }

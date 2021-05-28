@@ -29,7 +29,7 @@ namespace P42.Native.Controls
 
 
         #region Constructors
-        public ListView() : this(P42.Utils.Droid.Settings.Context) { }
+        public ListView() : this(global::P42.Utils.Droid.Settings.Context) { }
 
         public ListView(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {

@@ -23,7 +23,7 @@ namespace P42.Native.Controls
 
 
         #region Constructors
-        public BubbleBorder() : this(P42.Utils.Droid.Settings.Context) { }
+        public BubbleBorder() : this(global::P42.Utils.Droid.Settings.Context) { }
 
         public BubbleBorder(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer) { Init(); }
 
@@ -108,29 +108,29 @@ namespace P42.Native.Controls
                 var contentWidthSpec = MeasureSpec.MakeMeasureSpec((int)(cr - cl + 0.5), Android.Views.MeasureSpecMode.AtMost);
                 var contentHeightSpec = MeasureSpec.MakeMeasureSpec((int)(cb - ct + 0.5), Android.Views.MeasureSpecMode.AtMost);
                 Content.Measure(contentWidthSpec, contentHeightSpec);
-                if (VerticalContentAlignment == Alignment.End)
+                if (VerticalAlignment == Alignment.End)
                 {
                     ct = cb - Content.MeasuredHeight;
                 }
-                else if (VerticalContentAlignment == Alignment.Start)
+                else if (VerticalAlignment == Alignment.Start)
                 {
                     cb = ct + Content.MeasuredHeight;
                 }
-                else if (VerticalContentAlignment == Alignment.Center)
+                else if (VerticalAlignment == Alignment.Center)
                 {
                     ct += +(cb - ct) / 2 - (Content.MeasuredHeight / 2.0);
                     cb = ct + Content.MeasuredHeight;
                 }
 
-                if (HorizontalContentAlignment == Alignment.End)
+                if (HorizontalAlignment == Alignment.End)
                 {
                     cl = cr - Content.MeasuredWidth;
                 }
-                else if (HorizontalContentAlignment == Alignment.Start)
+                else if (HorizontalAlignment == Alignment.Start)
                 {
                     cr = cl + Content.MeasuredWidth;
                 }
-                else if (HorizontalContentAlignment == Alignment.Center)
+                else if (HorizontalAlignment == Alignment.Center)
                 {
                     cl += (cr - cl) / 2 - (Content.MeasuredWidth / 2.0);
                     cr = cl + Content.MeasuredWidth;

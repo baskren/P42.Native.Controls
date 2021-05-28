@@ -132,7 +132,7 @@ namespace P42.Native.Controls
 
 
         #region Constructors / Initializer
-        public SegmentedControl() : this(P42.Utils.Droid.Settings.Context) { }
+        public SegmentedControl() : this(global::P42.Utils.Droid.Settings.Context) { }
 
         public SegmentedControl(Context context) : base(context)
         {

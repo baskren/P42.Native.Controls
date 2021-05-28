@@ -60,8 +60,19 @@ namespace P42.Native.Controls
         public void OnDataContextChanged() { }
 
         public Task WaitForDrawComplete();
+
         #endregion
 
 
+#if __ANDROID__
+        Android.Views.View BaseView { get; }
+
+        public void RedrawElement()
+            => BaseView.PostInvalidate();
+
+        public void RelayoutElement()
+            => BaseView.RequestLayout();
+#else
+#endif
     }
 }

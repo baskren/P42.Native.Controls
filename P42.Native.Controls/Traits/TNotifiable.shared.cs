@@ -53,12 +53,12 @@ namespace P42.Native.Controls
             if (propertyName == null)
                 throw new Exception("null propertyName in SetField");
 
-            OnPropertyChanging(propertyName);
+            ((DINotifiable)this).OnPropertyChanging(propertyName);
             PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
             field = value;
             HasChanged = true;
             action?.Invoke();
-            OnPropertyChanged(propertyName);
+            ((DINotifiable)this).OnPropertyChanged(propertyName);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             return true;
         }

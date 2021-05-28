@@ -21,7 +21,7 @@ namespace P42.Native.Controls
 
 		static Label()
         {
-			var defaultLabel = new Android.Widget.TextView(P42.Utils.Droid.Settings.Context);
+			var defaultLabel = new Android.Widget.TextView(global::P42.Utils.Droid.Settings.Context);
 			DefaultTextColor = defaultLabel.TextColors.DefaultColor.ToColor();
 			DefaultFontSize = defaultLabel.TextSize;
 			defaultLabel.Dispose();
@@ -29,7 +29,7 @@ namespace P42.Native.Controls
 
 
 		#region Construction / Disposal
-		public Label() : this(P42.Utils.Droid.Settings.Context) { }
+		public Label() : this(global::P42.Utils.Droid.Settings.Context) { }
 
 		public Label(Context context) : base(context)
 		{

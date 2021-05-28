@@ -16,7 +16,7 @@ namespace P42.Native.Controls
 
 
         #region Construction
-        public Page() : this(P42.Utils.Droid.Settings.Context) { }
+        public Page() : this(global::P42.Utils.Droid.Settings.Context) { }
 
         public Page(Context context) : base(context)
         {

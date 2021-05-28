@@ -19,7 +19,7 @@ namespace P42.Native.Controls
 
 
         #region Constructors
-        public NavigationPage(IPage page) : this(P42.Utils.Droid.Settings.Context, page) { }
+        public NavigationPage(IPage page) : this(global::P42.Utils.Droid.Settings.Context, page) { }
 
         public NavigationPage(Context context, IPage iPage) : base(context)
         {

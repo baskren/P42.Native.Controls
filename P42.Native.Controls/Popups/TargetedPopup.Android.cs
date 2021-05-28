@@ -29,7 +29,7 @@ namespace P42.Native.Controls
 
 
         #region Construction / Disposal
-        public TargetedPopup(View target = null) : this(P42.Utils.Droid.Settings.Context, target) { }
+        public TargetedPopup(View target = null) : this(global::P42.Utils.Droid.Settings.Context, target) { }
 
         public TargetedPopup(Context context, Android.Views.View target = null)
         {
@@ -156,7 +156,7 @@ namespace P42.Native.Controls
             if (IsAnimated)
             {
                 Action<double> action = percent => m_Border.Alpha = (float)percent;
-                var animator = new P42.Utils.ActionAnimator(0.11, 0.95, TimeSpan.FromMilliseconds(300), action);
+                var animator = new global::P42.Utils.ActionAnimator(0.11, 0.95, TimeSpan.FromMilliseconds(300), action);
                 await animator.RunAsync();
             }
 
@@ -168,7 +168,7 @@ namespace P42.Native.Controls
 
             if (PopAfter > default(TimeSpan))
             {
-                P42.Utils.Timer.StartTimer(PopAfter, async () =>
+                global::P42.Utils.Timer.StartTimer(PopAfter, async () =>
                 {
                     await PopAsync(PopupPoppedCause.Timeout, "Timeout");
                     return false;
@@ -209,7 +209,7 @@ namespace P42.Native.Controls
             if (IsAnimated)
             {
                 Action<double> action = percent => m_Border.Alpha = (float)percent;
-                var animator = new P42.Utils.ActionAnimator(0.95, 0.11, TimeSpan.FromMilliseconds(300), action);
+                var animator = new global::P42.Utils.ActionAnimator(0.95, 0.11, TimeSpan.FromMilliseconds(300), action);
                 await animator.RunAsync();
             }
 

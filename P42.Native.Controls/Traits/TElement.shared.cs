@@ -12,7 +12,7 @@ namespace P42.Native.Controls
     {
 
 #if __ANDROID__
-        Android.Views.View BaseView { get; set; }
+        public Android.Views.View BaseView { get; protected set; }
 
         void UpdateLayoutParams()
         {
@@ -52,13 +52,6 @@ namespace P42.Native.Controls
             UpdateLayoutParams();
         }
 
-        [Overrideable]
-        public void RedrawElement()
-            => BaseView.PostInvalidate();
-
-        [Overrideable]
-        public void RelayoutElement()
-            => BaseView.RequestLayout();
 
 #else
 
@@ -227,7 +220,7 @@ namespace P42.Native.Controls
                 {
                     ActualWidth = value.Width;
                     ActualHeight = value.Height;
-                    OnPropertyChanged();
+                    ((IElement)this).OnPropertyChanged();
                     SizeChanged?.Invoke(this, DipActualSize);
                 }
             }
@@ -273,10 +266,10 @@ namespace P42.Native.Controls
         public virtual void OnDataContextChanged() { }
 
         public bool SetRedrawField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
-            => SetField(ref field, value, () => { if (HasDrawn) RedrawElement(); }, propertyName, callerPath);
+            => SetField(ref field, value, () => { if (HasDrawn) ((IElement)this).RedrawElement(); }, propertyName, callerPath);
 
         public bool SetLayoutField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
-            => SetField(ref field, value, () => { if (HasDrawn) RelayoutElement(); }, propertyName, callerPath);
+            => SetField(ref field, value, () => { if (HasDrawn) ((IElement)this).RelayoutElement(); }, propertyName, callerPath);
 
 
 

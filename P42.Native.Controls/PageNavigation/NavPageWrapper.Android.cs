@@ -19,6 +19,7 @@ namespace P42.Native.Controls
 
         #endregion
 
+
         #region Fields
         //GridLayout m_NavBar;
         TextView m_BackButton;
@@ -100,11 +101,11 @@ namespace P42.Native.Controls
         #region Property Change Handlers
         private void OnPage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(P42.Native.Controls.Page.Title))
+            if (e.PropertyName == nameof(Controls.Page.Title))
                 UpdateTitle();
-            else if (e.PropertyName == nameof(P42.Native.Controls.Page.BackButtonTitle))
+            else if (e.PropertyName == nameof(Controls.Page.BackButtonTitle))
                 UpdateBackButton();
-            else if (e.PropertyName == nameof(P42.Native.Controls.Page.HasBackButton))
+            else if (e.PropertyName == nameof(Controls.Page.HasBackButton))
                 UpdateBackButton();
         }
 

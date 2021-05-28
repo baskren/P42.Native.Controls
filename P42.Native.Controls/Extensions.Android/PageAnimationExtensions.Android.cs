@@ -151,8 +151,8 @@ namespace P42.Native.Controls
 
     public class EasingInterpolator : Java.Lang.Object, IInterpolator
     {
-        P42.Utils.Easing Easing;
-        public EasingInterpolator(P42.Utils.Easing easing)
+        global::P42.Utils.Easing Easing;
+        public EasingInterpolator(global::P42.Utils.Easing easing)
         {
             Easing = easing;
         }

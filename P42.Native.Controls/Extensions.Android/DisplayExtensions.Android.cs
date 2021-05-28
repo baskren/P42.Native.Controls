@@ -5,9 +5,9 @@ namespace P42.Native.Controls
 {
     public static partial class DisplayExtensions
     {
-        public static partial int PxWidth() => P42.Utils.Droid.Settings.Context.Resources.DisplayMetrics.WidthPixels;
+        public static partial int PxWidth() => global::P42.Utils.Droid.Settings.Context.Resources.DisplayMetrics.WidthPixels;
 
-        public static partial int PxHeight() => P42.Utils.Droid.Settings.Context.Resources.DisplayMetrics.HeightPixels;
+        public static partial int PxHeight() => global::P42.Utils.Droid.Settings.Context.Resources.DisplayMetrics.HeightPixels;
 
         public static partial SizeI PxSize() => new SizeI(PxWidth(), PxHeight());
 
@@ -19,7 +19,7 @@ namespace P42.Native.Controls
                 return new Size(PxWidth()/Scale(), PxHeight()/Scale());
         }
 
-        public static partial double Scale() => P42.Utils.Droid.Settings.Context.Resources.DisplayMetrics.Density;
+        public static partial double Scale() => global::P42.Utils.Droid.Settings.Context.Resources.DisplayMetrics.Density;
 
 
 

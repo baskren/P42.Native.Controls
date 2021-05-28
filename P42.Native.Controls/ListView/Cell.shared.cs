@@ -12,7 +12,7 @@ namespace P42.Native.Controls
     [AddTrait(typeof(TControl))]
     [AddTrait(typeof(TElement))]
     [AddTrait(typeof(TNotifiable))]
-    public partial class Cell : P42.Native.Controls.IElement
+    public partial class Cell : IElement
     {
 
         #region  Properties
@@ -65,6 +65,7 @@ namespace P42.Native.Controls
             ListView = null;
         }
         #endregion
+
 
         #region Event Handlers
         partial void UpdateSelection();

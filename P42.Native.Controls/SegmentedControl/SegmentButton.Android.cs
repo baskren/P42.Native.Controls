@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Android.Content;
-using Android.Content.Res;
+//using Android.Content.Res;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Runtime;
@@ -14,7 +14,7 @@ namespace P42.Native.Controls
     public partial class SegmentButton : TextView
     {
         #region Static Implmenetation
-        readonly static ColorStateList s_DefaultColorStateList = new ColorStateList(new int[][] { }, new int[] { });
+        readonly static Android.Content.Res.ColorStateList s_DefaultColorStateList = new Android.Content.Res.ColorStateList(new int[][] { }, new int[] { });
         internal static ThicknessI s_DefaultPadding = DisplayExtensions.DipToPx(new Thickness(5,2));
         internal static Color s_DefaultBackgroundColor = Color.White;
         internal static Color s_DefaultSelectedBackgroundColor = Color.DarkGray;
@@ -24,16 +24,12 @@ namespace P42.Native.Controls
 
         static SegmentButton()
         {
-            var tv = new TextView(P42.Utils.Droid.Settings.Context);
+            var tv = new TextView(global::P42.Utils.Droid.Settings.Context);
             var colors = tv.TextColors;
             s_DefaultTextColor = colors.DefaultColor.ToColor();
         }
         #endregion
 
-
-        #region Events
-        public event EventHandler<bool> SelectedChanged;
-        #endregion
 
 
         #region Properties
@@ -42,7 +38,7 @@ namespace P42.Native.Controls
         public override bool Selected
         {
             get => base.Selected;
-            set
+            set 
             {
                 if (base.Selected != value)
                 {
@@ -54,46 +50,8 @@ namespace P42.Native.Controls
             }
         }
 
-        Android.Widget.Orientation b_Orientation;
-        public Android.Widget.Orientation Orientation
-        {
-            get => b_Orientation;
-            set
-            {
-                if (SetField(ref b_Orientation, value))
-                    UpdateRadii();
-            }
-        }
 
-        internal bool IsHorizontal => b_Orientation == Android.Widget.Orientation.Horizontal;
 
-        SegmentPosition b_Position;
-        internal SegmentPosition Position
-        {
-            get => b_Position;
-            set
-            {
-                if (b_Position != value)
-                {
-                    b_Position = value;
-                    UpdateRadii();
-                }
-            }
-        }
-
-        int b_index = -1;
-        public int Index
-        {
-            get => b_index;
-            internal set
-            {
-                if (b_index != value)
-                {
-                    b_index = value;
-                    UpdateRadii();
-                }
-            }
-        }
         #endregion
 
 
@@ -240,7 +198,7 @@ namespace P42.Native.Controls
                 control.OnSegmentClicked(this);
         }
 
-        void UpdateRadii()
+        partial void UpdateRadii()
         {
             float tl = 0, tr = 0, br = 0, bl = 0;
 
