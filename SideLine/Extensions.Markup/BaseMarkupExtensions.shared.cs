@@ -6,13 +6,13 @@ namespace P42.Native.Controls
     public static class BaseMarkupExtensions
     {
 		public static T Assign<T>(this T notifiable, out T variable)
-			where T : DINotifiable
+			where T : INotifiable
 		{
 			variable = notifiable;
 			return notifiable;
 		}
 
-		public static T Invoke<T>(this T notifiable, Action<T> action) where T : DINotifiable
+		public static T Invoke<T>(this T notifiable, Action<T> action) where T : INotifiable
 		{
 			action?.Invoke(notifiable);
 			return notifiable;

@@ -1,44 +1,33 @@
+<#@template language="c#" hostspecific="true"#>
+<#@ parameter type="System.String" name="NamespaceName" #>
+<#@ parameter type="System.String" name="ClassName" #>
+
+/**************************************************************************
+ *
+ *  THIS IS A GENERATED FILE : EDITS WILL BE LOST !
+ *
+ **************************************************************************/
+
 using System;
-using SmartTraitsDefs;
 #if __ANDROID__
 using Color = Android.Graphics.Color;
 #endif
 
-namespace P42.Native.Controls
+namespace <#= NamespaceName #>
 {
-    [Trait]
-    abstract partial class TControl : TElement, IControl
+    partial class <#= ClassName #> : IControl
     {
 
-#if __ANDROID__
-
-        void UpdatePadding()
-        {
-            BaseView.SetPadding((int)(b_Padding.Left + 0.5), (int)(b_Padding.Top + 0.5), (int)(b_Padding.Right + 0.5), (int)(b_Padding.Bottom + 0.5));
-        }
-
-        [SmartTraitsDefs.TraitIgnore]
-        Android.Views.View BaseView { get; set; }
-#else
-
-        void UpdatePadding() {}
-
-#endif
-
         #region Defaults
-        [Overrideable]
         public static ThicknessI DefaultPadding = (ThicknessI)DisplayExtensions.DipToPx(10);
-        [Overrideable]
         public static double DefaultBorderWidth = DisplayExtensions.DipToPxD(1);
-        [Overrideable]
         public static Color DefaultBorderColor = Color.Black;
-        [Overrideable]
         public static double DefaultCornerRadius = DisplayExtensions.DipToPxD(5);
-        [Overrideable]
         public static Color DefaultBackgroundColor = Color.Gray;
         #endregion
 
-
+        
+        #region Properties
         internal protected ThicknessI b_Padding = DefaultPadding;
         public virtual ThicknessI Padding
         {
@@ -92,10 +81,35 @@ namespace P42.Native.Controls
             get => b_BackgroundColor;
             set => SetRedrawField(ref b_BackgroundColor, value);
         }
+        #endregion
+        
+        
+        #region Methods
 
+#if __ANDROID__
 
+        void UpdatePadding()
+        {
+            BaseView.SetPadding((int)(b_Padding.Left + 0.5), (int)(b_Padding.Top + 0.5), (int)(b_Padding.Right + 0.5), (int)(b_Padding.Bottom + 0.5));
+        }
 
+#else
 
+        void UpdatePadding() {}
 
+#endif
+
+        #endregion
+        
     }
 }
+
+<#+
+    public void SetClassName(string namespaceName, string className)
+    {
+        NamespaceName = namespaceName;
+        ClassName = className;
+    }
+    //string NamespaceName;
+    //string ClassName;
+#>

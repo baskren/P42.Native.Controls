@@ -1,29 +1,62 @@
-using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using System;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using SmartTraitsDefs;
+using Android.Graphics;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace P42.Native.Controls
 {
-    [AddTrait(typeof(TNotifiable))]
-    public partial class NavigationPage : IPage
+    public partial class Page : IPage
     {
         #region Properties
         string b_Title = string.Empty;
         public string Title
         {
             get => b_Title;
-            set => b_Title = value;
+            set => SetField(ref b_Title, value);
         }
 
-        public IPage CurrentPage => ((NavPageWrapper)CurrentView).Page;
+        bool b_HasBackButton = true;
+        public bool HasBackButton
+        {
+            get => b_HasBackButton;
+            set => SetField(ref b_HasBackButton, value);
+        }
+
+        string b_BackButtonTitle = "back";
+        public string BackButtonTitle
+        {
+            get => b_BackButtonTitle;
+            set => SetField(ref b_BackButtonTitle, value);
+        }
+
+
+        bool b_HasNavigationBar = true;
+        public bool HasNavigationBar
+        {
+            get => b_HasNavigationBar;
+            set => SetField(ref b_HasNavigationBar, value);
+        }
+
+        Thickness b_Padding;
+        public Thickness Padding
+        {
+            get => b_Padding;
+            set => SetField(ref b_Padding, value);
+        }
+
+
+        View b_Content;
+        public View Content
+        {
+            get => b_Content;
+            set => SetField(ref b_Content, value);
+        }
         #endregion
 
 
@@ -48,6 +81,8 @@ namespace P42.Native.Controls
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
         #endregion
+
+
 
     }
 }

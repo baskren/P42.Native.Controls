@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using SmartTraitsDefs;
 
 namespace P42.Native.Controls
 {
-    [TraitInterface]
-    public interface IElement : DINotifiable
+    public interface IElement : INotifiable
     {
         #region FrameworkElement
 

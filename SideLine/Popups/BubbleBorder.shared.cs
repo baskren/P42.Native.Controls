@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using SmartTraitsDefs;
 
 #if __ANDROID__
 using Color = Android.Graphics.Color;
@@ -9,9 +8,6 @@ using Element = Android.Views.View;
 
 namespace P42.Native.Controls
 {
-    [AddTrait(typeof(TControl))]
-    [AddTrait(typeof(TElement))]
-    [AddTrait(typeof(TNotifiable))]
     public partial class BubbleBorder : IControl 
     {
         #region Properties

@@ -26,101 +26,63 @@
     <ProjectReference Include="..\P42.Utils\P42.Utils\P42.Utils.csproj" />
   </ItemGroup>
 
+
+  <!-- Trait Implementations -->
   <ItemGroup>
+    <T4ParameterValues Include="NamespaceName">
+      <Value>P42.Native.Controls</Value>
+      <Visible>false</Visible>
+    </T4ParameterValues>
+    <T4ParameterValues Include="ClassName">
+      <Value>Pizza</Value>
+      <Visible>false</Visible>
+    </T4ParameterValues>
+    <None Update="TraitTemplates\TNotifiable.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <OutputFilePath>Traits</OutputFilePath>
+        <OutputFileName>Pizza.shared.g.cs</OutputFileName>
+    </None>
+  </ItemGroup>
+
   <!--
-    <PackageReference Include="SmartTraits" Version="0.1.0" />
-  -->
-    <ProjectReference Include="..\SmartTraits\SmartTraitsDefs\SmartTraitsDefs.csproj" />
-		<ProjectReference Include="..\SmartTraits\SmartTraits\SmartTraits.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.9.0" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2" PrivateAssets="all" />
-
-  </ItemGroup>
-
   <ItemGroup>
-    <Compile Update="Popups\TargetedPopup.shared.cs">
-      <SubType></SubType>
+    <None Update="Traits\SegmentButton.TNotifiable.shared.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SegmentButton.TNotifiable.shared.g.cs</LastGenOutput>
+    </None>
+    <None Update="Traits\SegmentedPanel.TNotifiable.shared.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SegmentedPanel.TNotifiable.shared.g.cs</LastGenOutput>
+    </None>
+    <None Update="Traits\SegmentedPanel.TElement.shared.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SegmentedPanel.TElement.shared.g.cs</LastGenOutput>
+    </None>
+    <None Update="Traits\SegmentedPanel.TControl.shared.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SegmentedPanel.TControl.shared.g.cs</LastGenOutput>
+    </None>
+    <None Update="Traits\SegmentedControl.TControl.shared.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SegmentedControl.TControl.shared.g.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Traits\SegmentButton.TNotifiable.shared.g.cs">
+      <DependentUpon>SegmentButton.TNotifiable.shared.tt</DependentUpon>
     </Compile>
-    <Compile Update="Popups\BubbleBorder.shared.cs">
-      <SubType></SubType>
+    <Compile Update="Traits\SegmentedPanel.TNotifiable.shared.g.cs">
+      <DependentUpon>SegmentedPanel.TNotifiable.shared.tt</DependentUpon>
     </Compile>
-    <Compile Update="ListView\ListView.shared.cs">
-      <SubType></SubType>
+    <Compile Update="Traits\SegmentedPanel.TNotifiable.shared.g.cs">
+      <DependentUpon>SegmentedPanel.TNotifiable.shared.tt</DependentUpon>
     </Compile>
-    <Compile Update="ListView\Cell.Android.cs">
-      <SubType></SubType>
+    <Compile Update="Traits\SegmentedPanel.TControl.shared.g.cs">
+      <DependentUpon>SegmentedPanel.TControl.shared.tt</DependentUpon>
     </Compile>
-    <Compile Update="ListView\ListView.Android.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="ListView\EventHandlers.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="ListView\ScrollIntoViewAlignment.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="ListView\IItemTypeSelector.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="ListView\ListViewAdapter.Android.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="ListView\Cell.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Fonts\FontExtensions.Android.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Fonts\FontStyle.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Fonts\FontRegistrar.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Fonts\EmbeddedFontLoader.Android.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Fonts\ExportFontAttribute.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Fonts\FontFile.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Fonts\EmbeddedFont.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Fonts\IEmbeddedFontLoader.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Extensions.Markup\ListViewMarkupExtensions.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Label\TextType.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Label\LineBreakMode.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Label\Label.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Label\Label.Android.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Interfaces\ILabel.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Extensions.Markup\LabelMarkupExtensions.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="Traits\TLabel.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="PageNavigation\NavigationPage.shared.cs">
-      <SubType></SubType>
-    </Compile>
-    <Compile Update="PageNavigation\NavPageWrapper.shared.cs">
-      <SubType></SubType>
+    <Compile Update="Traits\SegmentedControl.TControl.shared.g.cs">
+      <DependentUpon>SegmentedControl.TControl.shared.tt</DependentUpon>
     </Compile>
   </ItemGroup>
+  -->
 </Project>

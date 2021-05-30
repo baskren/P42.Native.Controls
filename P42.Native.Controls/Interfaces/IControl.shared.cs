@@ -4,14 +4,12 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using SmartTraitsDefs;
 #if __ANDROID__
 using Color = Android.Graphics.Color;
 #endif
 
 namespace P42.Native.Controls
 {
-    [TraitInterface]
     public interface IControl : IElement
     {
         #region Control

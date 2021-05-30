@@ -19,6 +19,9 @@ namespace P42.Native.Controls
 
 
         #region Constructors
+        public App(Context context) : base(context) { }
+
+        /*
         public App(Page page) : this(global::P42.Utils.Droid.Settings.Context, page) { }
 
         public App(Context context, Page page) : base(context)
@@ -40,8 +43,8 @@ namespace P42.Native.Controls
             SetFlipInterval(int.MaxValue);
             AddView(page, new ViewGroup.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent));
         }
+        */
         #endregion
-
 
         #region Push / Pop
         static PageAnimationOptions StayPut = new PageAnimationOptions
@@ -81,7 +84,7 @@ namespace P42.Native.Controls
                 return;
             if (popPage == CurrentView)
             {
-                var toPage = GetChildAt(ChildCount - 2) as Page;
+                var toPage = GetChildAt(ChildCount - 2) as IPage;
                 if (await popPage.OnDisappearing(toPage))
                 {
                     options = options ?? new PageAnimationOptions

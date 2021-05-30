@@ -27,8 +27,14 @@
 
     <DebugType>portable</DebugType>
 
+    <!-- T4 -->
+    <TransformOnBuild>true</TransformOnBuild>
+    <TransformOutOfDateOnly>false</TransformOutOfDateOnly>
+    
+    <!-- SmartTraits
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles> 
     <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\GeneratedFiles</CompilerGeneratedFilesOutputPath>
+    -->
 
   </PropertyGroup>
  
@@ -55,4 +61,22 @@
     </EmbeddedResource>
   </ItemGroup>
   
+  <!-- Trait Templates -->
+  <!--
+  <ItemGroup>
+    <None Update="TraitTemplates\TControl.shared.tt">
+      <SubType>Code</SubType>
+    </None>
+    <None Update="TraitTemplates\TNotifiable.shared.tt">
+      <SubType>Code</SubType>
+    </None>
+    <None Update="TraitTemplates\TLabel.shared.tt">
+      <SubType></SubType>
+    </None>
+    <None Update="TraitTemplates\TElement.shared.tt">
+      <SubType>Code</SubType>
+    </None>
+  </ItemGroup>
+  -->
+
 </Project>

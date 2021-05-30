@@ -6,7 +6,6 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
-using SmartTraitsDefs;
 
 namespace P42.Native.Controls
 {

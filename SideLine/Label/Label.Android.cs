@@ -139,7 +139,7 @@ namespace P42.Native.Controls
 
 
 
-		#region DINotifiable
+		#region INotifiable
 
 		#region Methods
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

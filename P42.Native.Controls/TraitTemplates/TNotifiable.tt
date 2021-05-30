@@ -1,22 +1,31 @@
+<#@template language="c#" hostspecific="true"#>
+<#@ parameter type="System.String" name="NamespaceName" #>
+<#@ parameter type="System.String" name="ClassName" #>
+
+/**************************************************************************
+ *
+ *  THIS IS A GENERATED FILE : EDITS WILL BE LOST !
+ *
+ **************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
-using SmartTraitsDefs;
 
-namespace P42.Native.Controls
+namespace <#= NamespaceName #>
 {
-    [Trait]
-    abstract partial class TNotifiable : DINotifiable
+    partial class <#= ClassName #> : INotifiable
     {
-
+        #region Events
         public event PropertyChangedEventHandler PropertyChanged;
         public event PropertyChangingEventHandler PropertyChanging;
+        #endregion
 
-
-
+        
+        #region Properties
         bool b_HasDrawn;
         public bool HasDrawn
         {
@@ -29,9 +38,10 @@ namespace P42.Native.Controls
         }
 
         public bool HasChanged { get; set; }
+        #endregion
 
-
-
+        
+        #region Methods
         TaskCompletionSource<bool> HasDrawnTaskCompletionSource;
         public async Task WaitForDrawComplete()
         {
@@ -53,15 +63,25 @@ namespace P42.Native.Controls
             if (propertyName == null)
                 throw new Exception("null propertyName in SetField");
 
-            ((DINotifiable)this).OnPropertyChanging(propertyName);
+            ((INotifiable)this).OnPropertyChanging(propertyName);
             PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
             field = value;
             HasChanged = true;
             action?.Invoke();
-            ((DINotifiable)this).OnPropertyChanged(propertyName);
+            ((INotifiable)this).OnPropertyChanged(propertyName);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             return true;
         }
-
+        #endregion
     }
 }
+
+<#+
+    public void SetClassName(string namespaceName, string className)
+    {
+        NamespaceName = namespaceName;
+        ClassName = className;
+    }
+    //string NamespaceName;
+    //string ClassName;
+#>

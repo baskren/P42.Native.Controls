@@ -1,87 +1,31 @@
+/**************************************************************************
+ *
+ *  THIS IS A GENERATED FILE : EDITS WILL BE LOST !
+ *
+ **************************************************************************/
+
 using System;
 using System.Runtime.CompilerServices;
 using Android.Views;
-using SmartTraitsDefs;
 
-
-
-namespace P42.Native.Controls
+namespace <#= NamespaceName #>
 {
-    [Trait]
-    abstract partial class TElement : TNotifiable, IElement
+    partial class <#= ClassName #> : IElement
     {
-
-#if __ANDROID__
-        public Android.Views.View BaseView { get; protected set; }
-
-        void UpdateLayoutParams()
-        {
-            BaseView.LayoutParameters = new ViewGroup.LayoutParams(
-                    HorizontalAlignment == Alignment.Stretch
-                        ? ViewGroup.LayoutParams.MatchParent
-                        : RequestedWidth < 0
-                            ? ViewGroup.LayoutParams.WrapContent
-                            : RequestedWidth < MinWidth
-                                ? MinWidth
-                                : RequestedWidth > MaxWidth
-                                    ? MaxWidth
-                                    : RequestedWidth,
-                    VerticalAlignment == Alignment.Start
-                        ? ViewGroup.LayoutParams.MatchParent
-                        : RequestedHeight < 0
-                            ? ViewGroup.LayoutParams.WrapContent
-                            : RequestedHeight < MinHeight
-                                ? MinHeight
-                                : RequestedHeight > MaxHeight
-                                    ? MaxHeight
-                                    : RequestedHeight
-                );
-            if (HasDrawn)
-                BaseView.RequestLayout();
-        }
-
-        void UpdateMinWidth()
-        {
-            BaseView.SetMinimumWidth(MinWidth);
-            UpdateLayoutParams();
-        }
-
-        void UpdateMinHeight()
-        {
-            BaseView.SetMinimumHeight(MinHeight);
-            UpdateLayoutParams();
-        }
-
-
-#else
-
-        void UpdateLayoutParams() {}
-        void UpdateMinWidth(){}
-        void UpdateMinHeight() {}
-        public void RedrawElement();
-        public void RelayoutElement();
-
-#endif
 
 
         #region Defaults
-        [Overrideable]
         public static Alignment DefaultHorizontalAlignment = Alignment.Center;
-        [Overrideable]
         public static Alignment DefaultVerticalAlignment = Alignment.Center;
-        [Overrideable]
         public static ThicknessI DefaultMargin = (ThicknessI)0;
-        [Overrideable]
         public static int DefaultMinWidth = DisplayExtensions.DipToPx(50);
-        [Overrideable]
         public static int DefaultMinHeight = DisplayExtensions.DipToPx(50);
-        [Overrideable]
         public static int DefaultMaxWidth = DisplayExtensions.PxWidth();
-        [Overrideable]
         public static int DefaultMaxHeight = DisplayExtensions.PxHeight();
         #endregion
 
-
+        
+        #region Properties
         int b_RequestedWidth = -1;
         public virtual int RequestedWidth
         {
@@ -255,14 +199,16 @@ namespace P42.Native.Controls
 
 #endif
 
+        #endregion
 
-
+        
+        #region Events
         public event EventHandler<Size> SizeChanged;
+        #endregion
 
 
-
-
-        [Overrideable]
+        #region Methods
+        
         public virtual void OnDataContextChanged() { }
 
         public bool SetRedrawField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
@@ -273,7 +219,70 @@ namespace P42.Native.Controls
 
 
 
+#if __ANDROID__
+        public Android.Views.View BaseView { get; protected set; }
 
+        void UpdateLayoutParams()
+        {
+            BaseView.LayoutParameters = new ViewGroup.LayoutParams(
+                    HorizontalAlignment == Alignment.Stretch
+                        ? ViewGroup.LayoutParams.MatchParent
+                        : RequestedWidth < 0
+                            ? ViewGroup.LayoutParams.WrapContent
+                            : RequestedWidth < MinWidth
+                                ? MinWidth
+                                : RequestedWidth > MaxWidth
+                                    ? MaxWidth
+                                    : RequestedWidth,
+                    VerticalAlignment == Alignment.Start
+                        ? ViewGroup.LayoutParams.MatchParent
+                        : RequestedHeight < 0
+                            ? ViewGroup.LayoutParams.WrapContent
+                            : RequestedHeight < MinHeight
+                                ? MinHeight
+                                : RequestedHeight > MaxHeight
+                                    ? MaxHeight
+                                    : RequestedHeight
+                );
+            if (HasDrawn)
+                BaseView.RequestLayout();
+        }
+
+        void UpdateMinWidth()
+        {
+            BaseView.SetMinimumWidth(MinWidth);
+            UpdateLayoutParams();
+        }
+
+        void UpdateMinHeight()
+        {
+            BaseView.SetMinimumHeight(MinHeight);
+            UpdateLayoutParams();
+        }
+
+
+#else
+
+        void UpdateLayoutParams() {}
+        void UpdateMinWidth(){}
+        void UpdateMinHeight() {}
+        public void RedrawElement();
+        public void RelayoutElement();
+
+#endif
+
+        #endregion
 
     }
 }
+
+
+<#+
+    public void SetClassName(string namespaceName, string className)
+    {
+        NamespaceName = namespaceName;
+        ClassName = className;
+    }
+    string NamespaceName;
+    string ClassName;
+#>

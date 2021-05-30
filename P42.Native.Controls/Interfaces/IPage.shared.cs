@@ -2,11 +2,10 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Android.Content;
-using SmartTraitsDefs;
 
 namespace P42.Native.Controls
 {
-    public interface IPage : DINotifiable
+    public interface IPage : INotifiable
     {
         public string Title { get; }
 

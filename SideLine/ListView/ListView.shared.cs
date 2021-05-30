@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Android.Content;
 using Android.Runtime;
 using Android.Util;
-using SmartTraitsDefs;
 
 #if __ANDROID__
 using Element = Android.Views.View;
@@ -16,9 +15,6 @@ using Element = Android.Views.View;
 
 namespace P42.Native.Controls
 {
-    [AddTrait(typeof(TControl))]
-    [AddTrait(typeof(TElement))]
-    [AddTrait(typeof(TNotifiable))]
     public partial class ListView : IElement
     {
 
