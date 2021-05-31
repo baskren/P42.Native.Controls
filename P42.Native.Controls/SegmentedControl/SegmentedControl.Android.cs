@@ -224,7 +224,6 @@ namespace P42.Native.Controls
             segment.BackgroundColor = BackgroundColor;
             segment.SelectedBackgroundColor = SelectedBackgroundColor;
             segment.Orientation = Orientation;
-            segment.Gravity = GravityFlags.Center;
             segment.SetPadding(Padding);
         }
 

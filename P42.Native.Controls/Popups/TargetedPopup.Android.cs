@@ -236,7 +236,7 @@ namespace P42.Native.Controls
             var windowSize = DisplayExtensions.PxSize();
             if (windowSize.Width < 1 || windowSize.Height < 1)
                 return;
-            //windowSize.Height -= DisplayExtensions.StatusBarHeight();
+            windowSize.Height -= DisplayExtensions.StatusBarHeight();
 
             var windowWidth = windowSize.Width - Margin.Horizontal;
             var windowHeight = windowSize.Height - Margin.Vertical;

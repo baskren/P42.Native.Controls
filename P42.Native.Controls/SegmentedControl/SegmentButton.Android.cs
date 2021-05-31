@@ -186,13 +186,7 @@ namespace P42.Native.Controls
             m_Background.SetShape(ShapeType.Rectangle);
             m_Background.SetColor(BackgroundColor);
             Background = new RippleDrawable(s_DefaultColorStateList, m_Background, null);
-            //SetForegroundGravity(Android.Views.GravityFlags.Center);
-            //Gravity = Android.Views.GravityFlags.Center;
-            //TextAlignment = Android.Views.TextAlignment.Gravity;
-            //TextAlignment = Android.Views.TextAlignment.TextEnd;
             Gravity = Android.Views.GravityFlags.Center;
-            //LayoutParameters = new Android.Views.ViewGroup.LayoutParams(Android.Views.ViewGroup.LayoutParams.MatchParent, Android.Views.ViewGroup.LayoutParams.MatchParent);
-            Android.Text.Layout x;
         }
         #endregion
 
