@@ -1,17 +1,14 @@
-﻿/**************************************************************************
- *
- *  THIS IS A GENERATED FILE : EDITS WILL BE LOST !
- *
- **************************************************************************/
+﻿using System;
+using SmartTraitsDefs;
 
-using System;
 #if __ANDROID__
 using Color = Android.Graphics.Color;
 #endif
 
 namespace P42.Native.Controls
 {
-    partial class TLabel : ILabel
+    [SimpleTrait]
+    partial class TLabel : TElement, ILabel
     {
     
         #region Properties

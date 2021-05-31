@@ -23,6 +23,8 @@ namespace P42.Native.Controls
             SetBackgroundColor(Color.Gold);
 
             LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
+
+            BaseView = this;
         }
 
         bool _disposed;

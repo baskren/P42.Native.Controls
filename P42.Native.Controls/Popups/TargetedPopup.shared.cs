@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using SmartTraitsDefs;
 
 #if __ANDROID__
 using Color = Android.Graphics.Color;
@@ -7,7 +8,8 @@ using Color = Android.Graphics.Color;
 
 namespace P42.Native.Controls
 {
-    public partial class TargetedPopup : IControl 
+    [AddSimpleTrait(typeof(TControl))]
+    public partial class TargetedPopup  
     {
         #region Properties
 

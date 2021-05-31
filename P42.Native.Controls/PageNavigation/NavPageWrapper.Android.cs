@@ -144,6 +144,7 @@ namespace P42.Native.Controls
         }
         #endregion
 
+
         #region Event Handlers
         protected async virtual void OnBackButtonClicked(object sender, EventArgs e)
         {

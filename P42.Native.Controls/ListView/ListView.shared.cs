@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Android.Content;
 using Android.Runtime;
 using Android.Util;
+using SmartTraitsDefs;
 
 #if __ANDROID__
 using Element = Android.Views.View;
@@ -15,7 +16,8 @@ using Element = Android.Views.View;
 
 namespace P42.Native.Controls
 {
-    public partial class ListView : IElement
+    [AddSimpleTrait(typeof(TElement))]
+    public partial class ListView 
     {
 
         #region Properties
@@ -120,6 +122,7 @@ namespace P42.Native.Controls
         public partial Task ScrollIntoView(object item, ScrollIntoViewAlignment alignment);
 
         #endregion
+
 
         #region Selection
         internal partial Task OnCellTapped(Cell cell);

@@ -205,8 +205,6 @@ namespace P42.Native.Controls
 
         #region Methods
         
-        public virtual void OnDataContextChanged() { }
-
         public bool SetRedrawField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
             => SetField(ref field, value, () => { if (HasDrawn) ((IElement)this).RedrawElement(); }, propertyName, callerPath);
 

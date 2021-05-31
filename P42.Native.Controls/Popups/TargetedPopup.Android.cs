@@ -47,6 +47,8 @@ namespace P42.Native.Controls
                 BackgroundColor = BackgroundColor
             };
             m_Border.PropertyChanged += OnBorderPropertyChanged;
+
+            BaseView = m_Border;
         }
 
 

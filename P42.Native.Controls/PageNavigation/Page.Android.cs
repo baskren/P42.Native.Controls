@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 
 namespace P42.Native.Controls
 {
-    public partial class Page : ViewGroup, IPage
+    public partial class Page : ViewGroup
     {
 
 
@@ -68,11 +68,22 @@ namespace P42.Native.Controls
         {
             Content?.Layout((int)(Padding.Left + 0.5), (int)(Padding.Top + 0.5) , Content.MeasuredWidth, Content.MeasuredHeight);
         }
-        
+
         #endregion
 
 
+        #region Property Change Handlers
+        public virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
+        {
+            if (propertyName == nameof(Content))
+                RemoveView(Content);
+        }
 
-
+        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            if (propertyName == nameof(Content))
+                AddView(Content, LayoutParameters = new LinearLayout.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent));
+        }
+        #endregion
     }
 }

@@ -86,6 +86,8 @@ namespace Demo.Droid
                 LayoutParameters = new GridLayout.LayoutParams(GridLayout.InvokeSpec(1, 1f), GridLayout.InvokeSpec(0, 1f))
             };
             */
+
+
             var showPopupButton = new SegmentedControl(Context)
             {
                 LayoutParameters = new GridLayout.LayoutParams(GridLayout.InvokeSpec(2, 1f), GridLayout.InvokeSpec(0, 1f)),

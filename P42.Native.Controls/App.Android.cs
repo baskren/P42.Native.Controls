@@ -21,7 +21,7 @@ namespace P42.Native.Controls
         #region Constructors
         public App(Context context) : base(context) { }
 
-        /*
+        
         public App(Page page) : this(global::P42.Utils.Droid.Settings.Context, page) { }
 
         public App(Context context, Page page) : base(context)
@@ -43,7 +43,7 @@ namespace P42.Native.Controls
             SetFlipInterval(int.MaxValue);
             AddView(page, new ViewGroup.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent));
         }
-        */
+        
         #endregion
 
         #region Push / Pop

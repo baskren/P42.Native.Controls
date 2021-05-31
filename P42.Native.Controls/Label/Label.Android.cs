@@ -39,6 +39,7 @@ namespace P42.Native.Controls
 
 		void Build()
         {
+			BaseView = this;
 			b_TextColor = DefaultTextColor;
 			b_FontSize = DefaultFontSize;
         }

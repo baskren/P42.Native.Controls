@@ -37,6 +37,7 @@ namespace P42.Native.Controls
 
         void Init()
         {
+            BaseView = this;
             SetWillNotDraw(false);
             UpdateLayoutParams();
         }

@@ -58,6 +58,7 @@ namespace P42.Native.Controls
 
         void Build()
         {
+            BaseView = this;
             SharedBuild();
             SetWillNotDraw(false);
             UpdateNativeListView();

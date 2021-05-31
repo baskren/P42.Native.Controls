@@ -8,10 +8,12 @@ using Android.Widget;
 using Android.Graphics;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using SmartTraitsDefs;
 
 namespace P42.Native.Controls
 {
-    public partial class NavPageWrapper : INotifiable
+    [AddSimpleTrait(typeof(TNotifiable))]
+    public partial class NavPageWrapper 
     {
         string Title => Page?.Title;
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using SmartTraitsDefs;
 
 #if __ANDROID__
 using Color = Android.Graphics.Color;
@@ -8,7 +9,8 @@ using UIElement = Android.Views.View;
 
 namespace P42.Native.Controls
 {
-    public partial class Cell : IElement
+    [AddSimpleTrait(typeof(TElement))]
+    public partial class Cell
     {
 
         #region  Properties
