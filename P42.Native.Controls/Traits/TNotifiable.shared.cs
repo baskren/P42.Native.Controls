@@ -1,23 +1,15 @@
-<#@template language="c#" hostspecific="true"#>
-<#@ parameter type="System.String" name="NamespaceName" #>
-<#@ parameter type="System.String" name="ClassName" #>
-
-/**************************************************************************
- *
- *  THIS IS A GENERATED FILE : EDITS WILL BE LOST !
- *
- **************************************************************************/
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using SmartTraitsDefs;
 
-namespace <#= NamespaceName #>
+namespace P42.Native.Controls
 {
-    partial class <#= ClassName #> : INotifiable
+    [SimpleTrait]
+    partial class TNotifiable : INotifiable
     {
         #region Events
         public event PropertyChangedEventHandler PropertyChanged;
@@ -76,12 +68,3 @@ namespace <#= NamespaceName #>
     }
 }
 
-<#+
-    public void SetClassName(string namespaceName, string className)
-    {
-        NamespaceName = namespaceName;
-        ClassName = className;
-    }
-    //string NamespaceName;
-    //string ClassName;
-#>

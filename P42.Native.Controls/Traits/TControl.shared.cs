@@ -1,21 +1,15 @@
-<#@template language="c#" hostspecific="true"#>
-<#@ parameter type="System.String" name="NamespaceName" #>
-<#@ parameter type="System.String" name="ClassName" #>
-
-/**************************************************************************
- *
- *  THIS IS A GENERATED FILE : EDITS WILL BE LOST !
- *
- **************************************************************************/
 
 using System;
+using SmartTraitsDefs;
+
 #if __ANDROID__
 using Color = Android.Graphics.Color;
 #endif
 
-namespace <#= NamespaceName #>
+namespace P42.Native.Controls
 {
-    partial class <#= ClassName #> : IControl
+    [SimpleTrait]
+    partial class TControl : TElement, IControl
     {
 
         #region Defaults
@@ -104,12 +98,3 @@ namespace <#= NamespaceName #>
     }
 }
 
-<#+
-    public void SetClassName(string namespaceName, string className)
-    {
-        NamespaceName = namespaceName;
-        ClassName = className;
-    }
-    //string NamespaceName;
-    //string ClassName;
-#>

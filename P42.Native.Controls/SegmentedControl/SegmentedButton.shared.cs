@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using SmartTraitsDefs;
 namespace P42.Native.Controls
 {
-    public partial class SegmentButton : INotifiable
+    [AddSimpleTrait(typeof(TNotifiable))]
+    public partial class SegmentButton 
     {
+        
         #region Properties
         Orientation b_Orientation;
         public Orientation Orientation
@@ -35,7 +37,7 @@ namespace P42.Native.Controls
         }
 
         #endregion
-
+        
         partial void UpdateRadii();
     }
 }

@@ -194,8 +194,8 @@ namespace P42.Native.Controls
         #region Event Handlers
         private void OnClicked(object sender, EventArgs e)
         {
-            if (Parent is SegmentedControl control)
-                control.OnSegmentClicked(this);
+            //if (Parent is SegmentedControl control)
+            //    control.OnSegmentClicked(this);
         }
 
         partial void UpdateRadii()

@@ -9,9 +9,9 @@ using System;
 using Color = Android.Graphics.Color;
 #endif
 
-namespace <#= NamespaceName #>
+namespace P42.Native.Controls
 {
-    partial class <#= ClassName #> : ILabel
+    partial class TLabel : ILabel
     {
     
         #region Properties
@@ -92,12 +92,3 @@ namespace <#= NamespaceName #>
     }
 }
 
-<#+
-    public void SetClassName(string namespaceName, string className)
-    {
-        NamespaceName = namespaceName;
-        ClassName = className;
-    }
-    string NamespaceName;
-    string ClassName;
-#>

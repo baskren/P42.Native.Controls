@@ -1,16 +1,12 @@
-/**************************************************************************
- *
- *  THIS IS A GENERATED FILE : EDITS WILL BE LOST !
- *
- **************************************************************************/
-
 using System;
 using System.Runtime.CompilerServices;
 using Android.Views;
+using SmartTraitsDefs;
 
-namespace <#= NamespaceName #>
+namespace P42.Native.Controls
 {
-    partial class <#= ClassName #> : IElement
+    [SimpleTrait]
+    partial class TElement : TNotifiable, IElement
     {
 
 
@@ -277,12 +273,3 @@ namespace <#= NamespaceName #>
 }
 
 
-<#+
-    public void SetClassName(string namespaceName, string className)
-    {
-        NamespaceName = namespaceName;
-        ClassName = className;
-    }
-    string NamespaceName;
-    string ClassName;
-#>

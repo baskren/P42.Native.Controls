@@ -11,5 +11,6 @@ namespace P42.Native.Controls
 
         void OnPropertyChanged([CallerMemberName] string propertyName = null) { }
 
+        
     }
 }

@@ -1,4 +1,0 @@
-<#@template language="C#"#>
-<#@output extension="g.cs" #>
-<# SetClassName("P42.Native.Controls", "SegmentedPanel"); #>
-<#@include file="TControl.shared.tt"#>
