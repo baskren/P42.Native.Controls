@@ -13,9 +13,9 @@ namespace P42.Native.Controls
         public int RequestedHeight { get; set;}
         public double DipRequestedHeight { get; set; }
 
-        public Alignment HorizontalAlignment { get; set;}
+        public P42.Native.Controls.Alignment HorizontalAlignment { get; set;}
 
-        public Alignment VerticalAlignment { get; set;}
+        public P42.Native.Controls.Alignment VerticalAlignment { get; set;}
 
         public ThicknessI Margin { get; set;}
         public Thickness DipMargin { get; set; }

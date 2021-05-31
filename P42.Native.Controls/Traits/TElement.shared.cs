@@ -11,8 +11,8 @@ namespace P42.Native.Controls
 
 
         #region Defaults
-        public static Alignment DefaultHorizontalAlignment = Alignment.Center;
-        public static Alignment DefaultVerticalAlignment = Alignment.Center;
+        public static P42.Native.Controls.Alignment DefaultHorizontalAlignment = P42.Native.Controls.Alignment.Center;
+        public static P42.Native.Controls.Alignment DefaultVerticalAlignment = P42.Native.Controls.Alignment.Center;
         public static ThicknessI DefaultMargin = (ThicknessI)0;
         public static int DefaultMinWidth = DisplayExtensions.DipToPx(50);
         public static int DefaultMinHeight = DisplayExtensions.DipToPx(50);
@@ -46,15 +46,15 @@ namespace P42.Native.Controls
             set => RequestedHeight = value.DipToPx();
         }
 
-        Alignment b_HorizontalAlignment = DefaultHorizontalAlignment;
-        public virtual Alignment HorizontalAlignment
+        P42.Native.Controls.Alignment b_HorizontalAlignment = DefaultHorizontalAlignment;
+        public virtual P42.Native.Controls.Alignment HorizontalAlignment
         {
             get => b_HorizontalAlignment;
             set => SetField(ref b_HorizontalAlignment, value, UpdateLayoutParams);
         }
 
-        Alignment b_VerticalAlignment = DefaultVerticalAlignment;
-        public virtual Alignment VerticalAlignment
+        P42.Native.Controls.Alignment b_VerticalAlignment = DefaultVerticalAlignment;
+        public virtual P42.Native.Controls.Alignment VerticalAlignment
         {
             get => b_VerticalAlignment;
             set => SetField(ref b_VerticalAlignment, value, UpdateLayoutParams);
@@ -219,7 +219,7 @@ namespace P42.Native.Controls
         void UpdateLayoutParams()
         {
             BaseView.LayoutParameters = new ViewGroup.LayoutParams(
-                    HorizontalAlignment == Alignment.Stretch
+                    HorizontalAlignment == P42.Native.Controls.Alignment.Stretch
                         ? ViewGroup.LayoutParams.MatchParent
                         : RequestedWidth < 0
                             ? ViewGroup.LayoutParams.WrapContent
@@ -228,7 +228,7 @@ namespace P42.Native.Controls
                                 : RequestedWidth > MaxWidth
                                     ? MaxWidth
                                     : RequestedWidth,
-                    VerticalAlignment == Alignment.Start
+                    VerticalAlignment == P42.Native.Controls.Alignment.Stretch
                         ? ViewGroup.LayoutParams.MatchParent
                         : RequestedHeight < 0
                             ? ViewGroup.LayoutParams.WrapContent

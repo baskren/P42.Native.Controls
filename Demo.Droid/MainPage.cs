@@ -44,7 +44,7 @@ namespace Demo.Droid
 
             var grid = new GridLayout(Context)
             {
-                RowCount = 6,
+                RowCount = 7,
                 ColumnCount = 1,
                 LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent),
             };
@@ -95,7 +95,6 @@ namespace Demo.Droid
             var rightSegment = new SegmentButton(Context)
             {
                 Text = "LEFT",
-                TextAlignment = TextAlignment.Center,
             };
             rightSegment.Click += OnSegment_Click;
             showPopupButton.AddView(rightSegment);
@@ -103,8 +102,6 @@ namespace Demo.Droid
             var upSegment = new SegmentButton(Context)
             {
                 Text = "UP",
-                TextAlignment = TextAlignment.Center,
-                Gravity = GravityFlags.Center
             };
             upSegment.Click += OnSegment_Click;
             showPopupButton.AddView(upSegment);
@@ -112,7 +109,6 @@ namespace Demo.Droid
             var downSegment = new SegmentButton(Context)
             {
                 Text = "DOWN",
-                TextAlignment = TextAlignment.Center
             };
             downSegment.Click += OnSegment_Click;
             showPopupButton.AddView(downSegment);
@@ -120,7 +116,6 @@ namespace Demo.Droid
             var leftSegment = new SegmentButton(Context)
             {
                 Text = "RIGHT",
-                TextAlignment = TextAlignment.Center
             };
             leftSegment.Click += OnSegment_Click;
             showPopupButton.AddView(leftSegment);
@@ -170,6 +165,17 @@ namespace Demo.Droid
             ((GridLayout.LayoutParams)cdPageButton.LayoutParameters).SetMargins(10, 10, 10, 10);
             cdPageButton.Click += async (s, e) => await this.PushAsync(new ContentAndDetailPresenterPage());
             grid.AddView(cdPageButton);
+
+            var label = new TextView(Context)
+            {
+                Text = "LABEL",
+                Gravity = GravityFlags.Bottom | GravityFlags.Right,
+                //TextAlignment = TextAlignment.Center,
+                LayoutParameters = new GridLayout.LayoutParams(GridLayout.InvokeSpec(6, 1f), GridLayout.InvokeSpec(0, 1f)),
+            };
+            label.SetPadding(30, 30, 30, 30);
+            label.SetBackgroundColor(Color.Orange);
+            grid.AddView(label);
 
             Content = grid;
             

@@ -225,6 +225,8 @@ namespace P42.Native.Controls
                     var bottom = Margin.Top + availableHeight ;
                     foreach (var child in children)
                     {
+                        if (child.MeasuredWidth != cellWidth || child.MeasuredHeight != cellHeight)
+                            child.Measure(MeasureSpec.MakeMeasureSpec((int)(cellWidth + 0.5), MeasureSpecMode.Exactly), MeasureSpec.MakeMeasureSpec((int)(cellHeight+0.5), MeasureSpecMode.Exactly));
                         child.Layout((int)(start + 0.5), top, (int)(start + cellWidth + 0.5), bottom);
                         start += cellWidth + Spacing;
                     }
@@ -236,6 +238,8 @@ namespace P42.Native.Controls
                     var right = (int)(Margin.Left + availableWidth + 0.5);
                     foreach (var child in children)
                     {
+                        if (child.MeasuredWidth != cellWidth || child.MeasuredHeight != cellHeight)
+                            child.Measure(MeasureSpec.MakeMeasureSpec((int)(cellWidth + 0.5), MeasureSpecMode.Exactly), MeasureSpec.MakeMeasureSpec((int)(cellHeight + 0.5), MeasureSpecMode.Exactly));
                         child.Layout(left, (int)(start + 0.5), right, (int)(start + cellHeight + 0.5f));
                         start += cellHeight + Spacing;
                     }

@@ -181,12 +181,18 @@ namespace P42.Native.Controls
 
         void Init()
         {
-            this.SetPadding(s_DefaultPadding);
+            //this.SetPadding(s_DefaultPadding);
             Click += OnClicked;
-            TextAlignment = Android.Views.TextAlignment.Center;
             m_Background.SetShape(ShapeType.Rectangle);
             m_Background.SetColor(BackgroundColor);
             Background = new RippleDrawable(s_DefaultColorStateList, m_Background, null);
+            //SetForegroundGravity(Android.Views.GravityFlags.Center);
+            //Gravity = Android.Views.GravityFlags.Center;
+            //TextAlignment = Android.Views.TextAlignment.Gravity;
+            //TextAlignment = Android.Views.TextAlignment.TextEnd;
+            Gravity = Android.Views.GravityFlags.Center;
+            //LayoutParameters = new Android.Views.ViewGroup.LayoutParams(Android.Views.ViewGroup.LayoutParams.MatchParent, Android.Views.ViewGroup.LayoutParams.MatchParent);
+            Android.Text.Layout x;
         }
         #endregion
 
@@ -194,8 +200,8 @@ namespace P42.Native.Controls
         #region Event Handlers
         private void OnClicked(object sender, EventArgs e)
         {
-            //if (Parent is SegmentedControl control)
-            //    control.OnSegmentClicked(this);
+            if (Parent is SegmentedControl control)
+                control.OnSegmentClicked(this);
         }
 
         partial void UpdateRadii()

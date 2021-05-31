@@ -1,6 +1,5 @@
 using System;
 
-using ElementType = P42.Native.Controls.IControl;
 #if __ANDROID__
 using Color = Android.Graphics.Color;
 #endif
@@ -10,19 +9,19 @@ namespace P42.Native.Controls
 {
     public static class IControlMarkupExtensions
     {
-        public static ElementType DipPadding<ElementType>(this ElementType element, Thickness value)
+        public static ElementType DipPadding<ElementType>(this ElementType element, Thickness value) where ElementType : Android.Views.View, P42.Native.Controls.IControl
         { ((IControl)element).DipPadding = value; return element; }
 
-        public static ElementType DipBorderWidth<ElementType>(this ElementType element, double value)
+        public static ElementType DipBorderWidth<ElementType>(this ElementType element, double value) where ElementType : Android.Views.View, P42.Native.Controls.IControl
         { ((IControl)element).DipBorderWidth = value; return element; }
 
-        public static ElementType DipCornerRadius<ElementType>(this ElementType element, double value)
+        public static ElementType DipCornerRadius<ElementType>(this ElementType element, double value) where ElementType : Android.Views.View, P42.Native.Controls.IControl
         { ((IControl)element).DipCornerRadius = value; return element; }
 
-        public static ElementType BorderColor<ElementType>(this ElementType element, Color value)
+        public static ElementType BorderColor<ElementType>(this ElementType element, Color value) where ElementType : Android.Views.View, P42.Native.Controls.IControl
         { ((IControl)element).BorderColor = value; return element; }
 
-        public static ElementType BackgroundColor<ElementType>(this ElementType element, Color value)
+        public static ElementType BackgroundColor<ElementType>(this ElementType element, Color value) where ElementType : Android.Views.View, P42.Native.Controls.IControl
         { ((IControl)element).BackgroundColor = value; return element; }
 
 
