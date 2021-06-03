@@ -188,6 +188,19 @@ namespace P42.Native.Controls
             Background = new RippleDrawable(s_DefaultColorStateList, m_Background, null);
             Gravity = Android.Views.GravityFlags.Center;
         }
+
+        bool _disposed;
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && !_disposed)
+            {
+                _disposed = true;
+                Click -= OnClicked;
+                Background?.Dispose();
+                m_Background?.Dispose();
+            }
+            base.Dispose(disposing);
+        }
         #endregion
 
 

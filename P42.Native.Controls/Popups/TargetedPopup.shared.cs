@@ -9,7 +9,7 @@ using Color = Android.Graphics.Color;
 namespace P42.Native.Controls
 {
     [AddSimpleTrait(typeof(TControl))]
-    public partial class TargetedPopup  
+    public partial class TargetedPopup : IDisposable
     {
         #region Properties
 
@@ -150,7 +150,7 @@ namespace P42.Native.Controls
             set => SetField(ref b_PageOverlayMode, value);
         }
 
-        Color b_PageOverlayColor = Color.Red.WithAlpha(0.5);
+        Color b_PageOverlayColor = Color.Gray.WithAlpha(0.25);
         public Color PageOverlayColor
         {
             get => b_PageOverlayColor;
@@ -190,6 +190,13 @@ namespace P42.Native.Controls
         {
             get => b_PushPopState;
             set => SetField(ref b_PushPopState, value);
+        }
+
+        bool b_DisposeOnPop = true;
+        public bool DisposeOnPop
+        {
+            get => b_DisposeOnPop;
+            set => SetField(ref b_DisposeOnPop, value);
         }
 
         #endregion
@@ -249,6 +256,9 @@ namespace P42.Native.Controls
             _popCompletionSource?.TrySetResult(result);
             Popped?.Invoke(this, result);
             //P42.Utils.Uno.GC.Collect();
+
+            if (DisposeOnPop)
+                Dispose();
         }
 
         TaskCompletionSource<PopupPoppedEventArgs> _popCompletionSource;

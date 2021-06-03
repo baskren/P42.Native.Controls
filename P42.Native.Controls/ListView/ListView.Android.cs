@@ -73,8 +73,8 @@ namespace P42.Native.Controls
             {
                 PxCellHeights.CollectionChanged -= OnNativeCellHeights_CollectionChanged;
                 RemoveNativeListView();
-                Header?.Dispose();
-                Footer?.Dispose();
+                DipHeader?.Dispose();
+                DipFooter?.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -169,6 +169,17 @@ namespace P42.Native.Controls
             SetWillNotDraw(false);
             UpdateRadii();
         }
+
+        bool _disposed;
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && !_disposed)
+            {
+                _disposed = true;
+                m_paint.Dispose();
+            }
+            base.Dispose(disposing);
+        }
         #endregion
 
 

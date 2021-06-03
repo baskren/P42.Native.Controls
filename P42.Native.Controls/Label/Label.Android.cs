@@ -47,13 +47,10 @@ namespace P42.Native.Controls
 		bool _disposed;
 		protected override void Dispose(bool disposing)
 		{
-			if (_disposed)
-				return;
-
-			_disposed = true;
-
-			if (disposing)
+			if (disposing && !_disposed)
 			{
+				_disposed = true;
+				Background?.Dispose();
 			}
 
 			base.Dispose(disposing);

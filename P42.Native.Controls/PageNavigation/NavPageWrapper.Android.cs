@@ -21,11 +21,8 @@ namespace P42.Native.Controls
 
 
         #region Fields
-        //GridLayout m_NavBar;
         TextView m_BackButton;
         TextView m_TitleTextView;
-        Android.Graphics.Drawables.ShapeDrawable m_BorderDrawable;
-        bool _disposed;
         Paint m_Paint = new Paint(PaintFlags.AntiAlias)
         {
             Color = Color.Black,
@@ -49,50 +46,23 @@ namespace P42.Native.Controls
             UpdateTitle();
             UpdateBackButton();
 
-            Background = Android.Graphics.Color.Red.ToColorDrawable();
+            Background = Android.Graphics.Color.White.ToColorDrawable();
 
         }
 
-
-        /*
-        public NavPageWrapper(Context context) : base(context)
-        {
-            Build();
-        }
-
-        public NavPageWrapper(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
-        {
-            Build();
-        }
-
-        public NavPageWrapper(Context context, IAttributeSet attrs) : base(context, attrs)
-        {
-            Build();
-        }
-
-        public NavPageWrapper(Context context, IAttributeSet attrs, int defStyleAttr) : base(context, attrs, defStyleAttr)
-        {
-            Build();
-        }
-
-        public NavPageWrapper(Context context, IAttributeSet attrs, int defStyleAttr, int defStyleRes) : base(context, attrs, defStyleAttr, defStyleRes)
-        {
-            Build();
-        }
-
-        void Build()
-        {
-        }
-        */
-
+        bool _disposed;
         protected override void Dispose(bool disposing)
         {
             if (!_disposed && disposing)
             {
                 if (DipPage is Page page)
                     page.PropertyChanged -= OnPage_PropertyChanged;
+                if (DipPage is View view)
+                    view.Dispose();
                 m_TitleTextView?.Dispose();
                 m_BackButton?.Dispose();
+                m_Paint?.Dispose();
+                Background?.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -117,6 +87,8 @@ namespace P42.Native.Controls
                 if (m_BackButton is null)
                 {
                     m_BackButton = new TextView(Context);
+                    var pad = new Thickness(5).DipToPx();
+                    m_BackButton.SetPadding(pad);
                     m_BackButton.SetTextColor(Color.Blue);
                     m_BackButton.Click += OnBackButtonClicked;
                     AddView(m_BackButton);

@@ -115,6 +115,21 @@ namespace P42.Native.Controls
             NtvBaseView = this;
             SetWillNotDraw(false);
         }
+
+        bool _disposed;
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && !_disposed)
+            {
+                _disposed = true;
+                var kids = this.Children();
+                RemoveAllViews();
+                foreach (var kid in kids)
+                    kid.Dispose();
+                Background?.Dispose();
+            }
+            base.Dispose(disposing);
+        }
         #endregion
 
 

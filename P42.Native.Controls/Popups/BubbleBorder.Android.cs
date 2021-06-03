@@ -42,6 +42,19 @@ namespace P42.Native.Controls
             SetWillNotDraw(false);
             NtvUpdateLayoutParams();
         }
+
+        bool _dispose;
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && !_dispose)
+            {
+                _dispose = true;
+                Background?.Dispose();
+                m_paint?.Dispose();
+                DipContent?.Dispose();
+            }
+            base.Dispose(disposing);
+        }
         #endregion
 
 

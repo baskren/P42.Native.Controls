@@ -17,7 +17,7 @@ namespace P42.Native.Controls
             }
         }
 
-        public static async Task PopAsync(this IPage currentPage, PageAnimationOptions options = null, bool dispose = false)
+        public static async Task PopAsync(this IPage currentPage, PageAnimationOptions options = null, bool dispose = true)
         {
             if (currentPage is View view)
             {
@@ -34,7 +34,7 @@ namespace P42.Native.Controls
         public static async Task PushModalAsync(Page newPage, PageAnimationOptions options = null)
             => await App.Current.InternalPushModalAsync(newPage, options);
 
-        public static async Task PopModalAsync(this IPage currentPage, PageAnimationOptions options = null, bool dispose = false)
+        public static async Task PopModalAsync(this IPage currentPage, PageAnimationOptions options = null, bool dispose = true)
             => await App.Current.InternalPopModalAsync(currentPage, options, dispose);
 
     }

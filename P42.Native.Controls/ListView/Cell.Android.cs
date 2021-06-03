@@ -32,8 +32,8 @@ namespace P42.Native.Controls
         {
             if (!_disposed && disposing)
             {
+                Click -= OnClicked;
                 DisposeCommon();
-
                 var children = this.Children();
                 RemoveAllViews();
                 foreach (var child in children)

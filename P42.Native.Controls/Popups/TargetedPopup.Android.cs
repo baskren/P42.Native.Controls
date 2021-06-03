@@ -205,8 +205,6 @@ namespace P42.Native.Controls
             PushPopState = PushPopState.Popping;
             _pushCompletionSource = null;
 
-            //m_Border.SizeChanged -= OnBorderSizeChanged;
-
             PoppedCause = cause;
             PoppedTrigger = trigger;
             await OnPopBeginAsync();
@@ -218,10 +216,12 @@ namespace P42.Native.Controls
                 await animator.RunAsync();
             }
 
-            //_popup.IsOpen = false;
-
             m_BorderPopup.Dismiss();
             m_OverlayPopup.Dismiss();
+
+            if (!DisposeOnPop)
+                m_Border.DipContent = null;
+
             m_BorderPopup.Dispose();
             m_OverlayPopup.Dispose();
 

@@ -244,7 +244,6 @@ namespace Demo.Droid
                 DipBackgroundColor = Color.Aquamarine,
                 DipBorderColor = Color.Transparent,
                 PreferredPointerDirection = P42.Native.Controls.PointerDirection.Up,
-                //PageOverlayMode = P42.Native.Controls.PageOverlayMode.TouchTransparent
             };
             ((IControl)popup).DipBorderWidth = 2;
 

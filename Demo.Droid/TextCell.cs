@@ -56,6 +56,20 @@ namespace Demo.Droid
         }
 
 
+        bool _disposed = false;
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && !_disposed)
+            {
+                _disposed = true;
+                _grid.RemoveAllViews();
+                _grid.Dispose();
+                _valueLabel.Dispose();
+                _titleLabel.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
         public override void DipOnDataContextChanged()
         {
             base.DipOnDataContextChanged();

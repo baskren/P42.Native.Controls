@@ -15,14 +15,30 @@ namespace P42.Native.Controls
     class ListViewAdapter : Android.Widget.BaseAdapter<object>
     {
         IEnumerable Items;
-        Type ItemViewType => ListView.ItemViewType;
-        IItemTypeSelector TemplateSelector => ListView.ItemViewTypeSelector;
+        Type ItemViewType => ListView?.DipItemViewType;
+        IItemTypeSelector TemplateSelector => ListView?.DipItemViewTypeSelector;
         ListView ListView;
+        List<Cell> ActiveCells = new List<Cell>();
 
         public ListViewAdapter(ListView listView)
         {
             ListView = listView;
-            SetItems(ListView.ItemsSource);
+            SetItems(ListView.DipItemsSource);
+        }
+
+        bool _disposed = false;
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && !_disposed)
+            {
+                _disposed = true;
+                foreach (var cell in ActiveCells)
+                    cell.Dispose();
+                ActiveCells.Clear();
+                ListView = null;
+                Items = null;
+            }
+            base.Dispose(disposing);
         }
 
         public void SetItems(IEnumerable items)
@@ -99,11 +115,11 @@ namespace P42.Native.Controls
                 else if (ItemViewType is Type t2 && typeof(Cell).IsAssignableFrom(t2))
                     cellType = t2;
                 if (cellType != null)
-                    cell = (Cell)Activator.CreateInstance(cellType, new object[] { ListView });
+                    ActiveCells.Add(cell = (Cell)Activator.CreateInstance(cellType, new object[] { ListView }));
             }
 
             if (cell is null)
-                cell = new TextCell(ListView);
+                ActiveCells.Add(cell = new TextCell(ListView));
 
             cell.DipIndex = position;
             cell.DipDataContext = this[position];
