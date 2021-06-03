@@ -20,7 +20,7 @@ namespace Demo.Droid
 
         void Build()
         {
-            Title = "Page " + pageNumber;
+            DipTitle = "Page " + pageNumber;
 
             SetBackgroundColor(Color.Argb(255, Random.Next(255), Random.Next(255), Random.Next(255)));
 
@@ -61,7 +61,7 @@ namespace Demo.Droid
             forewardButton.Click += OnForewardButton_Click;
             grid.AddView(forewardButton);
 
-            Content = grid;
+            DipContent = grid;
         }
 
         async void OnForewardButton_Click(object sender, EventArgs e)

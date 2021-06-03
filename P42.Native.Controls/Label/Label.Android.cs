@@ -16,14 +16,14 @@ namespace P42.Native.Controls
 {
 	public partial class Label : Android.Widget.TextView
 	{
-		static Color DefaultTextColor;
-		static double DefaultFontSize;
+		static Color NtvDefaultTextColor;
+		static double NtvDefaultFontSize;
 
 		static Label()
         {
 			var defaultLabel = new Android.Widget.TextView(global::P42.Utils.Droid.Settings.Context);
-			DefaultTextColor = defaultLabel.TextColors.DefaultColor.ToColor();
-			DefaultFontSize = defaultLabel.TextSize;
+			NtvDefaultTextColor = defaultLabel.TextColors.DefaultColor.ToColor();
+			NtvDefaultFontSize = defaultLabel.TextSize;
 			defaultLabel.Dispose();
         }
 
@@ -39,9 +39,9 @@ namespace P42.Native.Controls
 
 		void Build()
         {
-			BaseView = this;
-			b_TextColor = DefaultTextColor;
-			b_FontSize = DefaultFontSize;
+			NtvBaseView = this;
+			b_DipTextColor = NtvDefaultTextColor;
+			b_DipFontSize = NtvDefaultFontSize;
         }
 
 		bool _disposed;
@@ -77,8 +77,8 @@ namespace P42.Native.Controls
         public override void Draw(Canvas canvas)
         {
             base.Draw(canvas);
-			HasDrawn = true;
-			ActualSize = new SizeI(canvas.Width, canvas.Height);
+			DipHasDrawn = true;
+			NtvActualSize = new SizeI(canvas.Width, canvas.Height);
 		}
 		#endregion
 
@@ -88,7 +88,7 @@ namespace P42.Native.Controls
 		{
 			int maxLines = Int32.MaxValue;
 			bool singleLine = false;
-			switch (LineBreakMode)
+			switch (DipLineBreakMode)
 			{
 				case LineBreakMode.NoWrap:
 					maxLines = 1;
@@ -121,7 +121,7 @@ namespace P42.Native.Controls
 
 		void UpdateText()
 		{
-			switch (TextType)
+			switch (DipTextType)
 			{
 				case TextType.Html:
 					if (Xamarin.Essentials.DeviceInfo.Version >= new Version(7,0)) // Nouget+
@@ -148,22 +148,20 @@ namespace P42.Native.Controls
 			if (_disposed)
 				return;
 
-			if (propertyName == nameof(FontFamily) || propertyName == nameof(FontStyle))
-				Typeface = FontExtensions.ToTypeface(FontFamily, FontStyle);
-			else if (propertyName == nameof(FontSize))
-				SetTextSize(ComplexUnitType.Sp, (float)FontSize);
-			else if (propertyName == nameof(Text) || propertyName == nameof(TextType))
+			if (propertyName == nameof(DipFontFamily) || propertyName == nameof(DipFontStyle))
+				Typeface = FontExtensions.ToTypeface(DipFontFamily, DipFontStyle);
+			else if (propertyName == nameof(DipFontSize))
+				SetTextSize(ComplexUnitType.Sp, (float)DipFontSize);
+			else if (propertyName == nameof(Text) || propertyName == nameof(DipTextType))
 				UpdateText();
-			else if (propertyName == nameof(TextColor))
-				SetTextColor(b_TextColor);
-			else if (propertyName == nameof(LineBreakMode))
+			else if (propertyName == nameof(DipTextColor))
+				SetTextColor(b_DipTextColor);
+			else if (propertyName == nameof(DipLineBreakMode))
 				UpdateLineBreakMode();
-			else if (propertyName == nameof(HorizontalTextAlignment) || propertyName == nameof(VerticalTextAlignment))
-				Gravity = HorizontalTextAlignment.ToHorizontalGravityFlags() | VerticalTextAlignment.ToVerticalGravityFlags();
-			else if (propertyName == nameof(Margin))
-				SetPadding(Margin.Left, Margin.Top, Margin.Right, Margin.Bottom);
-			else if (propertyName == nameof(HasDrawn) && HasDrawn)
-				HasDrawnTaskCompletionSource?.TrySetResult(true);
+			else if (propertyName == nameof(DipHorizontalTextAlignment) || propertyName == nameof(DipVerticalTextAlignment))
+				Gravity = DipHorizontalTextAlignment.ToHorizontalGravityFlags() | DipVerticalTextAlignment.ToVerticalGravityFlags();
+			else if (propertyName == nameof(NtvMargin))
+				SetPadding(NtvMargin.Left, NtvMargin.Top, NtvMargin.Right, NtvMargin.Bottom);
 		}
 
 		#endregion

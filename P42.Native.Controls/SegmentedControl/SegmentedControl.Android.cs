@@ -27,46 +27,46 @@ namespace P42.Native.Controls
 
 
         #region Colors
-        Color b_TextColor = SegmentButton.s_DefaultTextColor;
+        Color b_TextColor = SegmentButton.DipDefaultTextColor;
         public virtual Color TextColor
         {
             get => b_TextColor;
             set
             {
                 if (SetField(ref b_TextColor, value))
-                    UpdateSegments(s => s.TextColor = value);
+                    UpdateSegments(s => s.DipTextColor = value);
             }
         }
 
-        Color b_SelectedTextColor = SegmentButton.s_DefaultSelectedTextColor;
+        Color b_SelectedTextColor = SegmentButton.DipDefaultSelectedTextColor;
         public virtual Color SelectedTextColor
         {
             get => b_SelectedTextColor;
             set
             {
                 if (SetField(ref b_SelectedTextColor, value))
-                    UpdateSegments(s => s.SelectedTextColor = value);
+                    UpdateSegments(s => s.DipSelectedTextColor = value);
             }
         }
 
-        public override Color BackgroundColor
+        public override Color DipBackgroundColor
         {
-            get => b_BackgroundColor;
+            get => b_DipBackgroundColor;
             set
             {
-                if (SetField(ref b_BackgroundColor, value))
-                    UpdateSegments(s => s.BackgroundColor = value);
+                if (SetField(ref b_DipBackgroundColor, value))
+                    UpdateSegments(s => s.DipBackgroundColor = value);
             }
         }
 
-        Color b_SelectedBackgroundColor = SegmentButton.s_DefaultSelectedBackgroundColor;
+        Color b_SelectedBackgroundColor = SegmentButton.DipDefaultSelectedBackgroundColor;
         public Color SelectedBackgroundColor
         {
             get => b_SelectedBackgroundColor;
             set
             {
                 if (SetField(ref b_SelectedBackgroundColor, value))
-                    UpdateSegments(s => s.SelectedBackgroundColor = value);
+                    UpdateSegments(s => s.DipSelectedBackgroundColor = value);
             }
         }
 
@@ -79,25 +79,25 @@ namespace P42.Native.Controls
         #endregion
 
         #region Outline Width / Radius
-        public override double CornerRadius
+        public override double NtvCornerRadius
         {
-            get => b_CornerRadius;
+            get => b_NtvCornerRadius;
             set
             {
-                if (SetField(ref b_CornerRadius, value))
+                if (SetField(ref b_NtvCornerRadius, value))
                     UpdateRadii();
             }
         }
         #endregion
 
         #region DipPadding
-        public override ThicknessI Padding
+        public override ThicknessI NtvPadding
         {
-            get => b_Padding;
+            get => b_NtvPadding;
             set
             {
-                if (SetField(ref b_Padding, value))
-                    UpdateSegments(s => s.SetPadding(b_Padding));
+                if (SetField(ref b_NtvPadding, value))
+                    UpdateSegments(s => s.SetPadding(b_NtvPadding));
             }
         }
         #endregion
@@ -112,7 +112,7 @@ namespace P42.Native.Controls
                 foreach (var child in this.Children())
                 {
                     if (child is SegmentButton button &&
-                        button.Selected)
+                        button.DipSelected)
                         result.Add(button.Index);
                 }
                 return result;
@@ -162,10 +162,10 @@ namespace P42.Native.Controls
 
         void Init()
         {
-            b_BackgroundColor = SegmentButton.s_DefaultBackgroundColor;
-            b_BorderWidth = s_DefaultBorderThickness;
-            b_CornerRadius = SegmentButton.s_DefaultCornerRadius + s_DefaultBorderThickness;
-            b_Padding = DisplayExtensions.DipToPx((Thickness)SegmentButton.s_DefaultPadding);
+            b_DipBackgroundColor = SegmentButton.DipDefaultBackgroundColor;
+            b_NtvBorderWidth = s_DefaultBorderThickness;
+            b_NtvCornerRadius = SegmentButton.NtvDefaultCornerRadius + s_DefaultBorderThickness;
+            b_NtvPadding = DisplayExtensions.DipToPx((Thickness)SegmentButton.NtvDefaultPadding);
             SetWillNotDraw(false);
             UpdateRadii();
         }
@@ -175,7 +175,7 @@ namespace P42.Native.Controls
         #region Property Change Handlers
         void UpdateRadii()
         {
-            UpdateSegments(s => s.CornerRadius = CornerRadius);
+            UpdateSegments(s => s.NtvCornerRadius = NtvCornerRadius);
         }
 
         public override void OnViewAdded(View child)
@@ -205,43 +205,43 @@ namespace P42.Native.Controls
                 {
                     segment.Index = i;
                     if (ChildCount == 1)
-                        segment.Position = SegmentPosition.Only;
+                        segment.DipPosition = SegmentPosition.Only;
                     else if (i == 0)
-                        segment.Position = SegmentPosition.First;
+                        segment.DipPosition = SegmentPosition.First;
                     else if (i == ChildCount - 1)
-                        segment.Position = SegmentPosition.Last;
+                        segment.DipPosition = SegmentPosition.Last;
                     else
-                        segment.Position = SegmentPosition.Middle;
+                        segment.DipPosition = SegmentPosition.Middle;
                 }
             }
         }
 
         void InitiateSegment(SegmentButton segment)
         {
-            segment.CornerRadius = CornerRadius;
-            segment.TextColor = TextColor;
-            segment.SelectedTextColor = SelectedTextColor;
-            segment.BackgroundColor = BackgroundColor;
-            segment.SelectedBackgroundColor = SelectedBackgroundColor;
-            segment.Orientation = Orientation;
-            segment.SetPadding(Padding);
+            segment.NtvCornerRadius = NtvCornerRadius;
+            segment.DipTextColor = TextColor;
+            segment.DipSelectedTextColor = SelectedTextColor;
+            segment.DipBackgroundColor = DipBackgroundColor;
+            segment.DipSelectedBackgroundColor = SelectedBackgroundColor;
+            segment.DipOrientation = Orientation;
+            segment.SetPadding(NtvPadding);
         }
 
         internal void OnSegmentClicked(SegmentButton segment)
         {
             if (SelectionMode == SelectionMode.None)
-                segment.Selected = false;
+                segment.DipSelected = false;
             else if (SelectionMode == SelectionMode.Radio)
-                UpdateSegments(s => s.Selected = s == segment);
+                UpdateSegments(s => s.DipSelected = s == segment);
             else if (SelectionMode == SelectionMode.Single)
             {
-                if (segment.Selected)
-                    segment.Selected = false;
+                if (segment.DipSelected)
+                    segment.DipSelected = false;
                 else
-                    UpdateSegments(s => s.Selected = s == segment);
+                    UpdateSegments(s => s.DipSelected = s == segment);
             }
             else if (SelectionMode == SelectionMode.Multi)
-                segment.Selected = !segment.Selected;
+                segment.DipSelected = !segment.DipSelected;
         }
 
         void UpdateSegments(Action<SegmentButton> action, SegmentButton except = null)
@@ -258,7 +258,7 @@ namespace P42.Native.Controls
         #region Android Measure / Layout / Draw
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
-            var borderW = (int)(BorderWidth + 0.5);
+            var borderW = (int)(NtvBorderWidth + 0.5);
 
             var availableWidth = MeasureSpec.GetSize(widthMeasureSpec) - 2 * borderW;
             var availableHeight = MeasureSpec.GetSize(heightMeasureSpec) - 2 * borderW;
@@ -276,16 +276,16 @@ namespace P42.Native.Controls
             base.OnDrawForeground(canvas);
             m_paint.Color = OutlineColor;
             m_paint.SetStyle(Paint.Style.Stroke);
-            m_paint.StrokeWidth = (float)BorderWidth;
-            var borderInset = (float)BorderWidth / 2.0f;
-            float r = (float)CornerRadius - borderInset;
+            m_paint.StrokeWidth = (float)NtvBorderWidth;
+            var borderInset = (float)NtvBorderWidth / 2.0f;
+            float r = (float)NtvCornerRadius - borderInset;
             canvas.DrawRoundRect(
-                new Rect(0,0, canvas.Width, canvas.Height).Inflate(-(Thickness)Margin).Inflate(-borderInset).AsRectF(),
+                new Rect(0,0, canvas.Width, canvas.Height).Inflate(-(Thickness)NtvMargin).Inflate(-borderInset).AsRectF(),
                 r, r,
                 m_paint);
 
-            double cellWidth = canvas.Width - Margin.Horizontal;
-            double cellHeight = canvas.Height - Margin.Vertical;
+            double cellWidth = canvas.Width - NtvMargin.Horizontal;
+            double cellHeight = canvas.Height - NtvMargin.Vertical;
 
             if (IsHorizontal && canvas.Width > 1)
                 cellWidth /= ChildCount;
@@ -296,9 +296,9 @@ namespace P42.Native.Controls
 
             if (IsHorizontal)
             {
-                double start = Margin.Left;
-                var top = (float)(Margin.Top + BorderWidth);
-                var bottom = (float)(Margin.Top + cellHeight - BorderWidth);
+                double start = NtvMargin.Left;
+                var top = (float)(NtvMargin.Top + NtvBorderWidth);
+                var bottom = (float)(NtvMargin.Top + cellHeight - NtvBorderWidth);
                 for (int i = 0; i < ChildCount - 1; i++)
                 {
                     start += cellWidth;
@@ -309,9 +309,9 @@ namespace P42.Native.Controls
             }
             else
             {
-                double start = Margin.Top;
-                var left = (float)(Margin.Left + BorderWidth);
-                var right = (float)(Margin.Left + cellWidth - BorderWidth);
+                double start = NtvMargin.Top;
+                var left = (float)(NtvMargin.Left + NtvBorderWidth);
+                var right = (float)(NtvMargin.Left + cellWidth - NtvBorderWidth);
                 for (int i = 0; i < ChildCount -1; i++)
                 {
                     start += cellHeight;

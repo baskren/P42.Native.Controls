@@ -14,7 +14,7 @@ namespace P42.Native.Controls
 
         #region Properties
 
-        public System.Collections.Generic.IEnumerable<IPage> Children => this.Children().Cast<NavPageWrapper>().Select(c => c.Page);
+        public System.Collections.Generic.IEnumerable<IPage> Children => this.Children().Cast<NavPageWrapper>().Select(c => c.DipPage);
         #endregion
 
 
@@ -64,7 +64,7 @@ namespace P42.Native.Controls
 
         internal async Task InternalPushAsync(IPage iPushPage, PageAnimationOptions options)
         {
-            var fromPage = CurrentPage;
+            var fromPage = DipCurrentPage;
             if (iPushPage is Page pushPage && await iPushPage.OnAppearing(fromPage))
             {
                 options = options ?? new PageAnimationOptions
@@ -89,9 +89,9 @@ namespace P42.Native.Controls
             if (iPopPage is View popPage && Children.Contains(iPopPage))
             {
                 var wrapper = popPage.Parent as NavPageWrapper;
-                if (popPage == CurrentPage)
+                if (popPage == DipCurrentPage)
                 {
-                    var toPage = ((NavPageWrapper)GetChildAt(ChildCount-2)).Page;
+                    var toPage = ((NavPageWrapper)GetChildAt(ChildCount-2)).DipPage;
                     if (await iPopPage.OnDisappearing(toPage))
                     {
                         options = options ?? new PageAnimationOptions

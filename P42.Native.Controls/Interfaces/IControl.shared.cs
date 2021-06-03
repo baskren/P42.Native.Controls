@@ -13,18 +13,18 @@ namespace P42.Native.Controls
     public interface IControl : IElement
     {
         #region Control
-        public ThicknessI Padding { get; set; }
+        public ThicknessI NtvPadding { get; set; }
         public Thickness DipPadding { get; set; }
 
-        public double BorderWidth { get; set; }
+        public double NtvBorderWidth { get; set; }
         public double DipBorderWidth { get; set; }
 
-        public double CornerRadius { get; set; }
+        public double NtvCornerRadius { get; set; }
         public double DipCornerRadius { get; set; }
 
-        public Color BorderColor { get; set; }
+        public Color DipBorderColor { get; set; }
 
-        public Color BackgroundColor  { get; set; }
+        public Color DipBackgroundColor  { get; set; }
 
 
         #endregion

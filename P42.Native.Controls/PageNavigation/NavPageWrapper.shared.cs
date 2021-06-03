@@ -15,9 +15,9 @@ namespace P42.Native.Controls
     [AddSimpleTrait(typeof(TNotifiable))]
     public partial class NavPageWrapper 
     {
-        string Title => Page?.Title;
+        string Title => DipPage?.DipTitle;
 
-        internal readonly IPage Page;
+        internal readonly IPage DipPage;
 
     }
 }

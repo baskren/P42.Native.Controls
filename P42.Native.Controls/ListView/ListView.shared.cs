@@ -22,159 +22,159 @@ namespace P42.Native.Controls
 
         #region Properties
 
-        Element b_Header;
-        public Element Header
+        Element b_DipHeader;
+        public Element DipHeader
         {
-            get => b_Header;
-            set => SetField(ref b_Header, value);
+            get => b_DipHeader;
+            set => SetField(ref b_DipHeader, value);
         }
 
-        Element b_Footer;
-        public Element Footer
+        Element b_DipFooter;
+        public Element DipFooter
         {
-            get => b_Footer;
-            set => SetField(ref b_Footer, value);
+            get => b_DipFooter;
+            set => SetField(ref b_DipFooter, value);
         }
 
-        bool b_IsItemClickEnabled;
-        public bool IsItemClickEnabled
+        bool b_DipIsItemClickEnabled;
+        public bool DipIsItemClickEnabled
         {
-            get => b_IsItemClickEnabled;
-            set => SetField(ref b_IsItemClickEnabled, value);
+            get => b_DipIsItemClickEnabled;
+            set => SetField(ref b_DipIsItemClickEnabled, value);
         }
 
-        internal ObservableCollection<object> b_SelectedItems = new ObservableCollection<object>();
-        public IEnumerable SelectedItems
+        internal ObservableCollection<object> b_DipSelectedItems = new ObservableCollection<object>();
+        public IEnumerable DipSelectedItems
         {
-            get => b_SelectedItems;
+            get => b_DipSelectedItems;
             set
             {
-                var deleteItems = b_SelectedItems.ToList();
+                var deleteItems = b_DipSelectedItems.ToList();
                 foreach (var item in value)
                 {
-                    if (!b_SelectedItems.Contains(item))
-                        b_SelectedItems.Add(item);
+                    if (!b_DipSelectedItems.Contains(item))
+                        b_DipSelectedItems.Add(item);
                     deleteItems.Remove(item);
                 }
                 foreach (var item in deleteItems)
-                    b_SelectedItems.Remove(item);
+                    b_DipSelectedItems.Remove(item);
             }
         }
 
-        SelectionMode b_SelectionMode;
-        public SelectionMode SelectionMode
+        SelectionMode b_DipSelectionMode;
+        public SelectionMode DipSelectionMode
         {
-            get => b_SelectionMode;
-            set => SetField(ref b_SelectionMode, value, UpdateSelectionMode);
+            get => b_DipSelectionMode;
+            set => SetField(ref b_DipSelectionMode, value, DipUpdateSelectionMode);
         }
 
-        int b_SelectedIndex;
-        public int SelectedIndex
+        int b_DipSelectedIndex;
+        public int DipSelectedIndex
         {
-            get => b_SelectedIndex;
-            set => SelectIndex(value);
+            get => b_DipSelectedIndex;
+            set => DipSelectIndex(value);
         }
 
-        object b_SelectedItem;
-        public object SelectedItem
+        object b_DipSelectedItem;
+        public object DipSelectedItem
         {
-            get => b_SelectedItem;
-            set => SelectItem(value);
+            get => b_DipSelectedItem;
+            set => DipSelectItem(value);
         }
 
-        IEnumerable b_ItemsSource;
-        public IEnumerable ItemsSource
+        IEnumerable b_DipItemsSource;
+        public IEnumerable DipItemsSource
         {
-            get => b_ItemsSource;
-            set => SetField(ref b_ItemsSource, value);
+            get => b_DipItemsSource;
+            set => SetField(ref b_DipItemsSource, value);
         }
 
-        Type b_ItemViewType;
-        public Type ItemViewType
+        Type b_DipItemViewType;
+        public Type DipItemViewType
         {
-            get => b_ItemViewType;
-            set => SetField(ref b_ItemViewType, value, UpdateNativeListView);
+            get => b_DipItemViewType;
+            set => SetField(ref b_DipItemViewType, value, UpdateNativeListView);
         }
 
 
-        IItemTypeSelector b_ItemViewTypeSelector;
-        public IItemTypeSelector ItemViewTypeSelector
+        IItemTypeSelector b_DipItemViewTypeSelector;
+        public IItemTypeSelector DipItemViewTypeSelector
         {
-            get => b_ItemViewTypeSelector;
-            set => SetField(ref b_ItemViewTypeSelector, value, UpdateNativeListView);
+            get => b_DipItemViewTypeSelector;
+            set => SetField(ref b_DipItemViewTypeSelector, value, UpdateNativeListView);
         }
         #endregion
 
 
         #region Events
-        public event ItemClickEventHandler ItemClick;
-        public event SelectionChangedEventHandler SelectionChanged;
+        public event ItemClickEventHandler DipItemClick;
+        public event SelectionChangedEventHandler DipSelectionChanged;
         #endregion
 
 
         void SharedBuild()
         {
-            HorizontalAlignment = Alignment.Stretch;
-            VerticalAlignment = Alignment.Stretch;
+            DipHorizontalAlignment = Alignment.Stretch;
+            DipVerticalAlignment = Alignment.Stretch;
         }
 
         #region Scroll
-        public partial Task ScrollIntoView(object item, ScrollIntoViewAlignment alignment);
+        public partial Task DipScrollIntoView(object item, ScrollIntoViewAlignment alignment);
 
         #endregion
 
 
         #region Selection
-        internal partial Task OnCellTapped(Cell cell);
+        internal partial Task DipOnCellTapped(Cell cell);
 
-        private void UpdateSelectionMode()
+        private void DipUpdateSelectionMode()
         {
-            if (SelectionMode == SelectionMode.None)
-                b_SelectedItems.Clear();
-            else if (SelectionMode != SelectionMode.Multi)
+            if (DipSelectionMode == SelectionMode.None)
+                b_DipSelectedItems.Clear();
+            else if (DipSelectionMode != SelectionMode.Multi)
             {
-                if (b_SelectedItems.FirstOrDefault() is object first && first != null)
+                if (b_DipSelectedItems.FirstOrDefault() is object first && first != null)
                 {
-                    var items = b_SelectedItems.ToArray();
+                    var items = b_DipSelectedItems.ToArray();
                     foreach (var item in items)
                         if (item != first)
-                            b_SelectedItems.Remove(item);
+                            b_DipSelectedItems.Remove(item);
                 }
             }
         }
 
-        public void SelectAll()
+        public void DipSelectAll()
         {
-            if (SelectionMode == SelectionMode.Multi)
+            if (DipSelectionMode == SelectionMode.Multi)
             {
-                foreach (var item in ItemsSource)
+                foreach (var item in DipItemsSource)
                 {
-                    if (!b_SelectedItems.Contains(item))
-                        b_SelectedItems.Add(item);
+                    if (!b_DipSelectedItems.Contains(item))
+                        b_DipSelectedItems.Add(item);
                 }
             }
         }
 
-        public void DeselectAll()
+        public void DipDeselectAll()
         {
-            b_SelectedItems.Clear();
+            b_DipSelectedItems.Clear();
         }
 
-        void SelectIndex(int index)
+        void DipSelectIndex(int index)
         {
-            if (SelectionMode != SelectionMode.None)
+            if (DipSelectionMode != SelectionMode.None)
             {
-                if (ItemsSource is IList collection)
+                if (DipItemsSource is IList collection)
                 {
-                    SelectedItem = collection[index];
+                    DipSelectedItem = collection[index];
                     return;
                 }
                 int i = 0;
-                foreach (var item in ItemsSource)
+                foreach (var item in DipItemsSource)
                 {
                     if (i == index)
                     {
-                        SelectItem(item);
+                        DipSelectItem(item);
                         return;
                     }
                     i++;
@@ -182,32 +182,32 @@ namespace P42.Native.Controls
             }
         }
 
-        void SelectItem(object item)
+        void DipSelectItem(object item)
         {
-            if (SelectionMode != SelectionMode.None)
+            if (DipSelectionMode != SelectionMode.None)
             {
                 if (_repondingToSelectedItemsCollectionChanged)
                     return;
-                if (SelectionMode == SelectionMode.Single)
+                if (DipSelectionMode == SelectionMode.Single)
                 {
-                    if (!b_SelectedItems.Contains(item))
+                    if (!b_DipSelectedItems.Contains(item))
                     {
-                        b_SelectedItems.Clear();
-                        b_SelectedItems.Add(item);
+                        b_DipSelectedItems.Clear();
+                        b_DipSelectedItems.Add(item);
                     }
                 }
-                else if (SelectionMode == SelectionMode.Multi)
+                else if (DipSelectionMode == SelectionMode.Multi)
                 {
-                    if (b_SelectedItems.Contains(item))
-                        b_SelectedItems.Remove(item);
+                    if (b_DipSelectedItems.Contains(item))
+                        b_DipSelectedItems.Remove(item);
                     else
-                        b_SelectedItems.Add(item);
+                        b_DipSelectedItems.Add(item);
                 }
             }
         }
 
         bool _repondingToSelectedItemsCollectionChanged;
-        private void OnSelectedItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void DipOnSelectedItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             _repondingToSelectedItemsCollectionChanged = true;
             switch (e.Action)
@@ -217,10 +217,10 @@ namespace P42.Native.Controls
                 case NotifyCollectionChangedAction.Replace:
                 case NotifyCollectionChangedAction.Reset:
                     if (e.NewItems?.Any() ?? false)
-                        SelectedItem = e.NewItems[0];
-                    else if (SelectedItem != null && (e.OldItems?.Contains(SelectedItem) ?? false))
-                        SelectedItem = null;
-                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(this, e.OldItems, e.NewItems));
+                        DipSelectedItem = e.NewItems[0];
+                    else if (DipSelectedItem != null && (e.OldItems?.Contains(DipSelectedItem) ?? false))
+                        DipSelectedItem = null;
+                    DipSelectionChanged?.Invoke(this, new SelectionChangedEventArgs(this, e.OldItems, e.NewItems));
                     break;
                 case NotifyCollectionChangedAction.Move:
                 default:

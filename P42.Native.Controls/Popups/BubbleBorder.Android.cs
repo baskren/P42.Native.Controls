@@ -38,9 +38,9 @@ namespace P42.Native.Controls
 
         void Init()
         {
-            BaseView = this;
+            NtvBaseView = this;
             SetWillNotDraw(false);
-            UpdateLayoutParams();
+            NtvUpdateLayoutParams();
         }
         #endregion
 
@@ -50,9 +50,9 @@ namespace P42.Native.Controls
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
             System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnMeasure(({MeasureSpec.GetSize(widthMeasureSpec)},{MeasureSpec.GetMode(widthMeasureSpec)}),({MeasureSpec.GetSize(heightMeasureSpec)},{MeasureSpec.GetMode(heightMeasureSpec)})");
-            if (Content is null)
+            if (DipContent is null)
             {
-                SetMeasuredDimension((int)MinWidth, (int)MinHeight);
+                SetMeasuredDimension((int)NtvMinWidth, (int)NtvMinHeight);
                 return;
             }
 
@@ -71,13 +71,13 @@ namespace P42.Native.Controls
             
             
 
-            var hzInset = (int)(Margin.Horizontal + 2 * BorderWidth + Padding.Horizontal + (PointerDirection.IsHorizontal() ? PointerLength : 0) + 0.5);
-            var vtInset = (int)(Margin.Vertical + 2 * BorderWidth + Padding.Vertical + (PointerDirection.IsVertical() ? PointerLength : 0) + 0.5);
+            var hzInset = (int)(NtvMargin.Horizontal + 2 * NtvBorderWidth + NtvPadding.Horizontal + (DipPointerDirection.IsHorizontal() ? NtvPointerLength : 0) + 0.5);
+            var vtInset = (int)(NtvMargin.Vertical + 2 * NtvBorderWidth + NtvPadding.Vertical + (DipPointerDirection.IsVertical() ? NtvPointerLength : 0) + 0.5);
             
             if (HasShadow)
             {
-                hzInset += 2 * ShadowRadius;
-                vtInset += 2 * ShadowRadius;
+                hzInset += 2 * NtvShadowRadius;
+                vtInset += 2 * NtvShadowRadius;
             }
 
             var contentWidthAvailable = availableWidth - hzInset;
@@ -86,7 +86,7 @@ namespace P42.Native.Controls
             var contentWidthSpec = MeasureSpec.MakeMeasureSpec(contentWidthAvailable, hzMode);
             var contentHeightSpec = MeasureSpec.MakeMeasureSpec(contentHeightAvailable, vtMode);
 
-            Content.Measure(contentWidthSpec, contentHeightSpec);
+            DipContent.Measure(contentWidthSpec, contentHeightSpec);
             //MeasureChildren(contentWidthSpec, contentHeightSpec);
 
             /*
@@ -95,66 +95,66 @@ namespace P42.Native.Controls
             var mHeigth = Content.MeasuredHeight + vtInset;
             */
 
-            SetMeasuredDimension(Content.MeasuredWidth + hzInset, Content.MeasuredHeight + vtInset);
+            SetMeasuredDimension(DipContent.MeasuredWidth + hzInset, DipContent.MeasuredHeight + vtInset);
         }
 
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
             System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout({changed}, {l}, {t}, {r}, {b})  w:{r-l} h:{b-t}");
-            if (Content != null)
+            if (DipContent != null)
             {
                 var borderWidth = 0.0;
-                if (BorderColor.A > 0 && BorderWidth > 0)
-                    borderWidth = (float)BorderWidth;
-                System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout: Margin:{Margin} Padding:{Padding} BorderWidth:{BorderWidth} PointerDir:{PointerDirection} PointerLen:{PointerLength}");
-                var cl = l + Margin.Left + borderWidth + Padding.Left + (PointerDirection == PointerDirection.Left ? PointerLength : 0);
-                var ct = t + Margin.Top + borderWidth + Padding.Top + (PointerDirection == PointerDirection.Up ? PointerLength : 0);
-                var cr = r - (Margin.Right + borderWidth + Padding.Right + (PointerDirection == PointerDirection.Right ? PointerLength : 0));
-                var cb = b - (Margin.Bottom + borderWidth + Padding.Bottom + (PointerDirection == PointerDirection.Down ? PointerLength : 0));
+                if (DipBorderColor.A > 0 && NtvBorderWidth > 0)
+                    borderWidth = (float)NtvBorderWidth;
+                System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout: Margin:{NtvMargin} Padding:{NtvPadding} BorderWidth:{NtvBorderWidth} PointerDir:{DipPointerDirection} PointerLen:{NtvPointerLength}");
+                var cl = l + NtvMargin.Left + borderWidth + NtvPadding.Left + (DipPointerDirection == PointerDirection.Left ? NtvPointerLength : 0);
+                var ct = t + NtvMargin.Top + borderWidth + NtvPadding.Top + (DipPointerDirection == PointerDirection.Up ? NtvPointerLength : 0);
+                var cr = r - (NtvMargin.Right + borderWidth + NtvPadding.Right + (DipPointerDirection == PointerDirection.Right ? NtvPointerLength : 0));
+                var cb = b - (NtvMargin.Bottom + borderWidth + NtvPadding.Bottom + (DipPointerDirection == PointerDirection.Down ? NtvPointerLength : 0));
 
                 if (HasShadow)
                 {
-                    cl += ShadowRadius - ShadowShift.X;
-                    ct += ShadowRadius - ShadowShift.Y;
-                    cr -= ShadowRadius + ShadowShift.X;
-                    cb -= ShadowRadius + ShadowShift.Y;
+                    cl += NtvShadowRadius - NtvShadowShift.X;
+                    ct += NtvShadowRadius - NtvShadowShift.Y;
+                    cr -= NtvShadowRadius + NtvShadowShift.X;
+                    cb -= NtvShadowRadius + NtvShadowShift.Y;
                 }
                 System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout Content.Layout({(int)(cl + 0.5)}, {(int)(ct + 0.5)}, {(int)(cr + 0.5)}, {(int)(cb + 0.5)}) w:{cr - cl} h:{cb - ct}");
 
                     
                 var contentWidthSpec = MeasureSpec.MakeMeasureSpec((int)(cr - cl + 0.5), Android.Views.MeasureSpecMode.AtMost);
                 var contentHeightSpec = MeasureSpec.MakeMeasureSpec((int)(cb - ct + 0.5), Android.Views.MeasureSpecMode.AtMost);
-                Content.Measure(contentWidthSpec, contentHeightSpec);
-                if (VerticalAlignment == Alignment.End)
+                DipContent.Measure(contentWidthSpec, contentHeightSpec);
+                if (DipVerticalAlignment == Alignment.End)
                 {
-                    ct = cb - Content.MeasuredHeight;
+                    ct = cb - DipContent.MeasuredHeight;
                 }
-                else if (VerticalAlignment == Alignment.Start)
+                else if (DipVerticalAlignment == Alignment.Start)
                 {
-                    cb = ct + Content.MeasuredHeight;
+                    cb = ct + DipContent.MeasuredHeight;
                 }
-                else if (VerticalAlignment == Alignment.Center)
+                else if (DipVerticalAlignment == Alignment.Center)
                 {
-                    ct += +(cb - ct) / 2 - (Content.MeasuredHeight / 2.0);
-                    cb = ct + Content.MeasuredHeight;
+                    ct += +(cb - ct) / 2 - (DipContent.MeasuredHeight / 2.0);
+                    cb = ct + DipContent.MeasuredHeight;
                 }
 
-                if (HorizontalAlignment == Alignment.End)
+                if (DipHorizontalAlignment == Alignment.End)
                 {
-                    cl = cr - Content.MeasuredWidth;
+                    cl = cr - DipContent.MeasuredWidth;
                 }
-                else if (HorizontalAlignment == Alignment.Start)
+                else if (DipHorizontalAlignment == Alignment.Start)
                 {
-                    cr = cl + Content.MeasuredWidth;
+                    cr = cl + DipContent.MeasuredWidth;
                 }
-                else if (HorizontalAlignment == Alignment.Center)
+                else if (DipHorizontalAlignment == Alignment.Center)
                 {
-                    cl += (cr - cl) / 2 - (Content.MeasuredWidth / 2.0);
-                    cr = cl + Content.MeasuredWidth;
+                    cl += (cr - cl) / 2 - (DipContent.MeasuredWidth / 2.0);
+                    cr = cl + DipContent.MeasuredWidth;
                 }
 
                 System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout Content.Layout({(int)(cl + 0.5)}, {(int)(ct + 0.5)}, {(int)(cr+0.5)}, {(int)(cb+0.5)}) w:{cr-cl} h:{cb-ct}");
-                Content.Layout((int)(cl+0.5), (int)(ct+0.5), (int)(cr+0.5), (int)(cb+0.5));
+                DipContent.Layout((int)(cl+0.5), (int)(ct+0.5), (int)(cr+0.5), (int)(cb+0.5));
             }
 
         }
@@ -168,10 +168,10 @@ namespace P42.Native.Controls
                 // Create paint for shadow
                 m_paint.Color = Color.Black.WithAlpha(0.5);
                 m_paint.SetMaskFilter(new BlurMaskFilter(
-                    ShadowRadius / 2,
+                    NtvShadowRadius / 2,
                     BlurMaskFilter.Blur.Normal));
                 Matrix translateMatrix = new Matrix();
-                translateMatrix.SetTranslate(ShadowShift.X, ShadowShift.Y);
+                translateMatrix.SetTranslate(NtvShadowShift.X, NtvShadowShift.Y);
                 var shadowPath = new Path(p);
                 shadowPath.Transform(translateMatrix);
                 canvas.DrawPath(shadowPath, m_paint);
@@ -179,22 +179,22 @@ namespace P42.Native.Controls
 
             m_paint.SetMaskFilter(null);
             System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnDraw({canvas.Width}, {canvas.Height})");
-            m_paint.Color = BackgroundColor;
+            m_paint.Color = DipBackgroundColor;
             m_paint.SetStyle(Paint.Style.Fill);
             canvas.DrawPath(p, m_paint);
 
-            if (BorderWidth > 0 && BorderColor.A > 0)
+            if (NtvBorderWidth > 0 && DipBorderColor.A > 0)
             {
-                m_paint.StrokeWidth = (float)BorderWidth;
-                m_paint.Color = BorderColor;
+                m_paint.StrokeWidth = (float)NtvBorderWidth;
+                m_paint.Color = DipBorderColor;
                 m_paint.SetStyle(Paint.Style.Stroke);
                 canvas.DrawPath(p, m_paint);
             }
 
             base.OnDraw(canvas);
 
-            HasDrawn = true;
-            ActualSize = new SizeI(canvas.Width, canvas.Height);
+            DipHasDrawn = true;
+            NtvActualSize = new SizeI(canvas.Width, canvas.Height);
         }
 
         #endregion
@@ -209,32 +209,32 @@ namespace P42.Native.Controls
             if (width < 1 || height < 1)
                 return new Path();
 
-            var strokeColor = BorderColor;
+            var strokeColor = DipBorderColor;
             var borderWidth = 0.0f;
-            if (strokeColor.A > 0 && BorderWidth > 0)
-                borderWidth = (float)BorderWidth;
+            if (strokeColor.A > 0 && NtvBorderWidth > 0)
+                borderWidth = (float)NtvBorderWidth;
 
-            var pointerLength = PointerDirection == PointerDirection.None ? 0 : (float)PointerLength;
+            var pointerLength = DipPointerDirection == PointerDirection.None ? 0 : (float)NtvPointerLength;
 
-            var left = (float)(Margin.Left + borderWidth / 2);
-            var right = (float)(width  - Margin.Right - borderWidth / 2);
-            var top = (float)(Margin.Top + borderWidth / 2);
-            var bottom = (float)(height - Margin.Bottom - borderWidth / 2);
+            var left = (float)(NtvMargin.Left + borderWidth / 2);
+            var right = (float)(width  - NtvMargin.Right - borderWidth / 2);
+            var top = (float)(NtvMargin.Top + borderWidth / 2);
+            var bottom = (float)(height - NtvMargin.Bottom - borderWidth / 2);
 
             if (HasShadow)
             {
-                left += ShadowRadius;
-                top += ShadowRadius;
-                right -= ShadowRadius;
-                bottom -= ShadowRadius;
+                left += NtvShadowRadius;
+                top += NtvShadowRadius;
+                right -= NtvShadowRadius;
+                bottom -= NtvShadowRadius;
                 width = right - left;
                 height = bottom - top;
             }
 
-            width -= (PointerDirection.IsHorizontal() ? pointerLength : 0);
-            height -= (PointerDirection.IsVertical() ? pointerLength : 0);
+            width -= (DipPointerDirection.IsHorizontal() ? pointerLength : 0);
+            height -= (DipPointerDirection.IsVertical() ? pointerLength : 0);
 
-            var cornerRadius = (float)CornerRadius;
+            var cornerRadius = (float)NtvCornerRadius;
 
             if (cornerRadius * 2 > width)
                 cornerRadius = width / 2.0f;
@@ -242,8 +242,8 @@ namespace P42.Native.Controls
                 cornerRadius = height / 2.0f;
 
 
-            var filetRadius = (float)PointerCornerRadius;
-            var tipRadius = (float)PointerTipRadius;
+            var filetRadius = (float)NtvPointerCornerRadius;
+            var tipRadius = (float)NtvPointerTipRadius;
 
             if (filetRadius / 2.0 + tipRadius / 2.0 > pointerLength)
             {
@@ -259,9 +259,9 @@ namespace P42.Native.Controls
                 tipRadius = 2 * (pointerLength - filetRadius / 2.0f);
 
             var result = new Path();
-            var pointerPosition = (float)PointerAxialPosition;
+            var pointerPosition = (float)NtvPointerAxialPosition;
             if (pointerPosition <= 1.0)
-                pointerPosition = (float)(PointerDirection == PointerDirection.Down || PointerDirection == PointerDirection.Up
+                pointerPosition = (float)(DipPointerDirection == PointerDirection.Down || DipPointerDirection == PointerDirection.Up
                     ? left + (right - left) * pointerPosition
                     : top + (bottom - top) * pointerPosition);
 
@@ -290,11 +290,11 @@ namespace P42.Native.Controls
                 result.ArcTo(new RectF(left, top, left + 2 * cornerRadius, top + 2 * cornerRadius), 180, 90, false);
                 result.Close();
             }
-            else if (PointerDirection.IsHorizontal())
+            else if (DipPointerDirection.IsHorizontal())
             {
                 var start = left;
                 var end = right;
-                if (PointerDirection == PointerDirection.Right)
+                if (DipPointerDirection == PointerDirection.Right)
                 {
                     dir = -1;
                     start = right;
@@ -302,8 +302,8 @@ namespace P42.Native.Controls
                 }
                 var baseX = start + dir * pointerLength;
 
-                var tipY = Math.Min(pointerPosition, (float)(bottom - PointerTipRadius * sqrt3d2));
-                tipY = Math.Max(tipY, top + (float)PointerTipRadius * sqrt3d2);
+                var tipY = Math.Min(pointerPosition, (float)(bottom - NtvPointerTipRadius * sqrt3d2));
+                tipY = Math.Max(tipY, top + (float)NtvPointerTipRadius * sqrt3d2);
                 if (height <= 2 * pointerAtLimitHalfWidth)
                     tipY = (float)((top + bottom) / 2.0);
                 result.MoveTo(start + dir * (pointerLength + cornerRadius), top);
@@ -386,14 +386,14 @@ namespace P42.Native.Controls
             {
                 var start = top;
                 var end = bottom;
-                if (PointerDirection == PointerDirection.Down)
+                if (DipPointerDirection == PointerDirection.Down)
                 {
                     dir = -1;
                     start = bottom;
                     end = top;
                 }
-                var tipX = Math.Min(pointerPosition, (float)(right - PointerTipRadius * sqrt3d2));     // 1
-                tipX = Math.Max(tipX, left + (float)PointerTipRadius * sqrt3d2);                               // 1
+                var tipX = Math.Min(pointerPosition, (float)(right - NtvPointerTipRadius * sqrt3d2));     // 1
+                tipX = Math.Max(tipX, left + (float)NtvPointerTipRadius * sqrt3d2);                               // 1
                 if (width <= 2 * pointerAtLimitHalfWidth)
                     tipX = (float)((left + right) / 2.0);   // 8
                 result.MoveTo(left, start + dir * (pointerLength + cornerRadius));
@@ -488,14 +488,14 @@ namespace P42.Native.Controls
         #region Methods
         protected virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
         {
-            if (propertyName == nameof(Content) && Content != null)
-                RemoveView(b_Content);
+            if (propertyName == nameof(DipContent) && DipContent != null)
+                RemoveView(b_DipContent);
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (propertyName == nameof(Content) && Content != null)
-                AddView(b_Content);
+            if (propertyName == nameof(DipContent) && DipContent != null)
+                AddView(b_DipContent);
         }
 
         #endregion

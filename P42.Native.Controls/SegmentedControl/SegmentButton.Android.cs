@@ -15,18 +15,18 @@ namespace P42.Native.Controls
     {
         #region Static Implmenetation
         readonly static Android.Content.Res.ColorStateList s_DefaultColorStateList = new Android.Content.Res.ColorStateList(new int[][] { }, new int[] { });
-        internal static ThicknessI s_DefaultPadding = DisplayExtensions.DipToPx(new Thickness(5,2));
-        internal static Color s_DefaultBackgroundColor = Color.White;
-        internal static Color s_DefaultSelectedBackgroundColor = Color.DarkGray;
-        internal static Color s_DefaultTextColor = Color.Gray;
-        internal static Color s_DefaultSelectedTextColor = Color.White;
-        internal static float s_DefaultCornerRadius = DisplayExtensions.DipToPx(5);
+        internal static ThicknessI NtvDefaultPadding = DisplayExtensions.DipToPx(new Thickness(5,2));
+        internal static Color DipDefaultBackgroundColor = Color.White;
+        internal static Color DipDefaultSelectedBackgroundColor = Color.DarkGray;
+        internal static Color DipDefaultTextColor = Color.Gray;
+        internal static Color DipDefaultSelectedTextColor = Color.White;
+        internal static float NtvDefaultCornerRadius = DisplayExtensions.DipToPx(5);
 
         static SegmentButton()
         {
             var tv = new TextView(global::P42.Utils.Droid.Settings.Context);
             var colors = tv.TextColors;
-            s_DefaultTextColor = colors.DefaultColor.ToColor();
+            DipDefaultTextColor = colors.DefaultColor.ToColor();
         }
         #endregion
 
@@ -35,7 +35,7 @@ namespace P42.Native.Controls
         #region Properties
 
         #region Index / Selection
-        public override bool Selected
+        public bool DipSelected
         {
             get => base.Selected;
             set 
@@ -44,8 +44,8 @@ namespace P42.Native.Controls
                 {
                     base.Selected = value;
                     SelectedChanged?.Invoke(this, base.Selected);
-                    m_Background.SetColor(base.Selected ? SelectedBackgroundColor : BackgroundColor);
-                    SetTextColor(base.Selected ? SelectedTextColor : TextColor);
+                    m_Background.SetColor(base.Selected ? DipSelectedBackgroundColor : DipBackgroundColor);
+                    SetTextColor(base.Selected ? DipSelectedTextColor : DipTextColor);
                 }
             }
         }
@@ -58,19 +58,19 @@ namespace P42.Native.Controls
         #region Corner Radius
         public double DipCornerRadius
         {
-            get => DisplayExtensions.PxToDip(b_CornerRadius);
-            set => CornerRadius = DisplayExtensions.DipToPx(value);
+            get => DisplayExtensions.PxToDip(b_NtvCornerRadius);
+            set => NtvCornerRadius = DisplayExtensions.DipToPx(value);
         }
 
-        double b_CornerRadius = s_DefaultCornerRadius;
-        internal double CornerRadius
+        double b_NtvCornerRadius = NtvDefaultCornerRadius;
+        internal double NtvCornerRadius
         {
-            get => b_CornerRadius;
+            get => b_NtvCornerRadius;
             set
             {
-                if (b_CornerRadius != value)
+                if (b_NtvCornerRadius != value)
                 {
-                    b_CornerRadius = value;
+                    b_NtvCornerRadius = value;
                     UpdateRadii();
                 }
             }
@@ -79,62 +79,62 @@ namespace P42.Native.Controls
 
 
         #region Color Properties
-        Color b_TextColor = s_DefaultTextColor;
-        public Color TextColor
+        Color b_DipTextColor = DipDefaultTextColor;
+        public Color DipTextColor
         {
-            get => b_TextColor;
+            get => b_DipTextColor;
             set
             {
-                if (b_TextColor != value)
+                if (b_DipTextColor != value)
                 {
-                    b_TextColor = value;
-                    if (!Selected)
-                        SetTextColor(b_TextColor);
+                    b_DipTextColor = value;
+                    if (!DipSelected)
+                        SetTextColor(b_DipTextColor);
                 }
             }
         }
 
-        Color b_SelectedTextColor = s_DefaultSelectedTextColor;
-        public Color SelectedTextColor
+        Color b_DipSelectedTextColor = DipDefaultSelectedTextColor;
+        public Color DipSelectedTextColor
         {
-            get => b_SelectedTextColor;
+            get => b_DipSelectedTextColor;
             set
             {
-                if (b_SelectedTextColor != value)
+                if (b_DipSelectedTextColor != value)
                 {
-                    b_SelectedTextColor = value;
-                    if (Selected)
-                        SetTextColor(b_SelectedTextColor);
+                    b_DipSelectedTextColor = value;
+                    if (DipSelected)
+                        SetTextColor(b_DipSelectedTextColor);
                 }
             }
         }
 
-        Color b_BackgroundColor = s_DefaultBackgroundColor;
-        internal Color BackgroundColor
+        Color b_DipBackgroundColor = DipDefaultBackgroundColor;
+        internal Color DipBackgroundColor
         {
-            get => b_BackgroundColor;
+            get => b_DipBackgroundColor;
             set
             {
-                if (b_BackgroundColor != value)
+                if (b_DipBackgroundColor != value)
                 {
-                    b_BackgroundColor = value;
-                    if (!Selected)
-                        m_Background.SetColor(b_BackgroundColor);
+                    b_DipBackgroundColor = value;
+                    if (!DipSelected)
+                        m_Background.SetColor(b_DipBackgroundColor);
                 }
             }
         }
 
-        Color b_selectedBackgroundColor = s_DefaultSelectedBackgroundColor;
-        internal Color SelectedBackgroundColor
+        Color b_DipSelectedBackgroundColor = DipDefaultSelectedBackgroundColor;
+        internal Color DipSelectedBackgroundColor
         {
-            get => b_selectedBackgroundColor;
+            get => b_DipSelectedBackgroundColor;
             set
             {
-                if (b_selectedBackgroundColor != value)
+                if (b_DipSelectedBackgroundColor != value)
                 {
-                    b_selectedBackgroundColor = value;
-                    if (Selected)
-                        m_Background.SetColor(b_selectedBackgroundColor);
+                    b_DipSelectedBackgroundColor = value;
+                    if (DipSelected)
+                        m_Background.SetColor(b_DipSelectedBackgroundColor);
                 }
             }
         }
@@ -184,7 +184,7 @@ namespace P42.Native.Controls
             //this.SetPadding(s_DefaultPadding);
             Click += OnClicked;
             m_Background.SetShape(ShapeType.Rectangle);
-            m_Background.SetColor(BackgroundColor);
+            m_Background.SetColor(DipBackgroundColor);
             Background = new RippleDrawable(s_DefaultColorStateList, m_Background, null);
             Gravity = Android.Views.GravityFlags.Center;
         }
@@ -202,23 +202,23 @@ namespace P42.Native.Controls
         {
             float tl = 0, tr = 0, br = 0, bl = 0;
 
-            if (b_Position == SegmentPosition.Only)
+            if (b_DipPosition == SegmentPosition.Only)
             {
-                tl = tr = br = bl = (float)CornerRadius;
+                tl = tr = br = bl = (float)NtvCornerRadius;
             }
-            else if (b_Position == SegmentPosition.First)
+            else if (b_DipPosition == SegmentPosition.First)
             {
-                if (IsHorizontal)
-                    tl = bl = (float)CornerRadius;
+                if (DipIsHorizontal)
+                    tl = bl = (float)NtvCornerRadius;
                 else
-                    tl = tr = (float)CornerRadius;
+                    tl = tr = (float)NtvCornerRadius;
             }
-            else if (b_Position == SegmentPosition.Last)
+            else if (b_DipPosition == SegmentPosition.Last)
             {
-                if (IsHorizontal)
-                    tr = br = (float)CornerRadius;
+                if (DipIsHorizontal)
+                    tr = br = (float)NtvCornerRadius;
                 else
-                    bl = br = (float)CornerRadius;
+                    bl = br = (float)NtvCornerRadius;
             }
             m_Background.SetCornerRadii(new float[] { tl, tl, tr, tr, br, br, bl, bl }); // TL, TR, BR, BL
         }

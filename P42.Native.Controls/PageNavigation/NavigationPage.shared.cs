@@ -16,14 +16,14 @@ namespace P42.Native.Controls
     public partial class NavigationPage : IPage
     {
         #region Properties
-        string b_Title = string.Empty;
-        public string Title
+        string b_DipTitle = string.Empty;
+        public string DipTitle
         {
-            get => b_Title;
-            set => b_Title = value;
+            get => b_DipTitle;
+            set => b_DipTitle = value;
         }
 
-        public IPage CurrentPage => ((NavPageWrapper)CurrentView).Page;
+        public IPage DipCurrentPage => ((NavPageWrapper)CurrentView).DipPage;
         #endregion
 
 

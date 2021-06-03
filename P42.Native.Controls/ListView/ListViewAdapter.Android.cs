@@ -105,9 +105,9 @@ namespace P42.Native.Controls
             if (cell is null)
                 cell = new TextCell(ListView);
 
-            cell.Index = position;
-            cell.DataContext = this[position];
-            cell.Background = new Android.Graphics.Drawables.ColorDrawable(Android.Graphics.Color.Orange);
+            cell.DipIndex = position;
+            cell.DipDataContext = this[position];
+            //cell.Background = new Android.Graphics.Drawables.ColorDrawable(Android.Graphics.Color.Orange);
             cell.Invalidate();
             return cell;
         }
@@ -125,10 +125,10 @@ namespace P42.Native.Controls
             AddView(Label);
         }
 
-        public override void OnDataContextChanged()
+        public override void DipOnDataContextChanged()
         {
-            base.OnDataContextChanged();
-            Label.Text = DataContext.ToString();
+            base.DipOnDataContextChanged();
+            Label.Text = DipDataContext.ToString();
         }
     }
 

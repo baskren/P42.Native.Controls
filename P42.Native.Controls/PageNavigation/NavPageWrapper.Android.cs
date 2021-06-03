@@ -41,9 +41,9 @@ namespace P42.Native.Controls
             SetBackgroundColor(Color.White);
             SetWillNotDraw(false);
             m_Paint.SetStyle(Paint.Style.Stroke);
-            Page = page;
+            DipPage = page;
             pageView = page as View;
-            Page.PropertyChanged += OnPage_PropertyChanged;
+            DipPage.PropertyChanged += OnPage_PropertyChanged;
             AddView(pageView, new LinearLayout.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent));
           
             UpdateTitle();
@@ -52,6 +52,7 @@ namespace P42.Native.Controls
             Background = Android.Graphics.Color.Red.ToColorDrawable();
 
         }
+
 
         /*
         public NavPageWrapper(Context context) : base(context)
@@ -88,7 +89,7 @@ namespace P42.Native.Controls
         {
             if (!_disposed && disposing)
             {
-                if (Page is Page page)
+                if (DipPage is Page page)
                     page.PropertyChanged -= OnPage_PropertyChanged;
                 m_TitleTextView?.Dispose();
                 m_BackButton?.Dispose();
@@ -101,17 +102,17 @@ namespace P42.Native.Controls
         #region Property Change Handlers
         private void OnPage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Controls.Page.Title))
+            if (e.PropertyName == nameof(Controls.Page.DipTitle))
                 UpdateTitle();
-            else if (e.PropertyName == nameof(Controls.Page.BackButtonTitle))
+            else if (e.PropertyName == nameof(Controls.Page.DipBackButtonTitle))
                 UpdateBackButton();
-            else if (e.PropertyName == nameof(Controls.Page.HasBackButton))
+            else if (e.PropertyName == nameof(Controls.Page.DipHasBackButton))
                 UpdateBackButton();
         }
 
         void UpdateBackButton()
         {
-            if (Page is Page page && page.HasNavigationBar && page.HasBackButton)
+            if (DipPage is Page page && page.DipHasNavigationBar && page.DipHasBackButton)
             {
                 if (m_BackButton is null)
                 {
@@ -120,13 +121,13 @@ namespace P42.Native.Controls
                     m_BackButton.Click += OnBackButtonClicked;
                     AddView(m_BackButton);
                 }
-                m_BackButton.Text = "< " + page?.BackButtonTitle;
+                m_BackButton.Text = "< " + page?.DipBackButtonTitle;
             }
         }
 
         void UpdateTitle()
         {
-            if (Page is Page page && page.HasNavigationBar && !string.IsNullOrEmpty(Title))
+            if (DipPage is Page page && page.DipHasNavigationBar && !string.IsNullOrEmpty(Title))
             {
                 if (m_TitleTextView is null)
                 {
@@ -148,7 +149,7 @@ namespace P42.Native.Controls
         #region Event Handlers
         protected async virtual void OnBackButtonClicked(object sender, EventArgs e)
         {
-            await Page.PopAsync();
+            await DipPage.PopAsync();
         }
         #endregion
 
@@ -167,7 +168,7 @@ namespace P42.Native.Controls
             var vtMode = MeasureSpec.GetMode(heightMeasureSpec);
 
 
-            if (Parent is NavigationPage navPage && Page is Page page && page.HasNavigationBar)
+            if (Parent is NavigationPage navPage && DipPage is Page page && page.DipHasNavigationBar)
             {
                 m_TitleTextView?.Measure(MeasureSpec.MakeMeasureSpec(availableWidth, MeasureSpecMode.AtMost), MeasureSpec.MakeMeasureSpec(availableHeight, MeasureSpecMode.AtMost));
                 m_BackButton?.Measure(MeasureSpec.MakeMeasureSpec(availableWidth, MeasureSpecMode.AtMost), MeasureSpec.MakeMeasureSpec(availableHeight, MeasureSpecMode.AtMost));
@@ -181,11 +182,11 @@ namespace P42.Native.Controls
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
             var navBarHt = 0;
-            if (Parent is NavigationPage navPage && Page is Page page && page.HasNavigationBar)
+            if (Parent is NavigationPage navPage && DipPage is Page page && page.DipHasNavigationBar)
             {
                 navBarHt = NavBarHeight;
                 var t1 = t + (navBarHt - m_BackButton.MeasuredHeight) / 2;
-                if (page.HasBackButton && navPage.GetChildAt(0) != this)
+                if (page.DipHasBackButton && navPage.GetChildAt(0) != this)
                 {
                     var p = DisplayExtensions.DipToPx(5);
                     m_BackButton.Layout(l + p, t1, l + p + m_BackButton.MeasuredWidth, t1 + m_BackButton.MeasuredHeight);
@@ -204,7 +205,7 @@ namespace P42.Native.Controls
         {
             base.OnDraw(canvas);
 
-            if (Parent is NavigationPage navPage && Page is Page page && page.HasNavigationBar)
+            if (Parent is NavigationPage navPage && DipPage is Page page && page.DipHasNavigationBar)
             {
                 var path = new Path();
                 path.MoveTo(0, NavBarHeight);

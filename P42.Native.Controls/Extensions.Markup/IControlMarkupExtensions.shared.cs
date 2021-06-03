@@ -19,10 +19,10 @@ namespace P42.Native.Controls
         { ((IControl)element).DipCornerRadius = value; return element; }
 
         public static ElementType BorderColor<ElementType>(this ElementType element, Color value) where ElementType : Android.Views.View, P42.Native.Controls.IControl
-        { ((IControl)element).BorderColor = value; return element; }
+        { ((IControl)element).DipBorderColor = value; return element; }
 
         public static ElementType BackgroundColor<ElementType>(this ElementType element, Color value) where ElementType : Android.Views.View, P42.Native.Controls.IControl
-        { ((IControl)element).BackgroundColor = value; return element; }
+        { ((IControl)element).DipBackgroundColor = value; return element; }
 
 
     }

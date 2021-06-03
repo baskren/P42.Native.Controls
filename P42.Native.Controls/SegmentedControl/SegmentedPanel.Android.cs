@@ -112,7 +112,7 @@ namespace P42.Native.Controls
 
         void Build()
         {
-            BaseView = this;
+            NtvBaseView = this;
             SetWillNotDraw(false);
         }
         #endregion
@@ -127,8 +127,8 @@ namespace P42.Native.Controls
                 foreach (var child in children)
                     child.LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
 
-                var availableWidth = MeasureSpec.GetSize(widthMeasureSpec) - Margin.Horizontal;
-                var availableHeight = MeasureSpec.GetSize(heightMeasureSpec) - Margin.Vertical;
+                var availableWidth = MeasureSpec.GetSize(widthMeasureSpec) - NtvMargin.Horizontal;
+                var availableHeight = MeasureSpec.GetSize(heightMeasureSpec) - NtvMargin.Vertical;
 
                 //System.Diagnostics.Debug.WriteLine($"availW:{availableWidth} availH:{availableHeight}");
 
@@ -191,7 +191,7 @@ namespace P42.Native.Controls
                 //System.Diagnostics.Debug.WriteLine(" ");
                 //SetMeasuredDimension(measuredWidth + PaddingLeft + PaddingRight, measuredHeight + PaddingTop + PaddingBottom);
                 //SetMeasuredDimension(measuredWidth + PaddingLeft + PaddingRight, measuredHeight + PaddingTop + PaddingBottom);
-                SetMeasuredDimension((int)(measuredWidth + Margin.Horizontal + PaddingLeft), (int)(measuredHeight + Margin.Vertical + PaddingTop));
+                SetMeasuredDimension((int)(measuredWidth + NtvMargin.Horizontal + PaddingLeft), (int)(measuredHeight + NtvMargin.Vertical + PaddingTop));
                 ExceedsAvailableSpace = tooSmall || calcWidth > availableWidth || calcHeight > availableHeight;
             }
             else
@@ -207,8 +207,8 @@ namespace P42.Native.Controls
             {
                 var children = this.Children();
 
-                var availableWidth = r - l - Margin.Horizontal;
-                var availableHeight = b - t - Margin.Vertical;
+                var availableWidth = r - l - NtvMargin.Horizontal;
+                var availableHeight = b - t - NtvMargin.Vertical;
 
                 double cellWidth = availableWidth;
                 double cellHeight = availableHeight;
@@ -220,9 +220,9 @@ namespace P42.Native.Controls
 
                 if (IsHorizontal)
                 {
-                    double start = Margin.Left;
-                    var top = Margin.Top;
-                    var bottom = Margin.Top + availableHeight ;
+                    double start = NtvMargin.Left;
+                    var top = NtvMargin.Top;
+                    var bottom = NtvMargin.Top + availableHeight ;
                     foreach (var child in children)
                     {
                         if (child.MeasuredWidth != cellWidth || child.MeasuredHeight != cellHeight)
@@ -233,9 +233,9 @@ namespace P42.Native.Controls
                 }
                 else
                 {
-                    double start = Margin.Top;
-                    var left = (int)(Margin.Left + 0.5);
-                    var right = (int)(Margin.Left + availableWidth + 0.5);
+                    double start = NtvMargin.Top;
+                    var left = (int)(NtvMargin.Left + 0.5);
+                    var right = (int)(NtvMargin.Left + availableWidth + 0.5);
                     foreach (var child in children)
                     {
                         if (child.MeasuredWidth != cellWidth || child.MeasuredHeight != cellHeight)
@@ -251,8 +251,8 @@ namespace P42.Native.Controls
         {
             base.OnDraw(canvas);
 
-            HasDrawn = true;
-            ActualSize = new SizeI(canvas.Width, canvas.Height);
+            DipHasDrawn = true;
+            NtvActualSize = new SizeI(canvas.Width, canvas.Height);
         }
 
         #endregion

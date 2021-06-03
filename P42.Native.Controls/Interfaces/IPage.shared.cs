@@ -7,7 +7,7 @@ namespace P42.Native.Controls
 {
     public interface IPage : INotifiable
     {
-        public string Title { get; }
+        public string DipTitle { get; }
 
         public Context Context { get; }
 

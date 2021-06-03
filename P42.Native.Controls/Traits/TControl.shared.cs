@@ -13,67 +13,67 @@ namespace P42.Native.Controls
     {
 
         #region Defaults
-        public static ThicknessI DefaultPadding = (ThicknessI)DisplayExtensions.DipToPx(10);
-        public static double DefaultBorderWidth = DisplayExtensions.DipToPxD(1);
-        public static Color DefaultBorderColor = Color.Black;
-        public static double DefaultCornerRadius = DisplayExtensions.DipToPxD(5);
-        public static Color DefaultBackgroundColor = Color.Gray;
+        public static ThicknessI NtvDefaultPadding = (ThicknessI)DisplayExtensions.DipToPx(10);
+        public static double NtvDefaultBorderWidth = DisplayExtensions.DipToPxD(1);
+        public static Color NtvDefaultBorderColor = Color.Black;
+        public static double NtvDefaultCornerRadius = DisplayExtensions.DipToPxD(5);
+        public static Color NtvDefaultBackgroundColor = Color.Gray;
         #endregion
 
         
         #region Properties
-        internal protected ThicknessI b_Padding = DefaultPadding;
-        public virtual ThicknessI Padding
+        internal protected ThicknessI b_NtvPadding = NtvDefaultPadding;
+        public virtual ThicknessI NtvPadding
         {
-            get => b_Padding;
-            set => SetField(ref b_Padding, value, UpdatePadding);
+            get => b_NtvPadding;
+            set => SetField(ref b_NtvPadding, value, NtvUpdatePadding);
         }
         public virtual Thickness DipPadding
         {
-            get => DisplayExtensions.PxToDip(Padding);
-            set => Padding = value.DipToPx();
+            get => DisplayExtensions.PxToDip(NtvPadding);
+            set => NtvPadding = value.DipToPx();
         }
 
 
-        internal protected double b_BorderWidth = DefaultBorderWidth;
-        public virtual double BorderWidth
+        internal protected double b_NtvBorderWidth = NtvDefaultBorderWidth;
+        public virtual double NtvBorderWidth
         {
-            get => b_BorderWidth;
-            set => SetLayoutField(ref b_BorderWidth, value);
+            get => b_NtvBorderWidth;
+            set => SetLayoutField(ref b_NtvBorderWidth, value);
         }
         public virtual double DipBorderWidth
         {
-            get => DisplayExtensions.PxToDip(BorderWidth);
-            set => BorderWidth = value.DipToPxD();
+            get => DisplayExtensions.PxToDip(NtvBorderWidth);
+            set => NtvBorderWidth = value.DipToPxD();
         }
 
 
 
-        internal protected Color b_BorderColor = DefaultBackgroundColor;
-        public virtual Color BorderColor
+        internal protected Color b_DipBorderColor = NtvDefaultBackgroundColor;
+        public virtual Color DipBorderColor
         {
-            get => b_BorderColor;
-            set => SetRedrawField(ref b_BorderColor, value);
+            get => b_DipBorderColor;
+            set => SetRedrawField(ref b_DipBorderColor, value);
         }
 
-        internal protected double b_CornerRadius = DefaultCornerRadius;
-        public virtual double CornerRadius
+        internal protected double b_NtvCornerRadius = NtvDefaultCornerRadius;
+        public virtual double NtvCornerRadius
         {
-            get => b_CornerRadius;
-            set => SetRedrawField(ref b_CornerRadius, value);
+            get => b_NtvCornerRadius;
+            set => SetRedrawField(ref b_NtvCornerRadius, value);
         }
         public virtual double DipCornerRadius
         {
-            get => DisplayExtensions.PxToDip(CornerRadius);
-            set => CornerRadius = value.DipToPxD();
+            get => DisplayExtensions.PxToDip(NtvCornerRadius);
+            set => NtvCornerRadius = value.DipToPxD();
         }
 
 
-        internal protected Color b_BackgroundColor = DefaultBackgroundColor;
-        public virtual Color BackgroundColor
+        internal protected Color b_DipBackgroundColor = NtvDefaultBackgroundColor;
+        public virtual Color DipBackgroundColor
         {
-            get => b_BackgroundColor;
-            set => SetRedrawField(ref b_BackgroundColor, value);
+            get => b_DipBackgroundColor;
+            set => SetRedrawField(ref b_DipBackgroundColor, value);
         }
         #endregion
         
@@ -82,14 +82,14 @@ namespace P42.Native.Controls
 
 #if __ANDROID__
 
-        void UpdatePadding()
+        void NtvUpdatePadding()
         {
-            BaseView.SetPadding((int)(b_Padding.Left + 0.5), (int)(b_Padding.Top + 0.5), (int)(b_Padding.Right + 0.5), (int)(b_Padding.Bottom + 0.5));
+            NtvBaseView.SetPadding((int)(b_NtvPadding.Left + 0.5), (int)(b_NtvPadding.Top + 0.5), (int)(b_NtvPadding.Right + 0.5), (int)(b_NtvPadding.Bottom + 0.5));
         }
 
 #else
 
-        void UpdatePadding() {}
+        void NtvUpdatePadding() {}
 
 #endif
 

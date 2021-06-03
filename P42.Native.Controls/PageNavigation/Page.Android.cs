@@ -55,18 +55,18 @@ namespace P42.Native.Controls
         #region Android Measure / Layout / Draw
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
-            var availableWidth = (int)(MeasureSpec.GetSize(widthMeasureSpec) - Padding.Horizontal + 0.5);
-            var availableHeight = (int)(MeasureSpec.GetSize(heightMeasureSpec) - Padding.Vertical + 0.5);
+            var availableWidth = MeasureSpec.GetSize(widthMeasureSpec) - NtvPadding.Horizontal;
+            var availableHeight = MeasureSpec.GetSize(heightMeasureSpec) - NtvPadding.Vertical;
             var hzMode = MeasureSpec.GetMode(widthMeasureSpec);
             var vtMode = MeasureSpec.GetMode(heightMeasureSpec);
-            Content.Measure(MeasureSpec.MakeMeasureSpec(availableWidth, hzMode), MeasureSpec.MakeMeasureSpec(availableHeight, vtMode));
+            DipContent.Measure(MeasureSpec.MakeMeasureSpec(availableWidth, hzMode), MeasureSpec.MakeMeasureSpec(availableHeight, vtMode));
             //System.Diagnostics.Debug.WriteLine($"Page.OnMeasure ");
             SetMeasuredDimension(availableWidth, availableHeight);
         }
 
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
-            Content?.Layout((int)(Padding.Left + 0.5), (int)(Padding.Top + 0.5) , Content.MeasuredWidth, Content.MeasuredHeight);
+            DipContent?.Layout(NtvPadding.Left, NtvPadding.Top, DipContent.MeasuredWidth, DipContent.MeasuredHeight);
         }
 
         #endregion
@@ -75,14 +75,14 @@ namespace P42.Native.Controls
         #region Property Change Handlers
         public virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
         {
-            if (propertyName == nameof(Content))
-                RemoveView(Content);
+            if (propertyName == nameof(DipContent))
+                RemoveView(DipContent);
         }
 
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (propertyName == nameof(Content))
-                AddView(Content, LayoutParameters = new LinearLayout.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent));
+            if (propertyName == nameof(DipContent))
+                AddView(DipContent, LayoutParameters = new LinearLayout.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent));
         }
         #endregion
     }

@@ -7,69 +7,67 @@ namespace P42.Native.Controls
     {
         #region FrameworkElement
 
-        public int RequestedWidth { get; set;}
+        public int NtvRequestedWidth { get; set;}
         public double DipRequestedWidth { get; set; }
 
-        public int RequestedHeight { get; set;}
+        public int NtvRequestedHeight { get; set;}
         public double DipRequestedHeight { get; set; }
 
-        public P42.Native.Controls.Alignment HorizontalAlignment { get; set;}
+        public P42.Native.Controls.Alignment DipHorizontalAlignment { get; set;}
 
-        public P42.Native.Controls.Alignment VerticalAlignment { get; set;}
+        public P42.Native.Controls.Alignment DipVerticalAlignment { get; set;}
 
-        public ThicknessI Margin { get; set;}
+        public ThicknessI NtvMargin { get; set;}
         public Thickness DipMargin { get; set; }
 
-        public int MinWidth { get; set; }
+        public int NtvMinWidth { get; set; }
         public double DipMinWidth { get; set;}
 
-        public int MinHeight { get; set; }
+        public int NtvMinHeight { get; set; }
         public double DipMinHeight { get; set;}
 
-        public int MaxWidth { get; set; }
+        public int NtvMaxWidth { get; set; }
         public double DipMaxWidth { get; set;}
 
-        public int MaxHeight { get; set;}
+        public int NtvMaxHeight { get; set;}
         public double DipMaxHeight { get; set; }
 
-        public int ActualWidth { get; }
+        public int NtvActualWidth { get; }
         public double DipActualWidth { get; }
 
-        public int ActualHeight { get; }
+        public int NtvActualHeight { get; }
         public double DipActualHeight { get; }
 
-        public SizeI ActualSize { get; }
+        public SizeI NtvActualSize { get; }
         public Size DipActualSize { get; }
 
-        public object DataContext { get; set; }
+        public object DipDataContext { get; set; }
 
-        public double Opacity { get; set; }
+        public double DipOpacity { get; set; }
 
-        public bool IsVisible { get; set; }
+        public bool DipIsVisible { get; set; }
         #endregion
 
 
         #region Events
-        public event EventHandler<Size> SizeChanged;
+        public event EventHandler<Size> DipSizeChanged;
         #endregion
 
 
         #region Methods
-        public void OnDataContextChanged() { }
-
-        public Task WaitForDrawComplete();
+        public void DipOnDataContextChanged() { }
 
         #endregion
 
 
 #if __ANDROID__
-        Android.Views.View BaseView { get; }
+        Android.Views.View NtvBaseView { get; }
 
-        public void RedrawElement()
-            => BaseView.PostInvalidate();
+        public void DipRedrawElement()
+            => NtvBaseView.PostInvalidate();
 
-        public void RelayoutElement()
-            => BaseView.RequestLayout();
+        public void DipRelayoutElement()
+            => NtvBaseView.RequestLayout();
 #else
 #endif
     }

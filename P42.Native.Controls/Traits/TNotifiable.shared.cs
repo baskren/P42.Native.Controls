@@ -18,35 +18,35 @@ namespace P42.Native.Controls
 
         
         #region Properties
-        bool b_HasDrawn;
-        public bool HasDrawn
+        bool b_DipHasDrawn;
+        public bool DipHasDrawn
         {
-            get => b_HasDrawn;
-            set => SetField(ref b_HasDrawn, value, () =>
+            get => b_DipHasDrawn;
+            set => SetField(ref b_DipHasDrawn, value, () =>
             {
-                if (HasDrawn)
-                    HasDrawnTaskCompletionSource?.TrySetResult(true);
+                if (DipHasDrawn)
+                    DipHasDrawnTaskCompletionSource?.TrySetResult(true);
             });
         }
 
-        public bool HasChanged { get; set; }
+        public bool DipHasChanged { get; set; }
         #endregion
 
         
         #region Methods
-        TaskCompletionSource<bool> HasDrawnTaskCompletionSource;
-        public async Task WaitForDrawComplete()
+        TaskCompletionSource<bool> DipHasDrawnTaskCompletionSource;
+        public async Task DipWaitForDrawComplete()
         {
-            if (HasDrawn)
+            if (DipHasDrawn)
                 return;
-            HasDrawnTaskCompletionSource = HasDrawnTaskCompletionSource ?? new TaskCompletionSource<bool>();
-            await HasDrawnTaskCompletionSource.Task;
+            DipHasDrawnTaskCompletionSource = DipHasDrawnTaskCompletionSource ?? new TaskCompletionSource<bool>();
+            await DipHasDrawnTaskCompletionSource.Task;
         }
 
 
         [OnDeserialized]
         internal void OnDeserializedMethod(StreamingContext context)
-            => HasChanged = false;
+            => DipHasChanged = false;
 
         protected bool SetField<T>(ref T field, T value, Action action = null, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
         {
@@ -58,7 +58,7 @@ namespace P42.Native.Controls
             ((INotifiable)this).OnPropertyChanging(propertyName);
             PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
             field = value;
-            HasChanged = true;
+            DipHasChanged = true;
             action?.Invoke();
             ((INotifiable)this).OnPropertyChanged(propertyName);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

@@ -12,69 +12,69 @@ namespace P42.Native.Controls
     {
     
         #region Properties
-        string b_FontFamily;
-        public string FontFamily
+        string b_DipFontFamily;
+        public string DipFontFamily
         {
-            get => b_FontFamily;
-            set => SetField(ref b_FontFamily, value);
+            get => b_DipFontFamily;
+            set => SetField(ref b_DipFontFamily, value);
         }
 
-        double b_FontSize;
-        public double FontSize
+        double b_DipFontSize;
+        public double DipFontSize
         {
-            get => b_FontSize;
-            set => SetField(ref b_FontSize, value);
+            get => b_DipFontSize;
+            set => SetField(ref b_DipFontSize, value);
         }
 
-        FontStyle b_FontStyle;
-        public FontStyle FontStyle
+        FontStyle b_DipFontStyle;
+        public FontStyle DipFontStyle
         {
-            get => b_FontStyle;
-            set => SetField(ref b_FontStyle, value);
-        }
-
-
-        Color b_TextColor;
-        public Color TextColor
-        {
-            get => b_TextColor;
-            set => SetField(ref b_TextColor, value);
-        }
-
-        TextType b_TextType;
-        public TextType TextType
-        {
-            get => b_TextType;
-            set => SetField(ref b_TextType, value);
-        }
-
-        string b_Text;
-        public new string Text
-        {
-            get => b_Text;
-            set => SetField(ref b_Text, value);
+            get => b_DipFontStyle;
+            set => SetField(ref b_DipFontStyle, value);
         }
 
 
-        LineBreakMode b_LineBreakMode;
-        public LineBreakMode LineBreakMode
+        Color b_DipTextColor;
+        public Color DipTextColor
         {
-            get => b_LineBreakMode;
-            set => SetField(ref b_LineBreakMode, value);
+            get => b_DipTextColor;
+            set => SetField(ref b_DipTextColor, value);
         }
 
-        Alignment b_HorizontalTextAlignment;
-        public Alignment HorizontalTextAlignment
+        TextType b_DipTextType;
+        public TextType DipTextType
         {
-            get => b_HorizontalTextAlignment;
-            set => SetField(ref b_HorizontalTextAlignment, value);
+            get => b_DipTextType;
+            set => SetField(ref b_DipTextType, value);
         }
 
-        Alignment b_VerticalTextAlignment;
-        public Alignment VerticalTextAlignment
+        string b_DipText;
+        public string DipText
         {
-            get => b_VerticalTextAlignment;
-            set => SetField(ref b_VerticalTextAlignment, value);
+            get => b_DipText;
+            set => SetField(ref b_DipText, value);
+        }
+
+
+        LineBreakMode b_DipLineBreakMode;
+        public LineBreakMode DipLineBreakMode
+        {
+            get => b_DipLineBreakMode;
+            set => SetField(ref b_DipLineBreakMode, value);
+        }
+
+        Alignment b_DipHorizontalTextAlignment;
+        public Alignment DipHorizontalTextAlignment
+        {
+            get => b_DipHorizontalTextAlignment;
+            set => SetField(ref b_DipHorizontalTextAlignment, value);
+        }
+
+        Alignment b_DipVerticalTextAlignment;
+        public Alignment DipVerticalTextAlignment
+        {
+            get => b_DipVerticalTextAlignment;
+            set => SetField(ref b_DipVerticalTextAlignment, value);
         }
 
         /* will implement this and Lines when it's time to start working at STRETCH

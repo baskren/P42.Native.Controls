@@ -58,7 +58,7 @@ namespace P42.Native.Controls
 
         void Build()
         {
-            BaseView = this;
+            NtvBaseView = this;
             SharedBuild();
             SetWillNotDraw(false);
             UpdateNativeListView();
@@ -98,7 +98,7 @@ namespace P42.Native.Controls
 
             AddHeader();
             AddFooter();
-            HasDrawn = false;
+            DipHasDrawn = false;
             _swappingOutNativeListView = false;
             AddView(_nativeListView);
         }
@@ -121,25 +121,25 @@ namespace P42.Native.Controls
 
         void RemoveFooter()
         {
-            if (Footer is View oldFooter)
+            if (DipFooter is View oldFooter)
                 _nativeListView.RemoveFooterView(oldFooter);
         }
 
         void RemoveHeader()
         {
-            if (Header is View oldHeader)
+            if (DipHeader is View oldHeader)
                 _nativeListView.RemoveHeaderView(oldHeader);
         }
 
         void AddHeader()
         {
-            if (Header is View header)
+            if (DipHeader is View header)
                 _nativeListView.AddHeaderView(header);
         }
 
         void AddFooter()
         {
-            if (Footer is View footer)
+            if (DipFooter is View footer)
                 _nativeListView.AddFooterView(footer);
         }
         #endregion
@@ -147,21 +147,21 @@ namespace P42.Native.Controls
 
         #region Selection
 
-        internal async partial Task OnCellTapped(Cell cell)
+        internal async partial Task DipOnCellTapped(Cell cell)
         {
             System.Diagnostics.Debug.WriteLine("ListView. CLICK");
-            SelectItem(cell.DataContext);
+            DipSelectItem(cell.DipDataContext);
             await Task.Delay(10);
-            if (IsItemClickEnabled)
-                ItemClick?.Invoke(this, new ItemClickEventArgs(this, cell.DataContext, cell));
+            if (DipIsItemClickEnabled)
+                DipItemClick?.Invoke(this, new ItemClickEventArgs(this, cell.DipDataContext, cell));
         }
         #endregion
 
 
         #region Scrolling
-        public async partial Task ScrollIntoView(object item, ScrollIntoViewAlignment alignment)
+        public async partial Task DipScrollIntoView(object item, ScrollIntoViewAlignment alignment)
         {
-            if (ItemsSource.IndexOf(item) is int index && index > -1)
+            if (DipItemsSource.IndexOf(item) is int index && index > -1)
             {
                 if (alignment == ScrollIntoViewAlignment.Default)
                 {
@@ -241,15 +241,15 @@ namespace P42.Native.Controls
             base.OnDraw(canvas);
 
             //HasDrawn = true;
-            ActualSize = new SizeI(canvas.Width, canvas.Height);
-            System.Diagnostics.Debug.WriteLine($"ListView.OnDraw EXIT : {ActualSize}");
+            NtvActualSize = new SizeI(canvas.Width, canvas.Height);
+            System.Diagnostics.Debug.WriteLine($"ListView.OnDraw EXIT : {NtvActualSize}");
         }
 
         internal void OnDrawCellsComplete()
         {
             if (_swappingOutNativeListView)
                 return;
-            HasDrawn = true;
+            DipHasDrawn = true;
         }
 
         protected override void OnAttachedToWindow()
@@ -272,22 +272,22 @@ namespace P42.Native.Controls
         #region Methods
         protected virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
         {
-            if (propertyName == nameof(Header))
+            if (propertyName == nameof(DipHeader))
                 RemoveHeader();
-            else if (propertyName == nameof(Footer))
+            else if (propertyName == nameof(DipFooter))
                 RemoveFooter();
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (propertyName == nameof(Header))
+            if (propertyName == nameof(DipHeader))
                 AddHeader();
-            else if (propertyName == nameof(Footer))
+            else if (propertyName == nameof(DipFooter))
                 AddFooter();
-            else if (propertyName == nameof(SelectedItem))
-                SelectItem(SelectedItem);
-            else if (propertyName == nameof(ItemsSource))
-                _adapter.SetItems(ItemsSource);
+            else if (propertyName == nameof(DipSelectedItem))
+                DipSelectItem(DipSelectedItem);
+            else if (propertyName == nameof(DipItemsSource))
+                _adapter.SetItems(DipItemsSource);
         }
         #endregion
 

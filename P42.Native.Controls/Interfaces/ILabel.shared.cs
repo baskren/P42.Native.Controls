@@ -10,23 +10,23 @@ namespace P42.Native.Controls
     {
         #region Properties
 
-        public string FontFamily { get; set; }
+        public string DipFontFamily { get; set; }
 
-        public double FontSize  { get; set; }
+        public double DipFontSize  { get; set; }
 
-        public FontStyle FontStyle { get; set; }
+        public FontStyle DipFontStyle { get; set; }
 
-        public Color TextColor { get; set; }
+        public Color DipTextColor { get; set; }
 
-        public TextType TextType { get; set; }
+        public TextType DipTextType { get; set; }
 
-        public string Text { get; set; }
+        public string DipText { get; set; }
 
-        public LineBreakMode LineBreakMode { get; set; }
+        public LineBreakMode DipLineBreakMode { get; set; }
 
-        public Alignment HorizontalTextAlignment { get; set; }
+        public Alignment DipHorizontalTextAlignment { get; set; }
 
-        public Alignment VerticalTextAlignment { get; set; }
+        public Alignment DipVerticalTextAlignment { get; set; }
 
         #endregion
     }

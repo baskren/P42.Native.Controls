@@ -15,10 +15,10 @@ namespace P42.Native.Controls
         { ((IElement)element).DipRequestedHeight = value; return element; }
 
         public static ElementType HorizontalAlighment<ElementType>(this ElementType element, Alignment value) where ElementType : Android.Views.View, P42.Native.Controls.IElement
-        { ((IElement)element).HorizontalAlignment = value; return element; }
+        { ((IElement)element).DipHorizontalAlignment = value; return element; }
 
         public static ElementType VerticalAlignment<ElementType>(this ElementType element, Alignment value) where ElementType : Android.Views.View, P42.Native.Controls.IElement
-        { ((IElement)element).VerticalAlignment = value; return element; }
+        { ((IElement)element).DipVerticalAlignment = value; return element; }
 
         public static ElementType DipMargin<ElementType>(this ElementType element, Thickness value) where ElementType : Android.Views.View, P42.Native.Controls.IElement
         { ((IElement)element).DipMargin = value; return element; }
@@ -36,10 +36,10 @@ namespace P42.Native.Controls
         { ((IElement)element).DipMaxHeight = value; return element; }
 
         public static ElementType Opacity<ElementType>(this ElementType element, double value) where ElementType : Android.Views.View, P42.Native.Controls.IElement
-        { ((IElement)element).Opacity = value; return element; }
+        { ((IElement)element).DipOpacity = value; return element; }
 
         public static ElementType IsVisible<ElementType>(this ElementType element, bool value) where ElementType : Android.Views.View, P42.Native.Controls.IElement
-        { ((IElement)element).IsVisible = value; return element; }
+        { ((IElement)element).DipIsVisible = value; return element; }
 
 
     }

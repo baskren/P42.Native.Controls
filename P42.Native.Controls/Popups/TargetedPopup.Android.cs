@@ -43,15 +43,15 @@ namespace P42.Native.Controls
 
             m_Border = new BubbleBorder(context)
             {
-                BorderColor = BorderColor,
-                BackgroundColor = BackgroundColor
+                DipBorderColor = DipBorderColor,
+                DipBackgroundColor = DipBackgroundColor
             };
             m_Border.PropertyChanged += OnBorderPropertyChanged;
 
-            BaseView = m_Border;
+            NtvBaseView = m_Border;
 
             m_Border.HasShadow = HasShadow;
-            m_Border.ShadowRadius = ShadowRadius;
+            m_Border.NtvShadowRadius = ShadowRadius;
         }
 
 
@@ -76,10 +76,10 @@ namespace P42.Native.Controls
         #region Event Handlers
         private void OnBorderPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(HasDrawn))
-                HasDrawn = m_Border.HasDrawn;
-            else if (e.PropertyName == nameof(ActualSize))
-                ActualSize = m_Border.ActualSize;
+            if (e.PropertyName == nameof(DipHasDrawn))
+                DipHasDrawn = m_Border.DipHasDrawn;
+            else if (e.PropertyName == nameof(NtvActualSize))
+                NtvActualSize = m_Border.NtvActualSize;
         }
 
         void M_BorderPopup_TouchIntercepted(object sender, View.TouchEventArgs e)
@@ -168,8 +168,8 @@ namespace P42.Native.Controls
             //_border.Bind(BubbleBorder.OpacityProperty, this, nameof(Opacity));
             m_Border.Alpha = 1;
 
-            await ((IElement)m_Border).WaitForDrawComplete();
-            HasDrawn = true;
+            await ((IElement)m_Border).DipWaitForDrawComplete();
+            DipHasDrawn = true;
 
             if (PopAfter > default(TimeSpan))
             {
@@ -233,7 +233,7 @@ namespace P42.Native.Controls
         #region Layout
         void UpdateMarginAndAlignment()
         {
-            if (Content is null)
+            if (DipContent is null)
                 return;
 
             var windowSize = DisplayExtensions.PxSize();
@@ -241,14 +241,14 @@ namespace P42.Native.Controls
                 return;
             windowSize.Height -= DisplayExtensions.StatusBarHeight();
 
-            var windowWidth = windowSize.Width - Margin.Horizontal;
-            var windowHeight = windowSize.Height - Margin.Vertical;
+            var windowWidth = windowSize.Width - NtvMargin.Horizontal;
+            var windowHeight = windowSize.Height - NtvMargin.Vertical;
             var cleanSize = MeasureBorder(new SizeI(windowWidth, windowHeight));
 
             if (PreferredPointerDirection == PointerDirection.None || Target is null)
             {
                 //System.Diagnostics.Debug.WriteLine(GetType() + ".UpdateMarginAndAlignment PreferredPointerDirection == PointerDirection.None");
-                CleanMarginAndAlignment(HorizontalAlignment, VerticalAlignment, windowSize, cleanSize);
+                CleanMarginAndAlignment(DipHorizontalAlignment, DipVerticalAlignment, windowSize, cleanSize);
                 return;
             }
 
@@ -265,86 +265,86 @@ namespace P42.Native.Controls
             }
 
             ActualPointerDirection = stats.PointerDirection;
-            var margin = Margin;
-            var hzAlign = HorizontalAlignment;
-            var vtAlign = VerticalAlignment;
+            var margin = NtvMargin;
+            var hzAlign = DipHorizontalAlignment;
+            var vtAlign = DipVerticalAlignment;
 
             if (stats.PointerDirection.IsHorizontal())
             {
                 if (stats.PointerDirection == PointerDirection.Left)
                 {
                     margin.Left = target.Right;
-                    if (HorizontalAlignment != Alignment.Stretch)
+                    if (DipHorizontalAlignment != Alignment.Stretch)
                         hzAlign = Alignment.Start;
                 }
                 else if (stats.PointerDirection == PointerDirection.Right)
                 {
                     margin.Right = windowSize.Width - target.Left;
-                    if (HorizontalAlignment != Alignment.Stretch)
+                    if (DipHorizontalAlignment != Alignment.Stretch)
                         hzAlign = Alignment.End;
                 }
 
-                if (VerticalAlignment == Alignment.Start)
+                if (DipVerticalAlignment == Alignment.Start)
                 {
-                    margin.Top = Math.Max(Margin.Top, target.Top);
+                    margin.Top = Math.Max(NtvMargin.Top, target.Top);
                 }
-                else if (VerticalAlignment == Alignment.Center)
+                else if (DipVerticalAlignment == Alignment.Center)
                 {
-                    margin.Top = Math.Max(Margin.Top, (int)(0.5 + target.VerticalCenter - stats.BorderSize.Height / 2.0));
+                    margin.Top = Math.Max(NtvMargin.Top, (int)(0.5 + target.VerticalCenter - stats.BorderSize.Height / 2.0));
                     vtAlign = Alignment.Start;
                 }
-                else if (VerticalAlignment == Alignment.End)
+                else if (DipVerticalAlignment == Alignment.End)
                 {
-                    margin.Bottom = Math.Max(Margin.Bottom, windowSize.Height  - target.Bottom);
+                    margin.Bottom = Math.Max(NtvMargin.Bottom, windowSize.Height  - target.Bottom);
                 }
 
-                if (margin.Top + stats.BorderSize.Height > windowSize.Height  - Margin.Bottom)
-                    margin.Top = windowSize.Height - Margin.Bottom - stats.BorderSize.Height;
+                if (margin.Top + stats.BorderSize.Height > windowSize.Height  - NtvMargin.Bottom)
+                    margin.Top = windowSize.Height - NtvMargin.Bottom - stats.BorderSize.Height;
 
-                if (VerticalAlignment == Alignment.End)
-                    m_Border.PointerAxialPosition = (target.Top - (windowSize.Height - margin.Bottom - cleanSize.Height)) + target.Bottom - (target.Top + target.Bottom) / 2.0 +(HasShadow ? ShadowRadius : 0);
+                if (DipVerticalAlignment == Alignment.End)
+                    m_Border.NtvPointerAxialPosition = (target.Top - (windowSize.Height - margin.Bottom - cleanSize.Height)) + target.Bottom - (target.Top + target.Bottom) / 2.0 +(HasShadow ? ShadowRadius : 0);
                 else
-                    m_Border.PointerAxialPosition = (target.Top - margin.Top) + target.Bottom - (target.Top + target.Bottom) / 2.0 + (HasShadow ? ShadowRadius : 0);
+                    m_Border.NtvPointerAxialPosition = (target.Top - margin.Top) + target.Bottom - (target.Top + target.Bottom) / 2.0 + (HasShadow ? ShadowRadius : 0);
             }
             else
             {
                 if (stats.PointerDirection == PointerDirection.Up)
                 {
                     margin.Top = target.Bottom;
-                    if (VerticalAlignment != Alignment.Stretch)
+                    if (DipVerticalAlignment != Alignment.Stretch)
                         vtAlign = Alignment.Start;
                 }
                 else if (stats.PointerDirection == PointerDirection.Down)
                 {
                     margin.Bottom = windowSize.Height - target.Top;
-                    if (VerticalAlignment != Alignment.Stretch)
+                    if (DipVerticalAlignment != Alignment.Stretch)
                         vtAlign = Alignment.End;
                 }
 
-                if (HorizontalAlignment == Alignment.Start)
+                if (DipHorizontalAlignment == Alignment.Start)
                 {
-                    margin.Left = Math.Max(Margin.Left, target.Left);
+                    margin.Left = Math.Max(NtvMargin.Left, target.Left);
                 }
-                else if (HorizontalAlignment == Alignment.Center)
+                else if (DipHorizontalAlignment == Alignment.Center)
                 {
-                    margin.Left = Math.Max(Margin.Left, (int)(0.5 + target.HoriztonalCenter - stats.BorderSize.Width / 2.0));
+                    margin.Left = Math.Max(NtvMargin.Left, (int)(0.5 + target.HoriztonalCenter - stats.BorderSize.Width / 2.0));
                     hzAlign = Alignment.Start;
                 }
-                else if (HorizontalAlignment == Alignment.End)
+                else if (DipHorizontalAlignment == Alignment.End)
                 {
-                    margin.Right = Math.Max(Margin.Right, windowSize.Width - target.Right);
+                    margin.Right = Math.Max(NtvMargin.Right, windowSize.Width - target.Right);
                 }
 
-                if (margin.Left + stats.BorderSize.Width > windowSize.Width - Margin.Right)
-                    margin.Left = windowSize.Width - Margin.Right - stats.BorderSize.Width;
+                if (margin.Left + stats.BorderSize.Width > windowSize.Width - NtvMargin.Right)
+                    margin.Left = windowSize.Width - NtvMargin.Right - stats.BorderSize.Width;
 
-                if (HorizontalAlignment == Alignment.End)
-                    m_Border.PointerAxialPosition = (target.Left - (windowSize.Width - margin.Right - cleanSize.Width)) + (target.Right - (target.Left + target.Right) / 2.0) + (HasShadow ? ShadowRadius : 0);
+                if (DipHorizontalAlignment == Alignment.End)
+                    m_Border.NtvPointerAxialPosition = (target.Left - (windowSize.Width - margin.Right - cleanSize.Width)) + (target.Right - (target.Left + target.Right) / 2.0) + (HasShadow ? ShadowRadius : 0);
                 else
-                    m_Border.PointerAxialPosition = (target.Left - margin.Left) + (target.Right - (target.Left + target.Right) / 2.0) + (HasShadow ? ShadowRadius : 0);
+                    m_Border.NtvPointerAxialPosition = (target.Left - margin.Left) + (target.Right - (target.Left + target.Right) / 2.0) + (HasShadow ? ShadowRadius : 0);
             }
 
-            ActualPointerDirection = m_Border.PointerDirection = stats.PointerDirection;
+            ActualPointerDirection = m_Border.DipPointerDirection = stats.PointerDirection;
             SetMarginAndAlignment(margin, hzAlign, vtAlign, windowSize, cleanSize);
         }
 
@@ -355,27 +355,27 @@ namespace P42.Native.Controls
             if (m_Border is null)
                 return;
 
-            m_Border.PointerDirection = ActualPointerDirection;
-            SetMarginAndAlignment(Margin, hzAlign, vtAlign, windowSize, borderSize);
+            m_Border.DipPointerDirection = ActualPointerDirection;
+            SetMarginAndAlignment(NtvMargin, hzAlign, vtAlign, windowSize, borderSize);
         }
 
         void SetMarginAndAlignment(ThicknessI margin, Alignment hzAlign, Alignment vtAlign, SizeI windowSize, SizeI borderSize)
         {
             var frame = CalculateFrame(margin, hzAlign, vtAlign, windowSize, borderSize);
 
-            //_popup.Margin = new Thickness(0);
+            //_popup.NtvMargin = new Thickness(0);
             //m_PopupOffset = new Point(frame.Left, frame.Top + DisplayExtensions.StatusBarHeight());
             m_PopupFrame = frame;
             m_PopupFrame.Top += DisplayExtensions.StatusBarHeight();
 
-            m_Border.Margin = new ThicknessI(0);
-            m_Border.RequestedWidth = frame.Width;
-            m_Border.RequestedHeight = frame.Height;
+            m_Border.NtvMargin = new ThicknessI(0);
+            m_Border.NtvRequestedWidth = frame.Width;
+            m_Border.NtvRequestedHeight = frame.Height;
 
-            m_Border.HorizontalAlignment = hzAlign == Alignment.Stretch && !this.HasPrescribedWidth()
+            m_Border.DipHorizontalAlignment = hzAlign == Alignment.Stretch && !this.HasPrescribedWidth()
                 ? Alignment.Stretch
                 : Alignment.Start;
-            m_Border.VerticalAlignment = vtAlign == Alignment.Stretch && !this.HasPrescribedHeight()
+            m_Border.DipVerticalAlignment = vtAlign == Alignment.Stretch && !this.HasPrescribedHeight()
                 ? Alignment.Stretch
                 : Alignment.Start;
 
@@ -389,9 +389,9 @@ namespace P42.Native.Controls
             var left = margin.Left;
             var top = margin.Top;
             if (this.HasPrescribedWidth())
-                borderSize.Width = RequestedWidth;
+                borderSize.Width = NtvRequestedWidth;
             if (this.HasPrescribedHeight())
-                borderSize.Height = RequestedHeight;
+                borderSize.Height = NtvRequestedHeight;
             var right = Math.Min(left + borderSize.Width + hzPointer, windowSize.Width - margin.Right);
             var bottom = Math.Min(top + borderSize.Height + vtPointer, windowSize.Height - margin.Bottom);
 
@@ -427,13 +427,13 @@ namespace P42.Native.Controls
 
             if (HasShadow)
             {
-                if (HorizontalAlignment != Alignment.Stretch || m_Border.PointerDirection == PointerDirection.Right)
+                if (DipHorizontalAlignment != Alignment.Stretch || m_Border.DipPointerDirection == PointerDirection.Right)
                     left -= ShadowRadius;
-                if (HorizontalAlignment != Alignment.Stretch || m_Border.PointerDirection == PointerDirection.Left)
+                if (DipHorizontalAlignment != Alignment.Stretch || m_Border.DipPointerDirection == PointerDirection.Left)
                     right += ShadowRadius;
-                if (VerticalAlignment != Alignment.Stretch || m_Border.PointerDirection == PointerDirection.Down)
+                if (DipVerticalAlignment != Alignment.Stretch || m_Border.DipPointerDirection == PointerDirection.Down)
                     top -= ShadowRadius;
-                if (VerticalAlignment != Alignment.Stretch || m_Border.PointerDirection == PointerDirection.Up)
+                if (DipVerticalAlignment != Alignment.Stretch || m_Border.DipPointerDirection == PointerDirection.Up)
                     bottom += ShadowRadius;
             }
 
@@ -444,8 +444,8 @@ namespace P42.Native.Controls
         {
             // given the amount of free space, determine if the border will fit 
             var windowSize = DisplayExtensions.PxSize();
-            var windowSpaceW = Math.Max(0, windowSize.Width - Margin.Horizontal);
-            var windowSpaceH = Math.Max(0, windowSize.Height - Margin.Vertical);
+            var windowSpaceW = Math.Max(0, windowSize.Width - NtvMargin.Horizontal);
+            var windowSpaceH = Math.Max(0, windowSize.Height - NtvMargin.Vertical);
             var windowSpace = new SizeI(windowSpaceW, windowSpaceH);
 
             var freeSpaceW = Math.Max(0, windowSpace.Width - cleanSize.Width);
@@ -524,24 +524,24 @@ namespace P42.Native.Controls
             {
                 if (target.Right > 0 && target.Left < windowBounds.Width && target.Bottom > 0 && target.Top < windowBounds.Height)
                 {
-                    var availL = target.Left - Margin.Left;
-                    var availR = windowBounds.Width - Margin.Right - target.Right;
-                    var availT = target.Top - Margin.Top;
-                    var availB = windowBounds.Height - target.Bottom - Margin.Bottom;
+                    var availL = target.Left - NtvMargin.Left;
+                    var availR = windowBounds.Width - NtvMargin.Right - target.Right;
+                    var availT = target.Top - NtvMargin.Top;
+                    var availB = windowBounds.Height - target.Bottom - NtvMargin.Bottom;
 
-                    var maxWidth = MaxWidth;
-                    if (RequestedWidth > 0 && RequestedWidth < maxWidth)
-                        maxWidth = RequestedWidth;
-                    if (maxWidth > 0 && HorizontalAlignment != Alignment.Stretch)
+                    var maxWidth = NtvMaxWidth;
+                    if (NtvRequestedWidth > 0 && NtvRequestedWidth < maxWidth)
+                        maxWidth = NtvRequestedWidth;
+                    if (maxWidth > 0 && DipHorizontalAlignment != Alignment.Stretch)
                     {
                         availL = Math.Min(availL, maxWidth);
                         availR = Math.Min(availR, maxWidth);
                     }
 
-                    var maxHeight = MaxHeight;
-                    if (RequestedHeight > 0 && RequestedHeight < maxHeight)
-                        maxHeight = RequestedHeight;
-                    if (maxHeight > 0 && VerticalAlignment != Alignment.Stretch)
+                    var maxHeight = NtvMaxHeight;
+                    if (NtvRequestedHeight > 0 && NtvRequestedHeight < maxHeight)
+                        maxHeight = NtvRequestedHeight;
+                    if (maxHeight > 0 && DipVerticalAlignment != Alignment.Stretch)
                     {
                         availT = Math.Min(availT, maxHeight);
                         availB = Math.Min(availB, maxHeight);
@@ -552,7 +552,7 @@ namespace P42.Native.Controls
             }
 
             //if (PointToOffScreenElements)
-            //    return new Thickness(windowBounds.Width - Margin.Horizontal, windowBounds.Height - Margin.Vertical, windowBounds.Width - Margin.Horizontal, windowBounds.Height - Margin.Vertical);
+            //    return new Thickness(windowBounds.Width - NtvMargin.Horizontal, windowBounds.Height - NtvMargin.Vertical, windowBounds.Width - NtvMargin.Horizontal, windowBounds.Height - NtvMargin.Vertical);
 
             return new ThicknessI(-1, -1, -1, -1);
         }
@@ -701,9 +701,9 @@ namespace P42.Native.Controls
             var width = available.Width;
             var height = available.Height;
             if (this.HasPrescribedWidth())
-                width = Math.Min(RequestedWidth, width);
+                width = Math.Min(NtvRequestedWidth, width);
             if (this.HasPrescribedHeight())
-                height = Math.Min(RequestedHeight, height);
+                height = Math.Min(NtvRequestedHeight, height);
 
             if (this.HasPrescribedWidth() && this.HasPrescribedHeight())
                 return new SizeI(width, height);
@@ -711,26 +711,26 @@ namespace P42.Native.Controls
             if (IsEmpty)
                 return new SizeI(
                     this.HasPrescribedWidth()
-                        ? width : MinWidth + Padding.Horizontal,
+                        ? width : NtvMinWidth + NtvPadding.Horizontal,
                     this.HasPrescribedHeight()
-                        ? height : MinHeight + Padding.Vertical
+                        ? height : NtvMinHeight + NtvPadding.Vertical
                     );
 
-            var hasBorder = (BorderWidth > 0) && BorderColor.A > 0;
-            var border = (int)(BorderWidth * (hasBorder ? 1 : 0) * 2 + 0.5);
-            var availableWidth = width - Padding.Horizontal - border - 1;
-            var availableHeight = height - Padding.Vertical - border - 1;
-            System.Diagnostics.Debug.WriteLine($"TargetedPopup.MeasureBorder border:[{border}] Padding:[{Padding}]  availableWidth:[" + availableWidth + "] availableHeight:[" + availableHeight + "]");
-            if (availableWidth > 0 && availableHeight > 0 && Content != null)
+            var hasBorder = (NtvBorderWidth > 0) && DipBorderColor.A > 0;
+            var border = (int)(NtvBorderWidth * (hasBorder ? 1 : 0) * 2 + 0.5);
+            var availableWidth = width - NtvPadding.Horizontal - border - 1;
+            var availableHeight = height - NtvPadding.Vertical - border - 1;
+            System.Diagnostics.Debug.WriteLine($"TargetedPopup.MeasureBorder border:[{border}] NtvPadding:[{NtvPadding}]  availableWidth:[" + availableWidth + "] availableHeight:[" + availableHeight + "]");
+            if (availableWidth > 0 && availableHeight > 0 && DipContent != null)
             {
-                var hzSpec = Android.Views.ViewGroup.MeasureSpec.MakeMeasureSpec((int)(availableWidth + 0.5), HorizontalAlignment.AsMeasureSpecMode());
-                var vtSpec = Android.Views.ViewGroup.MeasureSpec.MakeMeasureSpec((int)(availableHeight + 0.5), VerticalAlignment.AsMeasureSpecMode());
-                Content.Measure(hzSpec, vtSpec);
-                System.Diagnostics.Debug.WriteLine($"TargetedPopup.MeasureBorder Content.Size:{Content.MeasuredWidth}, {Content.MeasuredHeight} Padding:{Padding}");
+                var hzSpec = Android.Views.ViewGroup.MeasureSpec.MakeMeasureSpec((int)(availableWidth + 0.5), DipHorizontalAlignment.AsMeasureSpecMode());
+                var vtSpec = Android.Views.ViewGroup.MeasureSpec.MakeMeasureSpec((int)(availableHeight + 0.5), DipVerticalAlignment.AsMeasureSpecMode());
+                DipContent.Measure(hzSpec, vtSpec);
+                System.Diagnostics.Debug.WriteLine($"TargetedPopup.MeasureBorder Content.Size:{DipContent.MeasuredWidth}, {DipContent.MeasuredHeight} NtvPadding:{NtvPadding}");
                 //var result = _contentPresenter.DesiredSize;
                 //System.Diagnostics.Debug.WriteLine("TargetedPopup.MeasureBorder  _contentPresenter.DesiredSize:[" + _contentPresenter.DesiredSize + "]");
-                var resultWidth = Math.Min(Math.Max(Content.MeasuredWidth + Padding.Horizontal + border, MinWidth), MaxWidth);
-                var resultHeight = Math.Min(Math.Max(Content.MeasuredHeight + Padding.Vertical + border, MinHeight), MaxHeight);
+                var resultWidth = Math.Min(Math.Max(DipContent.MeasuredWidth + NtvPadding.Horizontal + border, NtvMinWidth), NtvMaxWidth);
+                var resultHeight = Math.Min(Math.Max(DipContent.MeasuredHeight + NtvPadding.Vertical + border, NtvMinHeight), NtvMaxHeight);
 
 
 
@@ -751,9 +751,9 @@ namespace P42.Native.Controls
         #endregion
 
 
-        bool HasPrescribedHeight() => RequestedHeight >= 0;
+        bool HasPrescribedHeight() => NtvRequestedHeight >= 0;
 
-        bool HasPrescribedWidth() => RequestedWidth >= 0;
+        bool HasPrescribedWidth() => NtvRequestedWidth >= 0;
 
         class OverlayTouchListener : Java.Lang.Object, View.IOnTouchListener
         {
@@ -780,18 +780,18 @@ namespace P42.Native.Controls
         
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (propertyName == nameof(Padding))
-                m_Border.Padding = Padding;
-            else if (propertyName == nameof(BorderWidth))
-                m_Border.BorderWidth = BorderWidth;
-            else if (propertyName == nameof(BorderColor))
-                m_Border.BorderColor = BorderColor;
-            else if (propertyName == nameof(CornerRadius))
-                m_Border.CornerRadius = CornerRadius;
-            else if (propertyName == nameof(BackgroundColor))
-                m_Border.BackgroundColor = BackgroundColor;
-            else if (propertyName == nameof(HasDrawn) && HasDrawn)
-                HasDrawnTaskCompletionSource?.TrySetResult(true);
+            if (propertyName == nameof(NtvPadding))
+                m_Border.NtvPadding = NtvPadding;
+            else if (propertyName == nameof(NtvBorderWidth))
+                m_Border.NtvBorderWidth = NtvBorderWidth;
+            else if (propertyName == nameof(DipBorderColor))
+                m_Border.DipBorderColor = DipBorderColor;
+            else if (propertyName == nameof(NtvCornerRadius))
+                m_Border.NtvCornerRadius = NtvCornerRadius;
+            else if (propertyName == nameof(DipBackgroundColor))
+                m_Border.DipBackgroundColor = DipBackgroundColor;
+            else if (propertyName == nameof(DipHasDrawn) && DipHasDrawn)
+                DipHasDrawnTaskCompletionSource?.TrySetResult(true);
         }
 
         public void RedrawElement() => m_Border.PostInvalidate();

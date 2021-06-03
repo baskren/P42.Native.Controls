@@ -24,7 +24,7 @@ namespace P42.Native.Controls
 
             LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
 
-            BaseView = this;
+            NtvBaseView = this;
         }
 
         bool _disposed;
@@ -48,8 +48,8 @@ namespace P42.Native.Controls
         #region Event Handlers
         async void OnClicked(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine($"Cell[{Index}] Tapped");
-            await (ListView?.OnCellTapped(this) ?? Task.CompletedTask);
+            System.Diagnostics.Debug.WriteLine($"Cell[{DipIndex}] Tapped");
+            await (ListView?.DipOnCellTapped(this) ?? Task.CompletedTask);
         }
 
         #endregion
@@ -59,12 +59,12 @@ namespace P42.Native.Controls
 
         partial void UpdateSelection()
         {
-            SetBackgroundColor(IsSelected ? SelectedColor : Color.Transparent);
+            SetBackgroundColor(DipIsSelected ? DipSelectedColor : Color.Transparent);
         }
 
         partial void OnIsEnabledChanged()
         {
-            Enabled = IsEnabled;
+            Enabled = DipIsEnabled;
         }
         #endregion
 
@@ -84,7 +84,7 @@ namespace P42.Native.Controls
                 height = Math.Max(child.MeasuredHeight, height);
             }
 
-            System.Diagnostics.Debug.WriteLine($"Cell.OnMeasure : height = {height}");
+            //System.Diagnostics.Debug.WriteLine($"Cell.OnMeasure : height = {height}");
 
             SetMeasuredDimension(width, height);
         }
@@ -93,7 +93,7 @@ namespace P42.Native.Controls
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
             yOffset = t;
-            System.Diagnostics.Debug.WriteLine($"Cell.OnLayout({l}, {t}, {r}, {b})");
+            //System.Diagnostics.Debug.WriteLine($"Cell.OnLayout({l}, {t}, {r}, {b})");
             foreach (var child in this.Children())
                 child.Layout(0, 0, r-l, b-t);
         }
@@ -101,12 +101,12 @@ namespace P42.Native.Controls
         protected override void OnDraw(Canvas canvas)
         {
             base.OnDraw(canvas);
-            HasDrawn = true;
-            ActualSize = new SizeI(canvas.Width, canvas.Height);
+            DipHasDrawn = true;
+            NtvActualSize = new SizeI(canvas.Width, canvas.Height);
 
-            System.Diagnostics.Debug.WriteLine($"Cell OnDraw: ActualSize: " + ActualSize );
+            //System.Diagnostics.Debug.WriteLine($"Cell OnDraw: ActualSize: " + NtvActualSize );
 
-            if (yOffset + canvas.Height >= ListView.ActualHeight)
+            if (yOffset + canvas.Height >= ListView.NtvActualHeight)
             {
                 ListView.OnDrawCellsComplete();
             }

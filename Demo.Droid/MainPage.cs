@@ -24,7 +24,7 @@ namespace Demo.Droid
 
         void Build()
         {
-            Title = "Main Page";
+            DipTitle = "Main Page";
 
             //HasNavigationBar = false;
             //Content = new TextView(P42.Utils.Droid.Settings.Context) { Text = "TEXT VIEW" };
@@ -130,7 +130,7 @@ namespace Demo.Droid
             };
             var hzStartSegment = new SegmentButton(Context) { Text = "START" };
             HzAlign.AddView(hzStartSegment);
-            var hzCenterSegment = new SegmentButton(Context) { Text = "CENTER", Selected = true };
+            var hzCenterSegment = new SegmentButton(Context) { Text = "CENTER", DipSelected = true };
             HzAlign.AddView(hzCenterSegment);
             var hzEndSegment = new SegmentButton(Context) { Text = "END" };
             HzAlign.AddView(hzEndSegment);
@@ -146,7 +146,7 @@ namespace Demo.Droid
             };
             var vtStartSegment = new SegmentButton(Context) { Text = "START" };
             VtAlign.AddView(vtStartSegment);
-            var vtCenterSegment = new SegmentButton(Context) { Text = "CENTER", Selected = true };
+            var vtCenterSegment = new SegmentButton(Context) { Text = "CENTER", DipSelected = true };
             VtAlign.AddView(vtCenterSegment);
             var vtEndSegment = new SegmentButton(Context) { Text = "END" };
             VtAlign.AddView(vtEndSegment);
@@ -177,7 +177,7 @@ namespace Demo.Droid
             label.SetBackgroundColor(Color.Orange);
             grid.AddView(label);
 
-            Content = grid;
+            DipContent = grid;
             
         }
 
@@ -195,9 +195,9 @@ namespace Demo.Droid
                 };
                 var popup = new P42.Native.Controls.TargetedPopup(sender as SegmentButton)
                 {
-                    Content = content,
-                    BackgroundColor = Color.Aquamarine,
-                    BorderColor = Color.Transparent,
+                    DipContent = content,
+                    DipBackgroundColor = Color.Aquamarine,
+                    DipBorderColor = Color.Transparent,
                     PreferredPointerDirection = segment.Text == "UP"
                     ? P42.Native.Controls.PointerDirection.Up
                     : segment.Text == "DOWN"
@@ -209,16 +209,16 @@ namespace Demo.Droid
                 };
                 ((IControl)popup).DipBorderWidth = 2;
 
-                var hzSelected = HzAlign.Children().Where(c => c is SegmentButton).Cast<SegmentButton>().FirstOrDefault(s => s.Selected)?.Text;
-                popup.HorizontalAlignment = hzSelected == "START"
+                var hzSelected = HzAlign.Children().Where(c => c is SegmentButton).Cast<SegmentButton>().FirstOrDefault(s => s.DipSelected)?.Text;
+                popup.DipHorizontalAlignment = hzSelected == "START"
                     ? P42.Native.Controls.Alignment.Start
                     : hzSelected == "CENTER"
                         ? P42.Native.Controls.Alignment.Center
                         : hzSelected == "END"
                             ? P42.Native.Controls.Alignment.End
                             : P42.Native.Controls.Alignment.Stretch;
-                var vtSelected = VtAlign.Children().Where(c => c is SegmentButton).Cast<SegmentButton>().FirstOrDefault(s => s.Selected)?.Text;
-                popup.VerticalAlignment = vtSelected == "START"
+                var vtSelected = VtAlign.Children().Where(c => c is SegmentButton).Cast<SegmentButton>().FirstOrDefault(s => s.DipSelected)?.Text;
+                popup.DipVerticalAlignment = vtSelected == "START"
                     ? P42.Native.Controls.Alignment.Start
                     : vtSelected == "CENTER"
                         ? P42.Native.Controls.Alignment.Center
@@ -240,9 +240,9 @@ namespace Demo.Droid
             };
             var popup = new P42.Native.Controls.TargetedPopup(sender as Button)
             {
-                Content = content,
-                BackgroundColor = Color.Aquamarine,
-                BorderColor = Color.Transparent,
+                DipContent = content,
+                DipBackgroundColor = Color.Aquamarine,
+                DipBorderColor = Color.Transparent,
                 PreferredPointerDirection = P42.Native.Controls.PointerDirection.Up,
                 //PageOverlayMode = P42.Native.Controls.PageOverlayMode.TouchTransparent
             };

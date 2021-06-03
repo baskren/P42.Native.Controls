@@ -16,48 +16,53 @@ namespace P42.Native.Controls
     public partial class Page : IPage
     {
         #region Properties
-        string b_Title = string.Empty;
-        public string Title
+        string b_DipTitle = string.Empty;
+        public string DipTitle
         {
-            get => b_Title;
-            set => SetField(ref b_Title, value);
+            get => b_DipTitle;
+            set => SetField(ref b_DipTitle, value);
         }
 
-        bool b_HasBackButton = true;
-        public bool HasBackButton
+        bool b_DipHasBackButton = true;
+        public bool DipHasBackButton
         {
-            get => b_HasBackButton;
-            set => SetField(ref b_HasBackButton, value);
+            get => b_DipHasBackButton;
+            set => SetField(ref b_DipHasBackButton, value);
         }
 
-        string b_BackButtonTitle = "back";
-        public string BackButtonTitle
+        string b_DipBackButtonTitle = "back";
+        public string DipBackButtonTitle
         {
-            get => b_BackButtonTitle;
-            set => SetField(ref b_BackButtonTitle, value);
-        }
-
-
-        bool b_HasNavigationBar = true;
-        public bool HasNavigationBar
-        {
-            get => b_HasNavigationBar;
-            set => SetField(ref b_HasNavigationBar, value);
-        }
-
-        Thickness b_Padding;
-        public Thickness Padding
-        {
-            get => b_Padding;
-            set => SetField(ref b_Padding, value);
+            get => b_DipBackButtonTitle;
+            set => SetField(ref b_DipBackButtonTitle, value);
         }
 
 
-        View b_Content;
-        public View Content
+        bool b_DipHasNavigationBar = true;
+        public bool DipHasNavigationBar
         {
-            get => b_Content;
-            set => SetField(ref b_Content, value);
+            get => b_DipHasNavigationBar;
+            set => SetField(ref b_DipHasNavigationBar, value);
+        }
+
+        ThicknessI b_NtvPadding;
+        public ThicknessI NtvPadding
+        {
+            get => b_NtvPadding;
+            set => SetField(ref b_NtvPadding, value);
+        }
+
+        public Thickness DipPadding
+        {
+            get => NtvPadding.PxToDip();
+            set => NtvPadding = value.DipToPx();
+        }
+
+        View b_DipContent;
+        public View DipContent
+        {
+            get => b_DipContent;
+            set => SetField(ref b_DipContent, value);
         }
         #endregion
 
@@ -85,6 +90,15 @@ namespace P42.Native.Controls
         #endregion
 
 
-
+        bool _disposed;
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && !_disposed)
+            {
+                _disposed = true;
+                DipContent?.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }

@@ -9,20 +9,20 @@ namespace P42.Native.Controls
     {
         
         #region Properties
-        Orientation b_Orientation;
-        public Orientation Orientation
+        Orientation b_DipOrientation;
+        public Orientation DipOrientation
         {
-            get => b_Orientation;
-            set => SetField(ref b_Orientation, value, UpdateRadii);
+            get => b_DipOrientation;
+            set => SetField(ref b_DipOrientation, value, UpdateRadii);
         }
 
-        internal bool IsHorizontal => b_Orientation == Orientation.Horizontal;
+        internal bool DipIsHorizontal => b_DipOrientation == Orientation.Horizontal;
 
-        SegmentPosition b_Position;
-        internal SegmentPosition Position
+        SegmentPosition b_DipPosition;
+        internal SegmentPosition DipPosition
         {
-            get => b_Position;
-            set => SetField(ref b_Position, value, UpdateRadii);
+            get => b_DipPosition;
+            set => SetField(ref b_DipPosition, value, UpdateRadii);
         }
 
         #region Events

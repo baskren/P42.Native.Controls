@@ -11,187 +11,187 @@ namespace P42.Native.Controls
 
 
         #region Defaults
-        public static P42.Native.Controls.Alignment DefaultHorizontalAlignment = P42.Native.Controls.Alignment.Center;
-        public static P42.Native.Controls.Alignment DefaultVerticalAlignment = P42.Native.Controls.Alignment.Center;
-        public static ThicknessI DefaultMargin = (ThicknessI)0;
-        public static int DefaultMinWidth = DisplayExtensions.DipToPx(50);
-        public static int DefaultMinHeight = DisplayExtensions.DipToPx(50);
-        public static int DefaultMaxWidth = DisplayExtensions.PxWidth();
-        public static int DefaultMaxHeight = DisplayExtensions.PxHeight();
+        public static P42.Native.Controls.Alignment DipDefaultHorizontalAlignment = P42.Native.Controls.Alignment.Center;
+        public static P42.Native.Controls.Alignment DipDefaultVerticalAlignment = P42.Native.Controls.Alignment.Center;
+        public static ThicknessI NtvDefaultMargin = (ThicknessI)0;
+        public static int NtvDefaultMinWidth = DisplayExtensions.DipToPx(50);
+        public static int NtvDefaultMinHeight = DisplayExtensions.DipToPx(50);
+        public static int NtvDefaultMaxWidth = DisplayExtensions.PxWidth();
+        public static int NtvDefaultMaxHeight = DisplayExtensions.PxHeight();
         #endregion
 
         
         #region Properties
-        int b_RequestedWidth = -1;
-        public virtual int RequestedWidth
+        int b_NtvRequestedWidth = -1;
+        public virtual int NtvRequestedWidth
         {
-            get => b_RequestedWidth;
-            set => SetField(ref b_RequestedWidth, value, UpdateLayoutParams);
+            get => b_NtvRequestedWidth;
+            set => SetField(ref b_NtvRequestedWidth, value, NtvUpdateLayoutParams);
         }
         public double DipRequestedWidth
         {
-            get => DisplayExtensions.PxToDip(RequestedWidth);
-            set => RequestedWidth = value.DipToPx();
+            get => DisplayExtensions.PxToDip(NtvRequestedWidth);
+            set => NtvRequestedWidth = value.DipToPx();
         }
 
-        int b_RequestedHeight = -1;
-        public virtual int RequestedHeight
+        int b_NtvRequestedHeight = -1;
+        public virtual int NtvRequestedHeight
         {
-            get => b_RequestedHeight;
-            set => SetField(ref b_RequestedHeight, value, UpdateLayoutParams);
+            get => b_NtvRequestedHeight;
+            set => SetField(ref b_NtvRequestedHeight, value, NtvUpdateLayoutParams);
         }
         public double DipRequestedHeight
         {
-            get => DisplayExtensions.PxToDip(RequestedHeight);
-            set => RequestedHeight = value.DipToPx();
+            get => DisplayExtensions.PxToDip(NtvRequestedHeight);
+            set => NtvRequestedHeight = value.DipToPx();
         }
 
-        P42.Native.Controls.Alignment b_HorizontalAlignment = DefaultHorizontalAlignment;
-        public virtual P42.Native.Controls.Alignment HorizontalAlignment
+        P42.Native.Controls.Alignment b_HorizontalAlignment = DipDefaultHorizontalAlignment;
+        public virtual P42.Native.Controls.Alignment DipHorizontalAlignment
         {
             get => b_HorizontalAlignment;
-            set => SetField(ref b_HorizontalAlignment, value, UpdateLayoutParams);
+            set => SetField(ref b_HorizontalAlignment, value, NtvUpdateLayoutParams);
         }
 
-        P42.Native.Controls.Alignment b_VerticalAlignment = DefaultVerticalAlignment;
-        public virtual P42.Native.Controls.Alignment VerticalAlignment
+        P42.Native.Controls.Alignment b_VerticalAlignment = DipDefaultVerticalAlignment;
+        public virtual P42.Native.Controls.Alignment DipVerticalAlignment
         {
             get => b_VerticalAlignment;
-            set => SetField(ref b_VerticalAlignment, value, UpdateLayoutParams);
+            set => SetField(ref b_VerticalAlignment, value, NtvUpdateLayoutParams);
         }
 
-        internal protected ThicknessI b_Margin = DefaultMargin;
-        public virtual ThicknessI Margin
+        internal protected ThicknessI b_NtvMargin = NtvDefaultMargin;
+        public virtual ThicknessI NtvMargin
         {
-            get => b_Margin;
-            set => SetLayoutField(ref b_Margin, value);
+            get => b_NtvMargin;
+            set => SetLayoutField(ref b_NtvMargin, value);
         }
         public virtual Thickness DipMargin
         {
-            get => DisplayExtensions.PxToDip(Margin);
-            set => Margin = value.DipToPx();
+            get => DisplayExtensions.PxToDip(NtvMargin);
+            set => NtvMargin = value.DipToPx();
         }
 
 
-        internal protected int b_MinWidth = DefaultMinWidth;
-        public virtual int MinWidth
+        internal protected int b_NtvMinWidth = NtvDefaultMinWidth;
+        public virtual int NtvMinWidth
         {
-            get => b_MinWidth;
-            set => SetField(ref b_MinWidth, value, UpdateMinWidth);
+            get => b_NtvMinWidth;
+            set => SetField(ref b_NtvMinWidth, value, NtvUpdateMinWidth);
         }
         public virtual double DipMinWidth
         {
-            get => DisplayExtensions.PxToDip(MinWidth);
-            set => MinWidth = value.DipToPx();
+            get => DisplayExtensions.PxToDip(NtvMinWidth);
+            set => NtvMinWidth = value.DipToPx();
         }
 
 
-        internal protected int b_MinHeight = DefaultMinHeight;
-        public virtual int MinHeight
+        internal protected int b_NtvMinHeight = NtvDefaultMinHeight;
+        public virtual int NtvMinHeight
         {
-            get => b_MinHeight;
-            set => SetField(ref b_MinHeight, value, UpdateMinHeight);
+            get => b_NtvMinHeight;
+            set => SetField(ref b_NtvMinHeight, value, NtvUpdateMinHeight);
         }
         public virtual double DipMinHeight
         {
-            get => DisplayExtensions.PxToDip(MinHeight);
-            set => MinHeight = value.DipToPx();
+            get => DisplayExtensions.PxToDip(NtvMinHeight);
+            set => NtvMinHeight = value.DipToPx();
         }
 
 
-        internal protected int b_MaxWidth = DefaultMaxWidth;
-        public virtual int MaxWidth
+        internal protected int b_NtvMaxWidth = NtvDefaultMaxWidth;
+        public virtual int NtvMaxWidth
         {
-            get => b_MaxWidth;
+            get => b_NtvMaxWidth;
             set
             {
-                if (SetField(ref b_MaxWidth, value) && HasDrawn && m_ActualWidthSet && ActualWidth > MaxWidth)
-                    BaseView.RequestLayout();
+                if (SetField(ref b_NtvMaxWidth, value) && DipHasDrawn && m_NtvActualWidthSet && NtvActualWidth > NtvMaxWidth)
+                    NtvBaseView.RequestLayout();
             }
         }
         public virtual double DipMaxWidth
         {
-            get => DisplayExtensions.PxToDip(MaxWidth);
-            set => MaxWidth = value.DipToPx();
+            get => DisplayExtensions.PxToDip(NtvMaxWidth);
+            set => NtvMaxWidth = value.DipToPx();
         }
 
-        internal protected int b_MaxHeight = DefaultMaxHeight;
-        public virtual int MaxHeight
+        internal protected int b_NtvMaxHeight = NtvDefaultMaxHeight;
+        public virtual int NtvMaxHeight
         {
-            get => b_MaxHeight;
+            get => b_NtvMaxHeight;
             set
             {
-                if (SetField(ref b_MaxHeight, value) && HasDrawn && m_ActualHeightSet && ActualHeight > MaxHeight)
-                    BaseView.RequestLayout();
+                if (SetField(ref b_NtvMaxHeight, value) && DipHasDrawn && m_NtvActualHeightSet && NtvActualHeight > NtvMaxHeight)
+                    NtvBaseView.RequestLayout();
             }
         }
         public virtual double DipMaxHeight
         {
-            get => DisplayExtensions.PxToDip(MaxHeight);
-            set => MaxHeight = value.DipToPx();
+            get => DisplayExtensions.PxToDip(NtvMaxHeight);
+            set => NtvMaxHeight = value.DipToPx();
         }
 
-        internal protected int b_ActualWidth;
-        internal protected bool m_ActualWidthSet;
-        public virtual int ActualWidth
+        internal protected int b_NtvActualWidth;
+        internal protected bool m_NtvActualWidthSet;
+        public virtual int NtvActualWidth
         {
-            get => b_ActualWidth;
-            private set => SetField(ref b_ActualWidth, value, () => m_ActualWidthSet = true);
+            get => b_NtvActualWidth;
+            private set => SetField(ref b_NtvActualWidth, value, () => m_NtvActualWidthSet = true);
         }
-        public double DipActualWidth => ActualWidth.PxToDip();
+        public double DipActualWidth => NtvActualWidth.PxToDip();
 
 
-        internal protected int b_ActualHeight;
-        internal protected bool m_ActualHeightSet;
-        public virtual int ActualHeight
+        internal protected int b_NtvActualHeight;
+        internal protected bool m_NtvActualHeightSet;
+        public virtual int NtvActualHeight
         {
-            get => b_ActualHeight;
-            private set => SetField(ref b_ActualHeight, value, () => m_ActualHeightSet = true);
+            get => b_NtvActualHeight;
+            private set => SetField(ref b_NtvActualHeight, value, () => m_NtvActualHeightSet = true);
         }
-        public virtual double DipActualHeight => ActualHeight.PxToDip();
+        public virtual double DipActualHeight => NtvActualHeight.PxToDip();
 
-        internal protected SizeI b_ActualSize;
-        public virtual SizeI ActualSize
+        internal protected SizeI b_NtvActualSize;
+        public virtual SizeI NtvActualSize
         {
-            get => new SizeI(b_ActualWidth, b_ActualHeight);
+            get => new SizeI(b_NtvActualWidth, b_NtvActualHeight);
             private set
             {
-                if (value.Width != b_ActualWidth || value.Height != b_ActualHeight)
+                if (value.Width != b_NtvActualWidth || value.Height != b_NtvActualHeight)
                 {
-                    ActualWidth = value.Width;
-                    ActualHeight = value.Height;
+                    NtvActualWidth = value.Width;
+                    NtvActualHeight = value.Height;
                     ((IElement)this).OnPropertyChanged();
-                    SizeChanged?.Invoke(this, DipActualSize);
+                    DipSizeChanged?.Invoke(this, DipActualSize);
                 }
             }
         }
-        public virtual Size DipActualSize => ActualSize.PxToDip();
+        public virtual Size DipActualSize => NtvActualSize.PxToDip();
 
-        object b_DataContext;
-        public object DataContext
+        object b_DipDataContext;
+        public object DipDataContext
         {
-            get => b_DataContext;
-            set => SetField(ref b_DataContext, value,((IElement)this).OnDataContextChanged);
+            get => b_DipDataContext;
+            set => SetField(ref b_DipDataContext, value,((IElement)this).DipOnDataContextChanged);
         }
 
 #if __ANDROID__
 
-        public virtual double Opacity
+        public virtual double DipOpacity
         {
-            get => BaseView.Alpha;
-            set => BaseView.Alpha = (float)value;
+            get => NtvBaseView.Alpha;
+            set => NtvBaseView.Alpha = (float)value;
         }
 
-        public virtual bool IsVisible
+        public virtual bool DipIsVisible
         {
-            get => BaseView.Visibility == ViewStates.Visible;
-            set => BaseView.Visibility = value ? ViewStates.Visible : ViewStates.Gone;
+            get => NtvBaseView.Visibility == ViewStates.Visible;
+            set => NtvBaseView.Visibility = value ? ViewStates.Visible : ViewStates.Gone;
         }
 
 #else
 
-        public virtual double Opacity { get; set; }
-        public virtual bool IsVisible { get; set; }
+        public virtual double DipOpacity { get; set; }
+        public virtual bool DipIsVisible { get; set; }
 
 #endif
 
@@ -199,69 +199,69 @@ namespace P42.Native.Controls
 
         
         #region Events
-        public event EventHandler<Size> SizeChanged;
+        public event EventHandler<Size> DipSizeChanged;
         #endregion
 
 
         #region Methods
         
         public bool SetRedrawField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
-            => SetField(ref field, value, () => { if (HasDrawn) ((IElement)this).RedrawElement(); }, propertyName, callerPath);
+            => SetField(ref field, value, () => { if (DipHasDrawn) ((IElement)this).DipRedrawElement(); }, propertyName, callerPath);
 
         public bool SetLayoutField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, [CallerFilePath] string callerPath = null)
-            => SetField(ref field, value, () => { if (HasDrawn) ((IElement)this).RelayoutElement(); }, propertyName, callerPath);
+            => SetField(ref field, value, () => { if (DipHasDrawn) ((IElement)this).DipRelayoutElement(); }, propertyName, callerPath);
 
 
 
 #if __ANDROID__
-        public Android.Views.View BaseView { get; protected set; }
+        public Android.Views.View NtvBaseView { get; protected set; }
 
-        void UpdateLayoutParams()
+        void NtvUpdateLayoutParams()
         {
-            BaseView.LayoutParameters = new ViewGroup.LayoutParams(
-                    HorizontalAlignment == P42.Native.Controls.Alignment.Stretch
+            NtvBaseView.LayoutParameters = new ViewGroup.LayoutParams(
+                    DipHorizontalAlignment == P42.Native.Controls.Alignment.Stretch
                         ? ViewGroup.LayoutParams.MatchParent
-                        : RequestedWidth < 0
+                        : NtvRequestedWidth < 0
                             ? ViewGroup.LayoutParams.WrapContent
-                            : RequestedWidth < MinWidth
-                                ? MinWidth
-                                : RequestedWidth > MaxWidth
-                                    ? MaxWidth
-                                    : RequestedWidth,
-                    VerticalAlignment == P42.Native.Controls.Alignment.Stretch
+                            : NtvRequestedWidth < NtvMinWidth
+                                ? NtvMinWidth
+                                : NtvRequestedWidth > NtvMaxWidth
+                                    ? NtvMaxWidth
+                                    : NtvRequestedWidth,
+                    DipVerticalAlignment == P42.Native.Controls.Alignment.Stretch
                         ? ViewGroup.LayoutParams.MatchParent
-                        : RequestedHeight < 0
+                        : NtvRequestedHeight < 0
                             ? ViewGroup.LayoutParams.WrapContent
-                            : RequestedHeight < MinHeight
-                                ? MinHeight
-                                : RequestedHeight > MaxHeight
-                                    ? MaxHeight
-                                    : RequestedHeight
+                            : NtvRequestedHeight < NtvMinHeight
+                                ? NtvMinHeight
+                                : NtvRequestedHeight > NtvMaxHeight
+                                    ? NtvMaxHeight
+                                    : NtvRequestedHeight
                 );
-            if (HasDrawn)
-                BaseView.RequestLayout();
+            if (DipHasDrawn)
+                NtvBaseView.RequestLayout();
         }
 
-        void UpdateMinWidth()
+        void NtvUpdateMinWidth()
         {
-            BaseView.SetMinimumWidth(MinWidth);
-            UpdateLayoutParams();
+            NtvBaseView.SetMinimumWidth(NtvMinWidth);
+            NtvUpdateLayoutParams();
         }
 
-        void UpdateMinHeight()
+        void NtvUpdateMinHeight()
         {
-            BaseView.SetMinimumHeight(MinHeight);
-            UpdateLayoutParams();
+            NtvBaseView.SetMinimumHeight(NtvMinHeight);
+            NtvUpdateLayoutParams();
         }
 
 
 #else
 
-        void UpdateLayoutParams() {}
-        void UpdateMinWidth(){}
-        void UpdateMinHeight() {}
-        public void RedrawElement();
-        public void RelayoutElement();
+        void NtvUpdateLayoutParams() {}
+        void NtvUpdateMinWidth(){}
+        void NtvUpdateMinHeight() {}
+        public void DipRedrawElement();
+        public void DipRelayoutElement();
 
 #endif
 

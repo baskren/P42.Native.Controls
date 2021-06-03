@@ -14,36 +14,36 @@ namespace P42.Native.Controls
     {
         #region Properties
 
-        Element b_Content;
-        public Element Content
+        Element b_DipContent;
+        public Element DipContent
         {
-            get => b_Content;
-            set => SetField(ref b_Content, value);
+            get => b_DipContent;
+            set => SetField(ref b_DipContent, value);
         }
 
-        int b_ShadowRadius = (10.0).DipToPx();
-        public int ShadowRadius
+        int b_NtvShadowRadius = (10.0).DipToPx();
+        public int NtvShadowRadius
         {
-            get => b_ShadowRadius;
-            set => SetField(ref b_ShadowRadius, value);
+            get => b_NtvShadowRadius;
+            set => SetField(ref b_NtvShadowRadius, value);
         }
         public double DipShadowRadius
         {
-            get => ShadowRadius.PxToDip();
-            set => ShadowRadius = value.DipToPx();
+            get => NtvShadowRadius.PxToDip();
+            set => NtvShadowRadius = value.DipToPx();
         }
 
-        PointI b_ShadowShift = new Point(2,2).DipToPx();
-        public PointI ShadowShift
+        PointI b_NtvShadowShift = new Point(2,2).DipToPx();
+        public PointI NtvShadowShift
         {
-            get => b_ShadowShift;
-            set => SetField(ref b_ShadowShift, value);
+            get => b_NtvShadowShift;
+            set => SetField(ref b_NtvShadowShift, value);
         }
 
         public Point DipShadowShift
         {
-            get => b_ShadowShift.PxToDip();
-            set => b_ShadowShift = value.DipToPx();
+            get => b_NtvShadowShift.PxToDip();
+            set => b_NtvShadowShift = value.DipToPx();
         }
 
         bool b_HasShadow;
@@ -64,80 +64,80 @@ namespace P42.Native.Controls
         }
         */
 
-        public static int DefaultPointerLength = DisplayExtensions.DipToPx(10);
-        int b_PointerLength = DefaultPointerLength;
-        public int PointerLength
+        public static int NtvDefaultPointerLength = DisplayExtensions.DipToPx(10);
+        int b_NtvPointerLength = NtvDefaultPointerLength;
+        public int NtvPointerLength
         {
-            get => b_PointerLength;
-            set => SetLayoutField(ref b_PointerLength, value);
+            get => b_NtvPointerLength;
+            set => SetLayoutField(ref b_NtvPointerLength, value);
         }
 
         public double DipPointerLength
         {
-            get => DisplayExtensions.PxToDip(b_PointerLength);
-            set => PointerLength = DisplayExtensions.DipToPx(value);
+            get => DisplayExtensions.PxToDip(b_NtvPointerLength);
+            set => NtvPointerLength = DisplayExtensions.DipToPx(value);
         }
 
-        public static double DefaultPointerTipRadius = DisplayExtensions.DipToPx(2);
-        double b_PointerTipRadius = DefaultPointerTipRadius;
-        public double PointerTipRadius
+        public static double NtvDefaultPointerTipRadius = DisplayExtensions.DipToPx(2);
+        double b_NtvPointerTipRadius = NtvDefaultPointerTipRadius;
+        public double NtvPointerTipRadius
         {
-            get => b_PointerTipRadius;
-            set => SetRedrawField(ref b_PointerTipRadius, value);
+            get => b_NtvPointerTipRadius;
+            set => SetRedrawField(ref b_NtvPointerTipRadius, value);
         }
 
         public double DipPointerTipRadius
         {
-            get => DisplayExtensions.PxToDip(b_PointerTipRadius);
-            set => PointerTipRadius = DisplayExtensions.DipToPx(value);
+            get => DisplayExtensions.PxToDip(b_NtvPointerTipRadius);
+            set => NtvPointerTipRadius = DisplayExtensions.DipToPx(value);
         }
 
-        public static double DefaultPointerAxialPosition = 0.5; 
-        double b_PointerAxialPosition = DefaultPointerAxialPosition;
-        public double PointerAxialPosition
+        public static double NtvDefaultPointerAxialPosition = 0.5; 
+        double b_NtvPointerAxialPosition = NtvDefaultPointerAxialPosition;
+        public double NtvPointerAxialPosition
         {
-            get => b_PointerAxialPosition;
-            set => SetRedrawField(ref b_PointerAxialPosition, value);
+            get => b_NtvPointerAxialPosition;
+            set => SetRedrawField(ref b_NtvPointerAxialPosition, value);
         }
 
         public double DipPointerAxialPosition
         {
-            get => DisplayExtensions.PxToDip(b_PointerAxialPosition);
+            get => DisplayExtensions.PxToDip(b_NtvPointerAxialPosition);
             set
             {
                 if (value <= 1)
-                    PointerAxialPosition = value;
+                    NtvPointerAxialPosition = value;
                 else
-                    PointerAxialPosition = DisplayExtensions.DipToPx(value);
+                    NtvPointerAxialPosition = DisplayExtensions.DipToPx(value);
             }
         }
 
-        public static PointerDirection DefaultPointerDirection = PointerDirection.Any;
-        PointerDirection b_PointerDirection = DefaultPointerDirection;
-        public PointerDirection PointerDirection
+        public static PointerDirection DipDefaultPointerDirection = PointerDirection.Any;
+        PointerDirection b_DipPointerDirection = DipDefaultPointerDirection;
+        public PointerDirection DipPointerDirection
         {
-            get => b_PointerDirection;
+            get => b_DipPointerDirection;
             set
             {
-                if (PointerDirection.IsHorizontal() == value.IsHorizontal())
-                    SetRedrawField(ref b_PointerDirection, value);
+                if (DipPointerDirection.IsHorizontal() == value.IsHorizontal())
+                    SetRedrawField(ref b_DipPointerDirection, value);
                 else
-                    SetLayoutField(ref b_PointerDirection, value);
+                    SetLayoutField(ref b_DipPointerDirection, value);
             }
         }
 
-        public static double DefaultPointerCornerRadius = DisplayExtensions.DipToPx(2);
-        double b_PointerCornerRadius = DefaultPointerCornerRadius;
-        public double PointerCornerRadius
+        public static double NtvDefaultPointerCornerRadius = DisplayExtensions.DipToPx(2);
+        double b_NtvPointerCornerRadius = NtvDefaultPointerCornerRadius;
+        public double NtvPointerCornerRadius
         {
-            get => b_PointerCornerRadius;
-            set => SetField(ref b_PointerCornerRadius, value);
+            get => b_NtvPointerCornerRadius;
+            set => SetField(ref b_NtvPointerCornerRadius, value);
         }
 
         public double DipPointerCornerRadius
         {
-            get => DisplayExtensions.PxToDip(b_PointerCornerRadius);
-            set => PointerCornerRadius = DisplayExtensions.DipToPx(value);
+            get => DisplayExtensions.PxToDip(b_NtvPointerCornerRadius);
+            set => NtvPointerCornerRadius = DisplayExtensions.DipToPx(value);
         }
         #endregion
 

@@ -13,40 +13,40 @@ namespace P42.Native.Controls
     public static class ListViewMarkupExtensions
     {
         public static ElementType Header<ElementType>(this ElementType element, UIElement value) where ElementType : ListView
-        { element.Header = value; return element; }
+        { element.DipHeader = value; return element; }
 
         public static ElementType Footer<ElementType>(this ElementType element, UIElement value) where ElementType : ListView
-        { element.Footer = value; return element; }
+        { element.DipFooter = value; return element; }
 
         public static ElementType IsItemClickEnabled<ElementType>(this ElementType element, bool value) where ElementType : ListView
-        { element.IsItemClickEnabled = value; return element; }
+        { element.DipIsItemClickEnabled = value; return element; }
 
         public static ElementType SelectedItems<ElementType>(this ElementType element, IEnumerable value) where ElementType : ListView
-        { element.SelectedItems = value; return element; }
+        { element.DipSelectedItems = value; return element; }
 
         public static ElementType SelectionMode<ElementType>(this ElementType element, SelectionMode value) where ElementType : ListView
-        { element.SelectionMode = value; return element; }
+        { element.DipSelectionMode = value; return element; }
 
         public static ElementType SelectedIndex<ElementType>(this ElementType element, int value) where ElementType : ListView
-        { element.SelectedIndex = value; return element; }
+        { element.DipSelectedIndex = value; return element; }
 
         public static ElementType SelectedItem<ElementType>(this ElementType element, object value) where ElementType : ListView
-        { element.SelectedItem = value; return element; }
+        { element.DipSelectedItem = value; return element; }
 
         public static ElementType ItemsSource<ElementType>(this ElementType element, IEnumerable value) where ElementType : ListView
-        { element.ItemsSource = value; return element; }
+        { element.DipItemsSource = value; return element; }
 
         public static ElementType ItemViewType<ElementType>(this ElementType element, Type value) where ElementType : ListView
-        { element.ItemViewType = value; return element; }
+        { element.DipItemViewType = value; return element; }
 
         public static ElementType ItemViewTypeSelector<ElementType>(this ElementType element, IItemTypeSelector value) where ElementType : ListView
-        { element.ItemViewTypeSelector = value; return element; }
+        { element.DipItemViewTypeSelector = value; return element; }
 
         public static ElementType ItemClick<ElementType>(this ElementType element, ItemClickEventHandler value) where ElementType : ListView
-        { element.ItemClick += value; return element; }
+        { element.DipItemClick += value; return element; }
 
         public static ElementType SelectionChanged<ElementType>(this ElementType element, SelectionChangedEventHandler value) where ElementType : ListView
-        { element.SelectionChanged += value; return element; }
+        { element.DipSelectionChanged += value; return element; }
 
     }
 }

@@ -13,14 +13,14 @@ namespace P42.Native.Controls
     {
         #region Properties
 
-        Android.Views.View b_Content;
-        public Android.Views.View Content
+        Android.Views.View b_DipContent;
+        public Android.Views.View DipContent
         {
-            get => b_Content;
+            get => b_DipContent;
             set
             {
-                if (SetField(ref b_Content, value))
-                    m_Border.Content = value;
+                if (SetField(ref b_DipContent, value))
+                    m_Border.DipContent = value;
             }
         }
 
@@ -51,7 +51,7 @@ namespace P42.Native.Controls
             set => SetField(ref b_PopAfter, value);
         }
 
-        public bool IsEmpty => Content is null;
+        public bool IsEmpty => DipContent is null;
 
         bool b_IsAnimated;
         public bool IsAnimated
@@ -84,14 +84,14 @@ namespace P42.Native.Controls
             set => SetField(ref b_PointerBias, value);
         }
 
-        double b_PointerCornerRadius = BubbleBorder.DefaultPointerCornerRadius;
+        double b_PointerCornerRadius = BubbleBorder.NtvDefaultPointerCornerRadius;
         public double PointerCornerRadius
         {
             get => b_PointerCornerRadius;
             set
             {
                 if (SetField(ref b_PointerCornerRadius, value))
-                    m_Border.PointerCornerRadius = PointerCornerRadius;
+                    m_Border.NtvPointerCornerRadius = PointerCornerRadius;
             }
         }
 
@@ -116,21 +116,21 @@ namespace P42.Native.Controls
             set => SetField(ref b_FallbackPointerDirection, value);
         }
 
-        int b_PointerLength = BubbleBorder.DefaultPointerLength;
+        int b_PointerLength = BubbleBorder.NtvDefaultPointerLength;
         public int PointerLength
         {
             get => b_PointerLength;
             set => SetField(ref b_PointerLength, value);
         }
 
-        double b_PointerTipRadius = BubbleBorder.DefaultPointerTipRadius;
+        double b_PointerTipRadius = BubbleBorder.NtvDefaultPointerTipRadius;
         public double PointerTipRadius
         {
             get => b_PointerTipRadius;
             set
             {
                 if (SetField(ref b_PointerTipRadius, value))
-                    m_Border.PointerTipRadius = PointerTipRadius;
+                    m_Border.NtvPointerTipRadius = PointerTipRadius;
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace P42.Native.Controls
 {
@@ -11,6 +12,8 @@ namespace P42.Native.Controls
 
         void OnPropertyChanged([CallerMemberName] string propertyName = null) { }
 
-        
+        Task DipWaitForDrawComplete();
+
+
     }
 }

@@ -18,13 +18,13 @@ namespace Demo.Droid
 
         public ContentAndDetailPresenterPage()
         {
-            Content = new ListView()
+            DipContent = new ListView()
                 .Assign(out _listView)
                 .ItemViewType(typeof(TextCell))
                 .ItemsSource(items)
                 .SelectionMode(SelectionMode.Single);
 
-            _listView.SelectionChanged += OnSelectionChanged;
+            _listView.DipSelectionChanged += OnSelectionChanged;
         }
 
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)

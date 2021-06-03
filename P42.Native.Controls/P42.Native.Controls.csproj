@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <!-- WASM -->
+  <!--
   <Import Project=".\P42.Native.Controls.WASM.props" Condition=" $(TargetFramework.StartsWith('netstandard2.')) " />
+  -->
 
   <!-- UWP -->
   <Import Project=".\P42.Native.Controls.UWP.props" Condition=" $(TargetFramework.StartsWith('uap10.0')) " />

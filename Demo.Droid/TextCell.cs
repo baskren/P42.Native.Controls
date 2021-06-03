@@ -12,22 +12,14 @@ namespace Demo.Droid
     public class TextCell : P42.Native.Controls.Cell
     {
         
-        Label titleLabel = new P42.Native.Controls.Label
+        Label _titleLabel = new P42.Native.Controls.Label
         {
-            FontStyle = FontStyle.Bold,
-            VerticalAlignment = Alignment.Center,
-            HorizontalAlignment = Alignment.Start
+            DipFontStyle = FontStyle.Bold,
+            DipVerticalAlignment = Alignment.Center,
+            DipHorizontalAlignment = Alignment.Start
         };
-        /*
-        Label valueLabel = new Label
-        {
-            VerticalAlignment = Alignment.Center,
-            HorizontalAlignment = Alignment.End
-        };
-        */
-
-        //Label titleLabel;
-        Label valueLabel;
+        Label _valueLabel;
+        Grid _grid;
 
         public TextCell(ListView listView) : base(listView)
         {
@@ -36,42 +28,42 @@ namespace Demo.Droid
 #if __ANDROID__
 
             //titleLabel = new Label(Context);
-            valueLabel = new Label(Context);
-            titleLabel.SetBackgroundColor(Color.Pink);
-            titleLabel.SetTextColor(Color.Black);
+            _valueLabel = new Label(Context);
+            _titleLabel.SetBackgroundColor(Color.Pink);
+            _titleLabel.SetTextColor(Color.Black);
             //valueLabel.Gravity = Android.Views.GravityFlags.Right;
 
-            var grid = new Grid(Context)
+            _grid = new Grid(Context)
             {
                 RowCount = 2,
                 ColumnCount = 1,
                 LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.WrapContent)
             };
 
-            titleLabel.LayoutParameters = new Grid.LayoutParams(
+            _titleLabel.LayoutParameters = new Grid.LayoutParams(
                 Grid.InvokeSpec(0),
                 Grid.InvokeSpec(0));
-            valueLabel.LayoutParameters = new Grid.LayoutParams(
+            _valueLabel.LayoutParameters = new Grid.LayoutParams(
                 Grid.InvokeSpec(1, Grid.Center),
                 Grid.InvokeSpec(0, Grid.RightAlighment));
 
-            grid.AddView(titleLabel);
-            grid.AddView(valueLabel);
+            _grid.AddView(_titleLabel);
+            _grid.AddView(_valueLabel);
 
-            AddView(grid);
+            AddView(_grid);
 #endif
 
         }
 
 
-        public override void OnDataContextChanged()
+        public override void DipOnDataContextChanged()
         {
-            base.OnDataContextChanged();
+            base.DipOnDataContextChanged();
 
-            titleLabel.Text = DataContext.ToString();
-            valueLabel.Text = DataContext.ToString();
+            _titleLabel.Text = DipDataContext.ToString();
+            _valueLabel.Text = DipDataContext.ToString();
 
-            System.Diagnostics.Debug.WriteLine($"TextCell OnDataContextChanged : " + DataContext.ToString()) ;
+            //System.Diagnostics.Debug.WriteLine($"TextCell OnDataContextChanged : " + DipDataContext.ToString()) ;
         }
     }
 }

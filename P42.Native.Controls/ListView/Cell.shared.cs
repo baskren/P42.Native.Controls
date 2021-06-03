@@ -14,30 +14,30 @@ namespace P42.Native.Controls
     {
 
         #region  Properties
-        public bool IsSelected
-            => DataContext is null
+        public bool DipIsSelected
+            => DipDataContext is null
             ? false
-            : ListView?.b_SelectedItems.Contains(DataContext) ?? false;
+            : ListView?.b_DipSelectedItems.Contains(DipDataContext) ?? false;
 
-        bool b_IsEnabled;
-        public bool IsEnabled
+        bool b_DipIsEnabled;
+        public bool DipIsEnabled
         {
-            get => b_IsEnabled;
-            set => SetField(ref b_IsEnabled, value, OnIsEnabledChanged);
+            get => b_DipIsEnabled;
+            set => SetField(ref b_DipIsEnabled, value, OnIsEnabledChanged);
         }
 
-        int b_Index;
-        public int Index
+        int b_DipIndex;
+        public int DipIndex
         {
-            get => b_Index;
-            internal set => SetField(ref b_Index, value, UpdateSelection);
+            get => b_DipIndex;
+            internal set => SetField(ref b_DipIndex, value, UpdateSelection);
         }
 
-        Color b_SelectedColor = Color.Blue;
-        public Color SelectedColor
+        Color b_DipSelectedColor = Color.Blue;
+        public Color DipSelectedColor
         {
-            get => b_SelectedColor;
-            internal set => SetField(ref b_SelectedColor, value, UpdateSelection);
+            get => b_DipSelectedColor;
+            internal set => SetField(ref b_DipSelectedColor, value, UpdateSelection);
         }
 
         #endregion
@@ -52,14 +52,14 @@ namespace P42.Native.Controls
         void BuildCommon(ListView listView)
         {
             ListView = listView;
-            ListView.b_SelectedItems.CollectionChanged += OnSelectedItems_CollectionChanged;
-            SizeChanged += OnSizeChanged;
+            ListView.b_DipSelectedItems.CollectionChanged += OnSelectedItems_CollectionChanged;
+            DipSizeChanged += OnSizeChanged;
         }
 
         void DisposeCommon()
         {
-            SizeChanged -= OnSizeChanged;
-            ListView.b_SelectedItems.CollectionChanged -= OnSelectedItems_CollectionChanged;
+            DipSizeChanged -= OnSizeChanged;
+            ListView.b_DipSelectedItems.CollectionChanged -= OnSelectedItems_CollectionChanged;
             ListView = null;
         }
         #endregion
@@ -70,12 +70,12 @@ namespace P42.Native.Controls
 
         partial void OnIsEnabledChanged();
 
-        public virtual void OnDataContextChanged()
+        public virtual void DipOnDataContextChanged()
         {
             UpdateSelection();
             foreach (var child in this.Children())
                 if (child is IElement element)
-                    element.DataContext = DataContext;
+                    element.DipDataContext = DipDataContext;
         }
 
         private void OnSelectedItems_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -87,16 +87,16 @@ namespace P42.Native.Controls
         {
             if (ListView is ListView listView)
             {
-                if (ActualHeight > -1 && DataContext != null)
+                if (NtvActualHeight > -1 && DipDataContext != null)
                 {
-                    if (Index < listView.PxCellHeights.Count)
+                    if (DipIndex < listView.PxCellHeights.Count)
                     {
-                        listView.PxCellHeights[Index] = ActualHeight;
+                        listView.PxCellHeights[DipIndex] = NtvActualHeight;
                         return;
                     }
-                    while (Index > listView.PxCellHeights.Count)
+                    while (DipIndex > listView.PxCellHeights.Count)
                         listView.PxCellHeights.Add(0);
-                    listView.PxCellHeights.Add(ActualHeight);
+                    listView.PxCellHeights.Add(NtvActualHeight);
                 }
             }
         }
