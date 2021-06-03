@@ -49,6 +49,9 @@ namespace P42.Native.Controls
             m_Border.PropertyChanged += OnBorderPropertyChanged;
 
             BaseView = m_Border;
+
+            m_Border.HasShadow = HasShadow;
+            m_Border.ShadowRadius = ShadowRadius;
         }
 
 
@@ -299,9 +302,9 @@ namespace P42.Native.Controls
                     margin.Top = windowSize.Height - Margin.Bottom - stats.BorderSize.Height;
 
                 if (VerticalAlignment == Alignment.End)
-                    m_Border.PointerAxialPosition = (target.Top - (windowSize.Height - margin.Bottom - cleanSize.Height)) + target.Bottom - (target.Top + target.Bottom) / 2.0;
+                    m_Border.PointerAxialPosition = (target.Top - (windowSize.Height - margin.Bottom - cleanSize.Height)) + target.Bottom - (target.Top + target.Bottom) / 2.0 +(HasShadow ? ShadowRadius : 0);
                 else
-                    m_Border.PointerAxialPosition = (target.Top - margin.Top) + target.Bottom - (target.Top + target.Bottom) / 2.0;
+                    m_Border.PointerAxialPosition = (target.Top - margin.Top) + target.Bottom - (target.Top + target.Bottom) / 2.0 + (HasShadow ? ShadowRadius : 0);
             }
             else
             {
@@ -336,9 +339,9 @@ namespace P42.Native.Controls
                     margin.Left = windowSize.Width - Margin.Right - stats.BorderSize.Width;
 
                 if (HorizontalAlignment == Alignment.End)
-                    m_Border.PointerAxialPosition = (target.Left - (windowSize.Width - margin.Right - cleanSize.Width)) + (target.Right - (target.Left + target.Right) / 2.0);
+                    m_Border.PointerAxialPosition = (target.Left - (windowSize.Width - margin.Right - cleanSize.Width)) + (target.Right - (target.Left + target.Right) / 2.0) + (HasShadow ? ShadowRadius : 0);
                 else
-                    m_Border.PointerAxialPosition = (target.Left - margin.Left) + (target.Right - (target.Left + target.Right) / 2.0);
+                    m_Border.PointerAxialPosition = (target.Left - margin.Left) + (target.Right - (target.Left + target.Right) / 2.0) + (HasShadow ? ShadowRadius : 0);
             }
 
             ActualPointerDirection = m_Border.PointerDirection = stats.PointerDirection;
@@ -420,6 +423,18 @@ namespace P42.Native.Controls
             else if (vtAlign == Alignment.Stretch && !this.HasPrescribedHeight())
             {
                 bottom = windowSize.Height - margin.Bottom;
+            }
+
+            if (HasShadow)
+            {
+                if (HorizontalAlignment != Alignment.Stretch || m_Border.PointerDirection == PointerDirection.Right)
+                    left -= ShadowRadius;
+                if (HorizontalAlignment != Alignment.Stretch || m_Border.PointerDirection == PointerDirection.Left)
+                    right += ShadowRadius;
+                if (VerticalAlignment != Alignment.Stretch || m_Border.PointerDirection == PointerDirection.Down)
+                    top -= ShadowRadius;
+                if (VerticalAlignment != Alignment.Stretch || m_Border.PointerDirection == PointerDirection.Up)
+                    bottom += ShadowRadius;
             }
 
             return new RectI(left, top, right - left, bottom - top);

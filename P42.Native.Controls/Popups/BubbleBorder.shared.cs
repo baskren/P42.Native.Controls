@@ -21,6 +21,39 @@ namespace P42.Native.Controls
             set => SetField(ref b_Content, value);
         }
 
+        int b_ShadowRadius = (10.0).DipToPx();
+        public int ShadowRadius
+        {
+            get => b_ShadowRadius;
+            set => SetField(ref b_ShadowRadius, value);
+        }
+        public double DipShadowRadius
+        {
+            get => ShadowRadius.PxToDip();
+            set => ShadowRadius = value.DipToPx();
+        }
+
+        PointI b_ShadowShift = new Point(2,2).DipToPx();
+        public PointI ShadowShift
+        {
+            get => b_ShadowShift;
+            set => SetField(ref b_ShadowShift, value);
+        }
+
+        public Point DipShadowShift
+        {
+            get => b_ShadowShift.PxToDip();
+            set => b_ShadowShift = value.DipToPx();
+        }
+
+        bool b_HasShadow;
+        public bool HasShadow
+        {
+            get => b_HasShadow;
+            set => SetField(ref b_HasShadow, value);
+        }
+
+
         #region Pointer
         /*
         double b_PointerBias;

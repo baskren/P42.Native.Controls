@@ -9,6 +9,7 @@ using Android.Content;
 using Android.Graphics;
 using Android.Runtime;
 using Android.Util;
+using Android.Views;
 using Newtonsoft.Json;
 
 namespace P42.Native.Controls
@@ -72,6 +73,13 @@ namespace P42.Native.Controls
 
             var hzInset = (int)(Margin.Horizontal + 2 * BorderWidth + Padding.Horizontal + (PointerDirection.IsHorizontal() ? PointerLength : 0) + 0.5);
             var vtInset = (int)(Margin.Vertical + 2 * BorderWidth + Padding.Vertical + (PointerDirection.IsVertical() ? PointerLength : 0) + 0.5);
+            
+            if (HasShadow)
+            {
+                hzInset += 2 * ShadowRadius;
+                vtInset += 2 * ShadowRadius;
+            }
+
             var contentWidthAvailable = availableWidth - hzInset;
             var contentHeightAvailable = availableHeight - vtInset;
 
@@ -103,6 +111,14 @@ namespace P42.Native.Controls
                 var ct = t + Margin.Top + borderWidth + Padding.Top + (PointerDirection == PointerDirection.Up ? PointerLength : 0);
                 var cr = r - (Margin.Right + borderWidth + Padding.Right + (PointerDirection == PointerDirection.Right ? PointerLength : 0));
                 var cb = b - (Margin.Bottom + borderWidth + Padding.Bottom + (PointerDirection == PointerDirection.Down ? PointerLength : 0));
+
+                if (HasShadow)
+                {
+                    cl += ShadowRadius - ShadowShift.X;
+                    ct += ShadowRadius - ShadowShift.Y;
+                    cr -= ShadowRadius + ShadowShift.X;
+                    cb -= ShadowRadius + ShadowShift.Y;
+                }
                 System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout Content.Layout({(int)(cl + 0.5)}, {(int)(ct + 0.5)}, {(int)(cr + 0.5)}, {(int)(cb + 0.5)}) w:{cr - cl} h:{cb - ct}");
 
                     
@@ -145,9 +161,24 @@ namespace P42.Native.Controls
 
         protected override void OnDraw(Canvas canvas)
         {
-            
-            System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnDraw({canvas.Width}, {canvas.Height})");
             Path p = GeneratePath(new Size(canvas.Width, canvas.Height));
+
+            if (HasShadow)
+            {
+                // Create paint for shadow
+                m_paint.Color = Color.Black.WithAlpha(0.5);
+                m_paint.SetMaskFilter(new BlurMaskFilter(
+                    ShadowRadius / 2,
+                    BlurMaskFilter.Blur.Normal));
+                Matrix translateMatrix = new Matrix();
+                translateMatrix.SetTranslate(ShadowShift.X, ShadowShift.Y);
+                var shadowPath = new Path(p);
+                shadowPath.Transform(translateMatrix);
+                canvas.DrawPath(shadowPath, m_paint);
+            }
+
+            m_paint.SetMaskFilter(null);
+            System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnDraw({canvas.Width}, {canvas.Height})");
             m_paint.Color = BackgroundColor;
             m_paint.SetStyle(Paint.Style.Fill);
             canvas.DrawPath(p, m_paint);
@@ -189,6 +220,16 @@ namespace P42.Native.Controls
             var right = (float)(width  - Margin.Right - borderWidth / 2);
             var top = (float)(Margin.Top + borderWidth / 2);
             var bottom = (float)(height - Margin.Bottom - borderWidth / 2);
+
+            if (HasShadow)
+            {
+                left += ShadowRadius;
+                top += ShadowRadius;
+                right -= ShadowRadius;
+                bottom -= ShadowRadius;
+                width = right - left;
+                height = bottom - top;
+            }
 
             width -= (PointerDirection.IsHorizontal() ? pointerLength : 0);
             height -= (PointerDirection.IsVertical() ? pointerLength : 0);

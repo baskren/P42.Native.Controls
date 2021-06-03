@@ -24,6 +24,26 @@ namespace P42.Native.Controls
             }
         }
 
+        int b_ShadowRadius = (10.0).DipToPx();
+        public int ShadowRadius
+        {
+            get => b_ShadowRadius;
+            set => SetField(ref b_ShadowRadius, value);
+        }
+        public double DipShadowRadius
+        {
+            get => ShadowRadius.PxToDip();
+            set => ShadowRadius = value.DipToPx();
+        }
+
+        bool b_HasShadow = true;
+        public bool HasShadow
+        {
+            get => b_HasShadow;
+            set => SetField(ref b_HasShadow, value);
+        }
+
+
         TimeSpan b_PopAfter;
         public TimeSpan PopAfter
         {
