@@ -304,7 +304,7 @@ namespace P42.Native.Controls
                 if (DipVerticalAlignment == Alignment.End)
                     m_Border.NtvPointerAxialPosition = (target.Top - (windowSize.Height - margin.Bottom - cleanSize.Height)) + target.Bottom - (target.Top + target.Bottom) / 2.0 +(HasShadow ? ShadowRadius : 0);
                 else
-                    m_Border.NtvPointerAxialPosition = (target.Top - margin.Top) + target.Bottom - (target.Top + target.Bottom) / 2.0 + (HasShadow ? ShadowRadius : 0);
+                    m_Border.NtvPointerAxialPosition = (target.Top - margin.Top) + target.Bottom - (target.Top + target.Bottom) / 2.0 + (HasShadow && DipVerticalAlignment != Alignment.Stretch ? ShadowRadius : 0);
             }
             else
             {
@@ -341,7 +341,7 @@ namespace P42.Native.Controls
                 if (DipHorizontalAlignment == Alignment.End)
                     m_Border.NtvPointerAxialPosition = (target.Left - (windowSize.Width - margin.Right - cleanSize.Width)) + (target.Right - (target.Left + target.Right) / 2.0) + (HasShadow ? ShadowRadius : 0);
                 else
-                    m_Border.NtvPointerAxialPosition = (target.Left - margin.Left) + (target.Right - (target.Left + target.Right) / 2.0) + (HasShadow ? ShadowRadius : 0);
+                    m_Border.NtvPointerAxialPosition = (target.Left - margin.Left) + (target.Right - (target.Left + target.Right) / 2.0) + (HasShadow && DipHorizontalAlignment != Alignment.Stretch ? ShadowRadius : 0);
             }
 
             ActualPointerDirection = m_Border.DipPointerDirection = stats.PointerDirection;
