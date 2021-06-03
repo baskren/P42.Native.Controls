@@ -131,16 +131,15 @@ namespace P42.Native.Controls
 
             UpdateMarginAndAlignment();
 
-            m_BorderPopup = new PopupWindow(m_Border, (int)(m_PopupFrame.Width + 0.5), (int)(m_PopupFrame.Height + 0.5), true);
-            m_BorderPopup.Elevation = 100f;
-
-            m_BorderPopup.Touchable = true;
-            m_BorderPopup.Focusable = false;
-            m_BorderPopup.OutsideTouchable = false;
-
-            m_BorderPopup.TouchModal = false;
+            m_BorderPopup = new PopupWindow(m_Border, (int)(m_PopupFrame.Width + 0.5), (int)(m_PopupFrame.Height + 0.5), true)
+            {
+                Elevation = 100f,
+                Touchable = true,
+                Focusable = false,
+                OutsideTouchable = false,
+                TouchModal = false
+            };
             m_BorderPopup.SetTouchInterceptor(null);
-
             m_BorderPopup.ShowAtLocation(App.Current, GravityFlags.Top | GravityFlags.Left, (int)(m_PopupFrame.Left + 0.5), (int)(m_PopupFrame.Top + 0.5));
 
             if (IsAnimated)
