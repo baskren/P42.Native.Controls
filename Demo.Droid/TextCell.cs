@@ -18,7 +18,7 @@ namespace Demo.Droid
             DipVerticalAlignment = Alignment.Center,
             DipHorizontalAlignment = Alignment.Start
         };
-        Label _valueLabel;
+        public Label _valueLabel;
         Grid _grid;
 
         public TextCell(ListView listView) : base(listView)

@@ -25,11 +25,38 @@ namespace Demo.Droid
                 .SelectionMode(SelectionMode.Single);
 
             _listView.DipSelectionChanged += OnSelectionChanged;
+
+            _listView.DipItemClick += OnItemClick;
+        }
+
+        async void OnItemClick(object sender, ItemClickEventArgs args)
+        {
+            ListView littleList;
+            var cell = (TextCell)args.CellElement;
+            var label = cell._valueLabel;
+            var popup = new TargetedPopup(label)
+            {
+                DipContent = new ListView()
+                    .Assign(out littleList)
+                    .ItemsSource(items)
+                    .SelectionMode(SelectionMode.None)
+                    .DipRequestedHeight(300)
+                    .DipRequestedWidth(300)
+            };
+            littleList.DipItemClick += async (s, e) =>
+            {
+                args.CellElement.DipDataContext = e.ClickedItem;
+                await popup.PopAsync();
+            };
+            await popup.PushAsync();
+            
         }
 
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine($"ContentAndDetailPresenterPage.OnSelectionChanged: " + e.ToString());
+
+
         }
     }
 }

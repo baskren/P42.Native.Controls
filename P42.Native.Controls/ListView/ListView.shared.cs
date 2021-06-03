@@ -36,7 +36,7 @@ namespace P42.Native.Controls
             set => SetField(ref b_DipFooter, value);
         }
 
-        bool b_DipIsItemClickEnabled;
+        bool b_DipIsItemClickEnabled = true;
         public bool DipIsItemClickEnabled
         {
             get => b_DipIsItemClickEnabled;

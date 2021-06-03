@@ -161,6 +161,17 @@ namespace P42.Native.Controls
                 var vtMode = MeasureSpec.GetMode(heightMeasureSpec);
                 //System.Diagnostics.Debug.WriteLine($" hzMode:{hzMode} vtMode:{vtMode} ");
 
+                if (NtvRequestedWidth > 0 && NtvRequestedWidth <= availableWidth)
+                {
+                    availableWidth = NtvRequestedWidth;
+                    hzMode = MeasureSpecMode.Exactly;
+                }
+                if (NtvRequestedHeight > 0 && NtvRequestedHeight <= availableHeight)
+                {
+                    availableHeight = NtvRequestedHeight;
+                    vtMode = MeasureSpecMode.Exactly;
+                }
+
                 double cellWidth = availableWidth;
                 double cellHeight = availableHeight;
                 if (IsHorizontal && availableWidth > 0)

@@ -38,20 +38,22 @@ namespace P42.Native.Controls
             m_Overlay = new View(context)
             {
                 LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent),
-                Background = PageOverlayColor.AsDrawable()
+                Background = DipPageOverlayColor.AsDrawable()
             };
 
             m_Border = new BubbleBorder(context)
             {
+                NtvMargin = NtvMargin,
+                NtvPadding = NtvPadding,
+                NtvBorderWidth = NtvBorderWidth,
+                NtvCornerRadius = NtvCornerRadius,
+                DipHasShadow = DipHasShadow,
                 DipBorderColor = DipBorderColor,
                 DipBackgroundColor = DipBackgroundColor
             };
             m_Border.PropertyChanged += OnBorderPropertyChanged;
 
             NtvBaseView = m_Border;
-
-            m_Border.HasShadow = HasShadow;
-            m_Border.NtvShadowRadius = ShadowRadius;
         }
 
 
@@ -93,11 +95,11 @@ namespace P42.Native.Controls
         #region Push / Pop
         async Task InnerPushAsyc()
         {
-            PushPopState = PushPopState.Pushing;
+            DipPushPopState = PushPopState.Pushing;
             _popCompletionSource = null;
 
-            PoppedCause = PopupPoppedCause.BackgroundTouch;
-            PoppedTrigger = null;
+            DipPoppedCause = PopupPoppedCause.BackgroundTouch;
+            DipPoppedTrigger = null;
 
             await OnPushBeginAsync();
 
@@ -107,10 +109,10 @@ namespace P42.Native.Controls
 
             //UpdateMarginAndAlignment();
             
-            if (PageOverlayMode != PageOverlayMode.TouchTransparent || b_PageOverlayColor.A > 0 )
+            if (DipPageOverlayMode != PageOverlayMode.TouchTransparent || b_DipPageOverlayColor.A > 0 )
             {
                 m_OverlayPopup = new PopupWindow(m_Overlay, DisplayExtensions.PxWidth(), DisplayExtensions.PxHeight(), true);
-                if (PageOverlayMode == PageOverlayMode.TouchTransparent)
+                if (DipPageOverlayMode == PageOverlayMode.TouchTransparent)
                 {
                     m_OverlayPopup.Touchable = false;
                     m_OverlayPopup.TouchModal = false;
@@ -118,13 +120,13 @@ namespace P42.Native.Controls
                 else
                     m_OverlayPopup.SetTouchInterceptor(new OverlayTouchListener((view, point) =>
                     {
-                        if (PageOverlayMode == PageOverlayMode.TouchDismiss)
+                        if (DipPageOverlayMode == PageOverlayMode.TouchDismiss)
                         {
                             System.Diagnostics.Debug.WriteLine($"TargetedPopup: Overlay INTERCEPT");
                             PopAsync(PopupPoppedCause.BackgroundTouch, null);
                             return true;
                         }
-                        return b_PageOverlayMode != PageOverlayMode.TouchTransparent;
+                        return b_DipPageOverlayMode != PageOverlayMode.TouchTransparent;
                     }));
                 m_OverlayPopup.ShowAtLocation(App.Current, GravityFlags.Top | GravityFlags.Left, 0, 0);
             }
@@ -165,7 +167,7 @@ namespace P42.Native.Controls
 
             await OnPushEndAsync();
 
-            PushPopState = PushPopState.Pushed;
+            DipPushPopState = PushPopState.Pushed;
             Pushed?.Invoke(this, EventArgs.Empty);
             _pushCompletionSource?.TrySetResult(true);
 
@@ -173,10 +175,10 @@ namespace P42.Native.Controls
 
         public virtual async Task PopAsync(PopupPoppedCause cause = PopupPoppedCause.MethodCalled, [CallerMemberName] object trigger = null)
         {
-            if (PushPopState == PushPopState.Popping || PushPopState == PushPopState.Popped)
+            if (DipPushPopState == PushPopState.Popping || DipPushPopState == PushPopState.Popped)
                 return;
 
-            if (PushPopState == PushPopState.Pushing)
+            if (DipPushPopState == PushPopState.Pushing)
             {
                 if (_pushCompletionSource is null)
                     await WaitForPush();
@@ -185,11 +187,11 @@ namespace P42.Native.Controls
             }
             _pushCompletionSource = null;
 
-            PushPopState = PushPopState.Popping;
+            DipPushPopState = PushPopState.Popping;
             _pushCompletionSource = null;
 
-            PoppedCause = cause;
-            PoppedTrigger = trigger;
+            DipPoppedCause = cause;
+            DipPoppedTrigger = trigger;
             await OnPopBeginAsync();
 
             if (IsAnimated)
@@ -202,13 +204,13 @@ namespace P42.Native.Controls
             m_BorderPopup.Dismiss();
             m_OverlayPopup.Dismiss();
 
-            if (!DisposeOnPop)
+            if (!DipDisposeOnPop)
                 m_Border.DipContent = null;
 
             m_BorderPopup.Dispose();
             m_OverlayPopup.Dispose();
 
-            CompletePop(PoppedCause, PoppedTrigger);
+            CompletePop(DipPoppedCause, DipPoppedTrigger);
         }
         #endregion
 
@@ -228,7 +230,7 @@ namespace P42.Native.Controls
             var windowHeight = windowSize.Height - NtvMargin.Vertical;
             var cleanSize = MeasureBorder(new SizeI(windowWidth, windowHeight));
 
-            if (PreferredPointerDirection == PointerDirection.None || Target is null)
+            if (DipPreferredPointerDirection == PointerDirection.None || Target is null)
             {
                 //System.Diagnostics.Debug.WriteLine(GetType() + ".UpdateMarginAndAlignment PreferredPointerDirection == PointerDirection.None");
                 CleanMarginAndAlignment(DipHorizontalAlignment, DipVerticalAlignment, windowSize, cleanSize);
@@ -247,7 +249,7 @@ namespace P42.Native.Controls
                 return;
             }
 
-            ActualPointerDirection = stats.PointerDirection;
+            DipActualPointerDirection = stats.PointerDirection;
             var margin = NtvMargin;
             var hzAlign = DipHorizontalAlignment;
             var vtAlign = DipVerticalAlignment;
@@ -327,18 +329,18 @@ namespace P42.Native.Controls
                     m_Border.NtvPointerAxialPosition = (target.Left - margin.Left) + (target.Right - (target.Left + target.Right) / 2.0);
             }
 
-            ActualPointerDirection = m_Border.DipPointerDirection = stats.PointerDirection;
+            DipActualPointerDirection = m_Border.DipPointerDirection = stats.PointerDirection;
             SetMarginAndAlignment(margin, hzAlign, vtAlign, windowSize, cleanSize);
         }
 
         void CleanMarginAndAlignment(Alignment hzAlign, Alignment vtAlign, SizeI windowSize, SizeI borderSize)
         {
-            ActualPointerDirection = PointerDirection.None;
+            DipActualPointerDirection = PointerDirection.None;
 
             if (m_Border is null)
                 return;
 
-            m_Border.DipPointerDirection = ActualPointerDirection;
+            m_Border.DipPointerDirection = DipActualPointerDirection;
             SetMarginAndAlignment(NtvMargin, hzAlign, vtAlign, windowSize, borderSize);
         }
 
@@ -367,8 +369,8 @@ namespace P42.Native.Controls
 
         RectI CalculateFrame(ThicknessI margin, Alignment hzAlign, Alignment vtAlign, SizeI windowSize, SizeI borderSize)
         {
-            var hzPointer = ActualPointerDirection.IsHorizontal() ? PointerLength : 0;
-            var vtPointer = ActualPointerDirection.IsVertical() ? PointerLength : 0;
+            var hzPointer = DipActualPointerDirection.IsHorizontal() ? NtvPointerLength : 0;
+            var vtPointer = DipActualPointerDirection.IsVertical() ? NtvPointerLength : 0;
             var left = margin.Left;
             var top = margin.Top;
             if (this.HasPrescribedWidth())
@@ -430,18 +432,18 @@ namespace P42.Native.Controls
 
             #region Check if clean border fits in preferred pointer quadrants
             // see if the existing measurement data works
-            if (GetBestDirectionStat(GetRectangleBorderStatsForDirection(PreferredPointerDirection, cleanStat, availableSpace)) is DirectionStats stats0)
+            if (GetBestDirectionStat(GetRectangleBorderStatsForDirection(DipPreferredPointerDirection, cleanStat, availableSpace)) is DirectionStats stats0)
                 return stats0;
             #endregion
 
             #region Check if border + content could fit in any of the preferred pointer quadrants
             // at this point in time valid and invalid fits are in the stats list
-            if (GetBestDirectionStat(GetMeasuredStatsForDirection(PreferredPointerDirection, cleanStat, availableSpace, windowSpace)) is DirectionStats stats1)
+            if (GetBestDirectionStat(GetMeasuredStatsForDirection(DipPreferredPointerDirection, cleanStat, availableSpace, windowSpace)) is DirectionStats stats1)
                 return stats1;
             #endregion
 
             // the stats list only contains invalid fallback fits ... but perhaps not all fallback fits have yet been tried
-            var uncheckedFallbackPointerDirection = (FallbackPointerDirection ^ PreferredPointerDirection) | FallbackPointerDirection;
+            var uncheckedFallbackPointerDirection = (DipFallbackPointerDirection ^ DipPreferredPointerDirection) | DipFallbackPointerDirection;
 
             #region Check if clean border fits in unchecked fallback pointer quadrants
             if (GetBestDirectionStat(GetRectangleBorderStatsForDirection(uncheckedFallbackPointerDirection, cleanStat, availableSpace)) is DirectionStats stats2)
@@ -479,10 +481,10 @@ namespace P42.Native.Controls
         {
             var targetBounds = Target is null ? RectI.Empty : Target.GetBoundsRelativeTo(App.Current);
 
-            var targetLeft = (Target is null ? TargetPoint.X : targetBounds.Left) - PointerMargin;
-            var targetRight = (Target is null ? TargetPoint.X : targetBounds.Right) + PointerMargin;
-            var targetTop = (Target is null ? TargetPoint.Y : targetBounds.Top) - PointerMargin;
-            var targetBottom = (Target is null ? TargetPoint.Y : targetBounds.Bottom) + PointerMargin;
+            var targetLeft = (Target is null ? NtvTargetPoint.X : targetBounds.Left) - NtvPointerMargin;
+            var targetRight = (Target is null ? NtvTargetPoint.X : targetBounds.Right) + NtvPointerMargin;
+            var targetTop = (Target is null ? NtvTargetPoint.Y : targetBounds.Top) - NtvPointerMargin;
+            var targetBottom = (Target is null ? NtvTargetPoint.Y : targetBounds.Bottom) + NtvPointerMargin;
 
             return new RectI(targetLeft, targetTop, targetRight - targetLeft, targetBottom - targetTop);
         }
@@ -490,7 +492,7 @@ namespace P42.Native.Controls
         ThicknessI AvailableSpace(RectI target)
         {
             var windowBounds = DisplayExtensions.PxSize();
-            if (Target != null || (TargetPoint.X > 0 || TargetPoint.Y > 0))
+            if (Target != null || (NtvTargetPoint.X > 0 || NtvTargetPoint.Y > 0))
             {
                 if (target.Right > 0 && target.Left < windowBounds.Width && target.Bottom > 0 && target.Top < windowBounds.Height)
                 {
@@ -531,11 +533,11 @@ namespace P42.Native.Controls
         {
             //System.Diagnostics.Debug.WriteLine(GetType() + ".GetRectangleBorderStatsForDirection cleanStat:["+cleanStat+"]");
             var stats = new List<DirectionStats>();
-            if (pointerDirection.LeftAllowed() && (availableSpace.Right - cleanStat.BorderSize.Width) >= PointerLength)
+            if (pointerDirection.LeftAllowed() && (availableSpace.Right - cleanStat.BorderSize.Width) >= NtvPointerLength)
             {
                 var stat = cleanStat;
                 stat.PointerDirection = PointerDirection.Left;
-                stat.BorderSize.Width += PointerLength;
+                stat.BorderSize.Width += NtvPointerLength;
                 var free = availableSpace.Right - stat.BorderSize.Width;
                 if (free >= 0)
                 {
@@ -544,11 +546,11 @@ namespace P42.Native.Controls
                 }
             }
 
-            if (pointerDirection.RightAllowed() && (availableSpace.Left - cleanStat.BorderSize.Width) >= PointerLength)
+            if (pointerDirection.RightAllowed() && (availableSpace.Left - cleanStat.BorderSize.Width) >= NtvPointerLength)
             {
                 var stat = cleanStat;
                 stat.PointerDirection = PointerDirection.Right;
-                stat.BorderSize.Width += PointerLength;
+                stat.BorderSize.Width += NtvPointerLength;
                 var free = availableSpace.Left - stat.BorderSize.Width;
                 if (free >= 0)
                 {
@@ -557,11 +559,11 @@ namespace P42.Native.Controls
                 }
             }
 
-            if (pointerDirection.UpAllowed() && (availableSpace.Bottom - cleanStat.BorderSize.Height) >= PointerLength)
+            if (pointerDirection.UpAllowed() && (availableSpace.Bottom - cleanStat.BorderSize.Height) >= NtvPointerLength)
             {
                 var stat = cleanStat;
                 stat.PointerDirection = PointerDirection.Up;
-                stat.BorderSize.Height += PointerLength;
+                stat.BorderSize.Height += NtvPointerLength;
                 var free = availableSpace.Bottom - stat.BorderSize.Height;
                 if (free >= 0)
                 {
@@ -570,11 +572,11 @@ namespace P42.Native.Controls
                 }
             }
 
-            if (pointerDirection.DownAllowed() && (availableSpace.Top - cleanStat.BorderSize.Height) >= PointerLength)
+            if (pointerDirection.DownAllowed() && (availableSpace.Top - cleanStat.BorderSize.Height) >= NtvPointerLength)
             {
                 var stat = cleanStat;
                 stat.PointerDirection = PointerDirection.Down;
-                stat.BorderSize.Height += PointerLength;
+                stat.BorderSize.Height += NtvPointerLength;
                 var free = availableSpace.Top - stat.BorderSize.Height;
                 if (free >= 0)
                 {
@@ -750,20 +752,29 @@ namespace P42.Native.Controls
         
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (propertyName == nameof(NtvPadding))
-                m_Border.NtvPadding = NtvPadding;
-            else if (propertyName == nameof(NtvBorderWidth))
-                m_Border.NtvBorderWidth = NtvBorderWidth;
-            else if (propertyName == nameof(DipBorderColor))
-                m_Border.DipBorderColor = DipBorderColor;
-            else if (propertyName == nameof(NtvCornerRadius))
-                m_Border.NtvCornerRadius = NtvCornerRadius;
-            else if (propertyName == nameof(DipBackgroundColor))
-                m_Border.DipBackgroundColor = DipBackgroundColor;
-            else if (propertyName == nameof(DipHasDrawn) && DipHasDrawn)
-                DipHasDrawnTaskCompletionSource?.TrySetResult(true);
-            else if (propertyName == nameof(HasShadow))
-                m_Border.HasShadow = HasShadow;
+            if (m_Border is not null)
+            {
+                if (propertyName == nameof(DipPadding))
+                    m_Border.NtvPadding = NtvPadding;
+                else if (propertyName == nameof(DipMargin))
+                    m_Border.NtvMargin = NtvMargin;
+                else if (propertyName == nameof(DipBorderWidth))
+                    m_Border.NtvBorderWidth = NtvBorderWidth;
+                else if (propertyName == nameof(DipBorderColor))
+                    m_Border.DipBorderColor = DipBorderColor;
+                else if (propertyName == nameof(DipCornerRadius))
+                    m_Border.NtvCornerRadius = NtvCornerRadius;
+                else if (propertyName == nameof(DipBackgroundColor))
+                    m_Border.DipBackgroundColor = DipBackgroundColor;
+                else if (propertyName == nameof(DipHasDrawn) && DipHasDrawn)
+                    DipHasDrawnTaskCompletionSource?.TrySetResult(true);
+                else if (propertyName == nameof(DipHasShadow))
+                    m_Border.DipHasShadow = DipHasShadow;
+                else if (propertyName == nameof(DipRequestedWidth))
+                    m_Border.NtvRequestedWidth = NtvRequestedWidth;
+                else if (propertyName == nameof(DipRequestedHeight))
+                    m_Border.NtvRequestedHeight = NtvRequestedHeight;
+            }
         }
 
         public void RedrawElement() => m_Border.PostInvalidate();

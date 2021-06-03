@@ -24,20 +24,20 @@ namespace P42.Native.Controls
             }
         }
 
-        int b_ShadowRadius = (10.0).DipToPx();
-        public int ShadowRadius
+        int b_NtvShadowRadius = (10.0).DipToPx();
+        public int NtvShadowRadius
         {
-            get => b_ShadowRadius;
-            set => SetField(ref b_ShadowRadius, value);
+            get => b_NtvShadowRadius;
+            set => SetField(ref b_NtvShadowRadius, value);
         }
         public double DipShadowRadius
         {
-            get => ShadowRadius.PxToDip();
-            set => ShadowRadius = value.DipToPx();
+            get => NtvShadowRadius.PxToDip();
+            set => NtvShadowRadius = value.DipToPx();
         }
 
         bool b_HasShadow = true;
-        public bool HasShadow
+        public bool DipHasShadow
         {
             get => b_HasShadow;
             set => SetField(ref b_HasShadow, value);
@@ -68,135 +68,161 @@ namespace P42.Native.Controls
             set => SetField(ref b_Target, value);
         }
 
-        Android.Graphics.Point b_TargetPoint;
-        public Android.Graphics.Point TargetPoint
+        PointI b_NtvTargetPoint;
+        public PointI NtvTargetPoint
         {
-            get => b_TargetPoint;
-            set => SetField(ref b_TargetPoint, value);
+            get => b_NtvTargetPoint;
+            set => SetField(ref b_NtvTargetPoint, value);
+        }
+        public Point DipTargetPoint
+        {
+            get => NtvTargetPoint.PxToDip();
+            set => NtvTargetPoint = value.DipToPx();
         }
         #endregion
 
         #region Pointer Properties
+        /*
         double b_PointerBias;
         public double PointerBias
         {
             get => b_PointerBias;
             set => SetField(ref b_PointerBias, value);
         }
-
-        double b_PointerCornerRadius = BubbleBorder.NtvDefaultPointerCornerRadius;
-        public double PointerCornerRadius
+        */
+        double b_NtvPointerCornerRadius = BubbleBorder.NtvDefaultPointerCornerRadius;
+        public double NtvPointerCornerRadius
         {
-            get => b_PointerCornerRadius;
+            get => b_NtvPointerCornerRadius;
             set
             {
-                if (SetField(ref b_PointerCornerRadius, value))
-                    m_Border.NtvPointerCornerRadius = PointerCornerRadius;
+                if (SetField(ref b_NtvPointerCornerRadius, value))
+                    m_Border.NtvPointerCornerRadius = NtvPointerCornerRadius;
             }
         }
-
-        PointerDirection b_ActualPointerDirection;
-        public PointerDirection ActualPointerDirection
+        public double DipPointerCornerRadius
         {
-            get => b_ActualPointerDirection;
-            private set => SetField(ref b_ActualPointerDirection, value);
+            get => NtvPointerCornerRadius.PxToDip();
+            set => NtvPointerCornerRadius = value.DipToPx();
         }
 
-        PointerDirection b_PreferredPointerDirection;
-        public PointerDirection PreferredPointerDirection
+        PointerDirection b_DipActualPointerDirection;
+        public PointerDirection DipActualPointerDirection
         {
-            get => b_PreferredPointerDirection;
-            set => SetField(ref b_PreferredPointerDirection, value);
+            get => b_DipActualPointerDirection;
+            private set => SetField(ref b_DipActualPointerDirection, value);
         }
 
-        PointerDirection b_FallbackPointerDirection;
-        public PointerDirection FallbackPointerDirection
+        PointerDirection b_DipPreferredPointerDirection;
+        public PointerDirection DipPreferredPointerDirection
         {
-            get => b_FallbackPointerDirection;
-            set => SetField(ref b_FallbackPointerDirection, value);
+            get => b_DipPreferredPointerDirection;
+            set => SetField(ref b_DipPreferredPointerDirection, value);
         }
 
-        int b_PointerLength = BubbleBorder.NtvDefaultPointerLength;
-        public int PointerLength
+        PointerDirection b_DipFallbackPointerDirection;
+        public PointerDirection DipFallbackPointerDirection
         {
-            get => b_PointerLength;
-            set => SetField(ref b_PointerLength, value);
+            get => b_DipFallbackPointerDirection;
+            set => SetField(ref b_DipFallbackPointerDirection, value);
         }
 
-        double b_PointerTipRadius = BubbleBorder.NtvDefaultPointerTipRadius;
-        public double PointerTipRadius
+        int b_NtvPointerLength = BubbleBorder.NtvDefaultPointerLength;
+        public int NtvPointerLength
         {
-            get => b_PointerTipRadius;
+            get => b_NtvPointerLength;
+            set => SetField(ref b_NtvPointerLength, value);
+        }
+        public double DipPointerLength
+        {
+            get => NtvPointerLength.PxToDip();
+            set => NtvPointerLength = value.DipToPx();
+        }
+
+        double b_NtvPointerTipRadius = BubbleBorder.NtvDefaultPointerTipRadius;
+        public double NtvPointerTipRadius
+        {
+            get => b_NtvPointerTipRadius;
             set
             {
-                if (SetField(ref b_PointerTipRadius, value))
-                    m_Border.NtvPointerTipRadius = PointerTipRadius;
+                if (SetField(ref b_NtvPointerTipRadius, value))
+                    m_Border.NtvPointerTipRadius = NtvPointerTipRadius;
             }
         }
-
-        int b_PointerMargin;
-        public int PointerMargin
+        public double DipPointerTipRadius
         {
-            get => b_PointerMargin;
-            set => SetField(ref b_PointerMargin, value);
+            get => NtvPointerTipRadius.PxToDip();
+            set => NtvPointerTipRadius = value.DipToPx();
+        }
+
+        int b_NtvPointerMargin;
+        public int NtvPointerMargin
+        {
+            get => b_NtvPointerMargin;
+            set => SetField(ref b_NtvPointerMargin, value);
+        }
+        public double DipPointerMargin
+        {
+            get => NtvPointerMargin.PxToDip();
+            set => NtvPointerMargin = value.DipToPx();
         }
         #endregion
 
         #region Page Overlay Properties
-        PageOverlayMode b_PageOverlayMode = PageOverlayMode.TouchDismiss;
-        public PageOverlayMode PageOverlayMode
+        PageOverlayMode b_DipPageOverlayMode = PageOverlayMode.TouchDismiss;
+        public PageOverlayMode DipPageOverlayMode
         {
-            get => b_PageOverlayMode;
-            set => SetField(ref b_PageOverlayMode, value);
+            get => b_DipPageOverlayMode;
+            set => SetField(ref b_DipPageOverlayMode, value);
         }
 
-        Color b_PageOverlayColor = Color.Gray.WithAlpha(0.25);
-        public Color PageOverlayColor
+        Color b_DipPageOverlayColor = Color.Gray.WithAlpha(0.25);
+        public Color DipPageOverlayColor
         {
-            get => b_PageOverlayColor;
+            get => b_DipPageOverlayColor;
             set
             {
-                if (SetField(ref b_PageOverlayColor, value))
+                if (SetField(ref b_DipPageOverlayColor, value))
                     //m_OverlayShape.Paint.Color = PageOverlayColor;
-                    m_Overlay.Background = PageOverlayColor.AsDrawable();
+                    m_Overlay.Background = DipPageOverlayColor.AsDrawable();
             }
         }
         #endregion
 
         #region Push/Pop
-        TimeSpan b_AnimationDuration;
-        public TimeSpan AnimationDuration
+        TimeSpan b_DipAnimationDuration;
+        public TimeSpan DipAnimationDuration
         {
-            get => b_AnimationDuration;
-            set => SetField(ref b_AnimationDuration, value);
+            get => b_DipAnimationDuration;
+            set => SetField(ref b_DipAnimationDuration, value);
         }
 
         PopupPoppedCause b_PoppedCause;
-        public PopupPoppedCause PoppedCause
+        public PopupPoppedCause DipPoppedCause
         {
             get => b_PoppedCause;
             set => SetField(ref b_PoppedCause, value);
         }
 
-        object b_PoppedTrigger;
-        public object PoppedTrigger
+        object b_DipPoppedTrigger;
+        public object DipPoppedTrigger
         {
-            get => b_PoppedTrigger;
-            set => SetField(ref b_PoppedTrigger, value);
+            get => b_DipPoppedTrigger;
+            set => SetField(ref b_DipPoppedTrigger, value);
         }
 
-        PushPopState b_PushPopState;
-        public PushPopState PushPopState
+        PushPopState b_DipPushPopState;
+        public PushPopState DipPushPopState
         {
-            get => b_PushPopState;
-            set => SetField(ref b_PushPopState, value);
+            get => b_DipPushPopState;
+            set => SetField(ref b_DipPushPopState, value);
         }
 
-        bool b_DisposeOnPop = true;
-        public bool DisposeOnPop
+        bool b_DipDisposeOnPop = true;
+        public bool DipDisposeOnPop
         {
-            get => b_DisposeOnPop;
-            set => SetField(ref b_DisposeOnPop, value);
+            get => b_DipDisposeOnPop;
+            set => SetField(ref b_DipDisposeOnPop, value);
         }
 
         #endregion
@@ -219,7 +245,7 @@ namespace P42.Native.Controls
         #region Push / Pop
         private void OnPopupClosed(object sender, object e)
         {
-            if (PushPopState == PushPopState.Pushed || PushPopState == PushPopState.Popping)
+            if (DipPushPopState == PushPopState.Pushed || DipPushPopState == PushPopState.Popping)
             {
                 CompletePop(PopupPoppedCause.BackgroundTouch, null);
             }
@@ -233,10 +259,10 @@ namespace P42.Native.Controls
 
         public virtual async Task PushAsync()
         {
-            if (PushPopState == PushPopState.Pushed || PushPopState == PushPopState.Pushing)
+            if (DipPushPopState == PushPopState.Pushed || DipPushPopState == PushPopState.Pushing)
                 return;
 
-            if (PushPopState == PushPopState.Popping)
+            if (DipPushPopState == PushPopState.Popping)
             {
                 if (_popCompletionSource is null)
                 {
@@ -250,14 +276,14 @@ namespace P42.Native.Controls
 
         void CompletePop(PopupPoppedCause poppedCause, object poppedTrigger)
         {
-            var result = new PopupPoppedEventArgs(PoppedCause, PoppedTrigger);
-            PushPopState = PushPopState.Popped;
+            var result = new PopupPoppedEventArgs(DipPoppedCause, DipPoppedTrigger);
+            DipPushPopState = PushPopState.Popped;
             //_border.Bind(BubbleBorder.OpacityProperty, this, nameof(Opacity));
             _popCompletionSource?.TrySetResult(result);
             Popped?.Invoke(this, result);
             //P42.Utils.Uno.GC.Collect();
 
-            if (DisposeOnPop)
+            if (DipDisposeOnPop)
                 Dispose();
         }
 

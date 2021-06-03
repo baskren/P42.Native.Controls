@@ -276,6 +276,17 @@ namespace P42.Native.Controls
             var hzMode = MeasureSpec.GetMode(widthMeasureSpec);
             var vtMode = MeasureSpec.GetMode(heightMeasureSpec);
 
+            if (NtvRequestedWidth > 0 && NtvRequestedWidth - 2 * borderW <= availableWidth)
+            {
+                availableWidth = NtvRequestedWidth - 2 * borderW;
+                hzMode = MeasureSpecMode.Exactly;
+            }
+            if (NtvRequestedHeight > 0 && NtvRequestedHeight - 2 * borderW <= availableHeight)
+            {
+                availableHeight = NtvRequestedHeight - 2 * borderW;
+                vtMode = MeasureSpecMode.Exactly;
+            }
+
             base.OnMeasure(
                 MeasureSpec.MakeMeasureSpec(availableWidth, hzMode),
                 MeasureSpec.MakeMeasureSpec(availableHeight, vtMode));

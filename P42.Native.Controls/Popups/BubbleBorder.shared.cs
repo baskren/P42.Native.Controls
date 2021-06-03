@@ -47,7 +47,7 @@ namespace P42.Native.Controls
         }
 
         bool b_IsShadow;
-        public bool HasShadow
+        public bool DipHasShadow
         {
             get => b_IsShadow;
             set => SetField(ref b_IsShadow, value);

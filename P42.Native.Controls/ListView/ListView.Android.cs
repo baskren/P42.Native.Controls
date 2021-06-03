@@ -221,15 +221,45 @@ namespace P42.Native.Controls
         {
             if (_swappingOutNativeListView)
                 return;
-            _nativeListView.Measure(widthMeasureSpec, heightMeasureSpec);
-            SetMeasuredDimension(_nativeListView.MeasuredWidth, _nativeListView.MeasuredHeight);
+
+            var availableWidth = MeasureSpec.GetSize(widthMeasureSpec) - NtvMargin.Horizontal;
+            var availableHeight = MeasureSpec.GetSize(heightMeasureSpec) - NtvMargin.Vertical;
+
+            if (availableWidth < 0 || availableHeight < 0)
+            {
+                var size = DisplayExtensions.PxSize();
+
+                if (availableWidth < 0)
+                    availableWidth = size.Width;
+                if (availableHeight < 0)
+                    availableHeight = size.Height;
+            }
+
+            var hzMode = MeasureSpec.GetMode(widthMeasureSpec);
+            var vtMode = MeasureSpec.GetMode(heightMeasureSpec);
+            //System.Diagnostics.Debug.WriteLine($" hzMode:{hzMode} vtMode:{vtMode} ");
+
+            if (NtvRequestedWidth > 0 && NtvRequestedWidth <= availableWidth)
+            {
+                availableWidth = NtvRequestedWidth;
+                hzMode = MeasureSpecMode.Exactly;
+            }
+            if (NtvRequestedHeight > 0 && NtvRequestedHeight <= availableHeight)
+            {
+                availableHeight = NtvRequestedHeight;
+                vtMode = MeasureSpecMode.Exactly;
+            }
+
+
+            _nativeListView.Measure(MeasureSpec.MakeMeasureSpec(availableWidth, hzMode), MeasureSpec.MakeMeasureSpec(availableHeight, vtMode));
+            SetMeasuredDimension(_nativeListView.MeasuredWidth + NtvMargin.Horizontal, _nativeListView.MeasuredHeight + NtvMargin.Vertical);
         }
         
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
             if (_swappingOutNativeListView)
                 return;
-            _nativeListView.Layout(l, t, r, b);
+            _nativeListView.Layout(l + NtvMargin.Left, t + NtvMargin.Top, r - NtvMargin.Right, b - NtvMargin.Bottom);
             System.Diagnostics.Debug.WriteLine($"ListView.OnLayout({l}, {t}, {r}, {b}) EXIT : ");
         }
 

@@ -54,14 +54,17 @@ namespace P42.Native.Controls
                 return false;
             if (propertyName == null)
                 throw new Exception("null propertyName in SetField");
+            string dipPropertyName = propertyName.StartsWith("Ntv") ? "Dip" + propertyName[3..] : propertyName;
 
-            ((INotifiable)this).OnPropertyChanging(propertyName);
-            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
+            ((INotifiable)this).OnPropertyChanging(dipPropertyName);
+            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(dipPropertyName));
+
             field = value;
             DipHasChanged = true;
             action?.Invoke();
-            ((INotifiable)this).OnPropertyChanged(propertyName);
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+            ((INotifiable)this).OnPropertyChanged(dipPropertyName);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(dipPropertyName));
             return true;
         }
         #endregion

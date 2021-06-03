@@ -198,7 +198,7 @@ namespace Demo.Droid
                     DipContent = content,
                     DipBackgroundColor = Color.Aquamarine,
                     DipBorderColor = Color.Transparent,
-                    PreferredPointerDirection = segment.Text == "UP"
+                    DipPreferredPointerDirection = segment.Text == "UP"
                     ? P42.Native.Controls.PointerDirection.Up
                     : segment.Text == "DOWN"
                         ? P42.Native.Controls.PointerDirection.Down
@@ -243,7 +243,7 @@ namespace Demo.Droid
                 DipContent = content,
                 DipBackgroundColor = Color.Aquamarine,
                 DipBorderColor = Color.Transparent,
-                PreferredPointerDirection = P42.Native.Controls.PointerDirection.Up,
+                DipPreferredPointerDirection = P42.Native.Controls.PointerDirection.Up,
             };
             ((IControl)popup).DipBorderWidth = 2;
 

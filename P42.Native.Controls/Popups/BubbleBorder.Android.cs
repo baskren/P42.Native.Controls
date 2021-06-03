@@ -69,14 +69,34 @@ namespace P42.Native.Controls
                 return;
             }
 
-            var availableWidth = MeasureSpec.GetSize(widthMeasureSpec);
-            var availableHeight = MeasureSpec.GetSize(heightMeasureSpec);
+            var availableWidth = MeasureSpec.GetSize(widthMeasureSpec) - NtvMargin.Horizontal;
+            var availableHeight = MeasureSpec.GetSize(heightMeasureSpec) - NtvMargin.Vertical;
             var hzMode = MeasureSpec.GetMode(widthMeasureSpec);
             var vtMode = MeasureSpec.GetMode(heightMeasureSpec);
 
+            if (availableWidth < 0 || availableHeight < 0)
+            {
+                var size = DisplayExtensions.PxSize();
 
-            var hzInset = (int)(NtvMargin.Horizontal + 2 * NtvBorderWidth + NtvPadding.Horizontal + (DipPointerDirection.IsHorizontal() ? NtvPointerLength : 0) + 0.5);
-            var vtInset = (int)(NtvMargin.Vertical + 2 * NtvBorderWidth + NtvPadding.Vertical + (DipPointerDirection.IsVertical() ? NtvPointerLength : 0) + 0.5);
+                if (availableWidth < 0)
+                    availableWidth = size.Width;
+                if (availableHeight < 0)
+                    availableHeight = size.Height;
+            }
+
+            if (NtvRequestedWidth > 0 && NtvRequestedWidth <= availableWidth)
+            {
+                availableWidth = NtvRequestedWidth;
+                hzMode = MeasureSpecMode.Exactly;
+            }
+            if (NtvRequestedHeight > 0 && NtvRequestedHeight <= availableHeight)
+            {
+                availableHeight = NtvRequestedHeight;
+                vtMode = MeasureSpecMode.Exactly;
+            }
+
+            var hzInset = (int)(2 * NtvBorderWidth + NtvPadding.Horizontal + (DipPointerDirection.IsHorizontal() ? NtvPointerLength : 0) + 0.5);
+            var vtInset = (int)(2 * NtvBorderWidth + NtvPadding.Vertical + (DipPointerDirection.IsVertical() ? NtvPointerLength : 0) + 0.5);
 
             var contentWidthAvailable = availableWidth - hzInset;
             var contentHeightAvailable = availableHeight - vtInset;
@@ -85,15 +105,8 @@ namespace P42.Native.Controls
             var contentHeightSpec = MeasureSpec.MakeMeasureSpec(contentHeightAvailable, vtMode);
 
             DipContent.Measure(contentWidthSpec, contentHeightSpec);
-            //MeasureChildren(contentWidthSpec, contentHeightSpec);
 
-            /*
-            var mWidth = Content.MeasuredWidth + hzInset;
-            if (Content.LayoutParameters.Width.GetTypeCode() == TypeCo)
-            var mHeigth = Content.MeasuredHeight + vtInset;
-            */
-
-            SetMeasuredDimension(DipContent.MeasuredWidth + hzInset, DipContent.MeasuredHeight + vtInset);
+            SetMeasuredDimension(DipContent.MeasuredWidth + NtvMargin.Horizontal + hzInset, DipContent.MeasuredHeight + NtvMargin.Vertical + vtInset);
         }
 
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
@@ -154,7 +167,7 @@ namespace P42.Native.Controls
         {
             Path p = GeneratePath(new Size(canvas.Width, canvas.Height));
 
-            if (HasShadow)
+            if (DipHasShadow)
             {
                 // Create paint for shadow
                 Android.Graphics.Rect clipRect = new Android.Graphics.Rect();

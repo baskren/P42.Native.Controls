@@ -149,7 +149,7 @@ namespace P42.Native.Controls
 				Typeface = FontExtensions.ToTypeface(DipFontFamily, DipFontStyle);
 			else if (propertyName == nameof(DipFontSize))
 				SetTextSize(ComplexUnitType.Sp, (float)DipFontSize);
-			else if (propertyName == nameof(Text) || propertyName == nameof(DipTextType))
+			else if (propertyName == nameof(DipText) || propertyName == nameof(DipTextType))
 				UpdateText();
 			else if (propertyName == nameof(DipTextColor))
 				SetTextColor(b_DipTextColor);
@@ -157,7 +157,7 @@ namespace P42.Native.Controls
 				UpdateLineBreakMode();
 			else if (propertyName == nameof(DipHorizontalTextAlignment) || propertyName == nameof(DipVerticalTextAlignment))
 				Gravity = DipHorizontalTextAlignment.ToHorizontalGravityFlags() | DipVerticalTextAlignment.ToVerticalGravityFlags();
-			else if (propertyName == nameof(NtvMargin))
+			else if (propertyName == nameof(DipMargin))
 				SetPadding(NtvMargin.Left, NtvMargin.Top, NtvMargin.Right, NtvMargin.Bottom);
 		}
 
