@@ -132,30 +132,15 @@ namespace P42.Native.Controls
             UpdateMarginAndAlignment();
 
             m_BorderPopup = new PopupWindow(m_Border, (int)(m_PopupFrame.Width + 0.5), (int)(m_PopupFrame.Height + 0.5), true);
-            //m_BorderPopup = new PopupWindow(m_Border, DisplayExtensions.Width, DisplayExtensions.Height, true);
-            //m_BorderPopup.ShowAtLocation(App.Current, GravityFlags.Top | GravityFlags.Left, 0, 0);
+            m_BorderPopup.Elevation = 100f;
+
             m_BorderPopup.Touchable = true;
             m_BorderPopup.Focusable = false;
             m_BorderPopup.OutsideTouchable = false;
-            //m_BorderPopup.TouchIntercepted += M_BorderPopup_TouchIntercepted;
+
             m_BorderPopup.TouchModal = false;
             m_BorderPopup.SetTouchInterceptor(null);
-            //m_BorderPopup.ClippingEnabled = false;
-            //m_BorderPopup.SetBackgroundDrawable(PageOverlayColor.AsDrawable());
-            /*
-            m_BorderPopup.SetTouchInterceptor(new OverlayTouchListener((view, point) =>
-            {
-                // return true if touch is within border
-                //return point.X >=0 && point.X < view.Width && point.Y >= 0 && point.Y < view.Height;
-                System.Diagnostics.Debug.WriteLine($"TargetedPopup.INTERCEPT");
 
-                // return: dismiss popup?
-                return true;
-            }));
-            */
-            //_popup.IsOpen = true;
-            //await Task.Delay(5);
-            //_popup.InvalidateMeasure();
             m_BorderPopup.ShowAtLocation(App.Current, GravityFlags.Top | GravityFlags.Left, (int)(m_PopupFrame.Left + 0.5), (int)(m_PopupFrame.Top + 0.5));
 
             if (IsAnimated)
@@ -165,7 +150,6 @@ namespace P42.Native.Controls
                 await animator.RunAsync();
             }
 
-            //_border.Bind(BubbleBorder.OpacityProperty, this, nameof(Opacity));
             m_Border.Alpha = 1;
 
             await ((IElement)m_Border).DipWaitForDrawComplete();
@@ -302,9 +286,9 @@ namespace P42.Native.Controls
                     margin.Top = windowSize.Height - NtvMargin.Bottom - stats.BorderSize.Height;
 
                 if (DipVerticalAlignment == Alignment.End)
-                    m_Border.NtvPointerAxialPosition = (target.Top - (windowSize.Height - margin.Bottom - cleanSize.Height)) + target.Bottom - (target.Top + target.Bottom) / 2.0 +(HasShadow ? ShadowRadius : 0);
+                    m_Border.NtvPointerAxialPosition = (target.Top - (windowSize.Height - margin.Bottom - cleanSize.Height)) + target.Bottom - (target.Top + target.Bottom) / 2.0;
                 else
-                    m_Border.NtvPointerAxialPosition = (target.Top - margin.Top) + target.Bottom - (target.Top + target.Bottom) / 2.0 + (HasShadow && DipVerticalAlignment != Alignment.Stretch ? ShadowRadius : 0);
+                    m_Border.NtvPointerAxialPosition = (target.Top - margin.Top) + target.Bottom - (target.Top + target.Bottom) / 2.0;
             }
             else
             {
@@ -339,9 +323,9 @@ namespace P42.Native.Controls
                     margin.Left = windowSize.Width - NtvMargin.Right - stats.BorderSize.Width;
 
                 if (DipHorizontalAlignment == Alignment.End)
-                    m_Border.NtvPointerAxialPosition = (target.Left - (windowSize.Width - margin.Right - cleanSize.Width)) + (target.Right - (target.Left + target.Right) / 2.0) + (HasShadow ? ShadowRadius : 0);
+                    m_Border.NtvPointerAxialPosition = (target.Left - (windowSize.Width - margin.Right - cleanSize.Width)) + (target.Right - (target.Left + target.Right) / 2.0);
                 else
-                    m_Border.NtvPointerAxialPosition = (target.Left - margin.Left) + (target.Right - (target.Left + target.Right) / 2.0) + (HasShadow && DipHorizontalAlignment != Alignment.Stretch ? ShadowRadius : 0);
+                    m_Border.NtvPointerAxialPosition = (target.Left - margin.Left) + (target.Right - (target.Left + target.Right) / 2.0);
             }
 
             ActualPointerDirection = m_Border.DipPointerDirection = stats.PointerDirection;
@@ -424,19 +408,6 @@ namespace P42.Native.Controls
             {
                 bottom = windowSize.Height - margin.Bottom;
             }
-
-            if (HasShadow)
-            {
-                if (DipHorizontalAlignment != Alignment.Stretch || m_Border.DipPointerDirection == PointerDirection.Right)
-                    left -= ShadowRadius;
-                if (DipHorizontalAlignment != Alignment.Stretch || m_Border.DipPointerDirection == PointerDirection.Left)
-                    right += ShadowRadius;
-                if (DipVerticalAlignment != Alignment.Stretch || m_Border.DipPointerDirection == PointerDirection.Down)
-                    top -= ShadowRadius;
-                if (DipVerticalAlignment != Alignment.Stretch || m_Border.DipPointerDirection == PointerDirection.Up)
-                    bottom += ShadowRadius;
-            }
-
             return new RectI(left, top, right - left, bottom - top);
         }
 
@@ -792,6 +763,8 @@ namespace P42.Native.Controls
                 m_Border.DipBackgroundColor = DipBackgroundColor;
             else if (propertyName == nameof(DipHasDrawn) && DipHasDrawn)
                 DipHasDrawnTaskCompletionSource?.TrySetResult(true);
+            else if (propertyName == nameof(HasShadow))
+                m_Border.HasShadow = HasShadow;
         }
 
         public void RedrawElement() => m_Border.PostInvalidate();

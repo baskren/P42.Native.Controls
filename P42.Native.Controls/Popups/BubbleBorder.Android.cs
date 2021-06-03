@@ -62,7 +62,7 @@ namespace P42.Native.Controls
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
-            System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnMeasure(({MeasureSpec.GetSize(widthMeasureSpec)},{MeasureSpec.GetMode(widthMeasureSpec)}),({MeasureSpec.GetSize(heightMeasureSpec)},{MeasureSpec.GetMode(heightMeasureSpec)})");
+            //System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnMeasure(({MeasureSpec.GetSize(widthMeasureSpec)},{MeasureSpec.GetMode(widthMeasureSpec)}),({MeasureSpec.GetSize(heightMeasureSpec)},{MeasureSpec.GetMode(heightMeasureSpec)})");
             if (DipContent is null)
             {
                 SetMeasuredDimension((int)NtvMinWidth, (int)NtvMinHeight);
@@ -74,24 +74,9 @@ namespace P42.Native.Controls
             var hzMode = MeasureSpec.GetMode(widthMeasureSpec);
             var vtMode = MeasureSpec.GetMode(heightMeasureSpec);
 
-            
-            if (hzMode == Android.Views.MeasureSpecMode.Exactly && vtMode == Android.Views.MeasureSpecMode.Exactly)
-            {
-
-                SetMeasuredDimension(availableWidth, availableHeight);
-                return;
-            }
-            
-            
 
             var hzInset = (int)(NtvMargin.Horizontal + 2 * NtvBorderWidth + NtvPadding.Horizontal + (DipPointerDirection.IsHorizontal() ? NtvPointerLength : 0) + 0.5);
             var vtInset = (int)(NtvMargin.Vertical + 2 * NtvBorderWidth + NtvPadding.Vertical + (DipPointerDirection.IsVertical() ? NtvPointerLength : 0) + 0.5);
-            
-            if (HasShadow)
-            {
-                hzInset += 2 * NtvShadowRadius;
-                vtInset += 2 * NtvShadowRadius;
-            }
 
             var contentWidthAvailable = availableWidth - hzInset;
             var contentHeightAvailable = availableHeight - vtInset;
@@ -113,26 +98,19 @@ namespace P42.Native.Controls
 
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
-            System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout({changed}, {l}, {t}, {r}, {b})  w:{r-l} h:{b-t}");
+            //System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout({changed}, {l}, {t}, {r}, {b})  w:{r-l} h:{b-t}");
             if (DipContent != null)
             {
                 var borderWidth = 0.0;
                 if (DipBorderColor.A > 0 && NtvBorderWidth > 0)
                     borderWidth = (float)NtvBorderWidth;
-                System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout: Margin:{NtvMargin} Padding:{NtvPadding} BorderWidth:{NtvBorderWidth} PointerDir:{DipPointerDirection} PointerLen:{NtvPointerLength}");
+                //System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout: Margin:{NtvMargin} Padding:{NtvPadding} BorderWidth:{NtvBorderWidth} PointerDir:{DipPointerDirection} PointerLen:{NtvPointerLength}");
                 var cl = l + NtvMargin.Left + borderWidth + NtvPadding.Left + (DipPointerDirection == PointerDirection.Left ? NtvPointerLength : 0);
                 var ct = t + NtvMargin.Top + borderWidth + NtvPadding.Top + (DipPointerDirection == PointerDirection.Up ? NtvPointerLength : 0);
                 var cr = r - (NtvMargin.Right + borderWidth + NtvPadding.Right + (DipPointerDirection == PointerDirection.Right ? NtvPointerLength : 0));
                 var cb = b - (NtvMargin.Bottom + borderWidth + NtvPadding.Bottom + (DipPointerDirection == PointerDirection.Down ? NtvPointerLength : 0));
 
-                if (HasShadow)
-                {
-                    cl += NtvShadowRadius - NtvShadowShift.X;
-                    ct += NtvShadowRadius - NtvShadowShift.Y;
-                    cr -= NtvShadowRadius + NtvShadowShift.X;
-                    cb -= NtvShadowRadius + NtvShadowShift.Y;
-                }
-                System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout Content.Layout({(int)(cl + 0.5)}, {(int)(ct + 0.5)}, {(int)(cr + 0.5)}, {(int)(cb + 0.5)}) w:{cr - cl} h:{cb - ct}");
+                //System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout Content.Layout({(int)(cl + 0.5)}, {(int)(ct + 0.5)}, {(int)(cr + 0.5)}, {(int)(cb + 0.5)}) w:{cr - cl} h:{cb - ct}");
 
                     
                 var contentWidthSpec = MeasureSpec.MakeMeasureSpec((int)(cr - cl + 0.5), Android.Views.MeasureSpecMode.AtMost);
@@ -166,7 +144,7 @@ namespace P42.Native.Controls
                     cr = cl + DipContent.MeasuredWidth;
                 }
 
-                System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout Content.Layout({(int)(cl + 0.5)}, {(int)(ct + 0.5)}, {(int)(cr+0.5)}, {(int)(cb+0.5)}) w:{cr-cl} h:{cb-ct}");
+                //System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnLayout Content.Layout({(int)(cl + 0.5)}, {(int)(ct + 0.5)}, {(int)(cr+0.5)}, {(int)(cb+0.5)}) w:{cr-cl} h:{cb-ct}");
                 DipContent.Layout((int)(cl+0.5), (int)(ct+0.5), (int)(cr+0.5), (int)(cb+0.5));
             }
 
@@ -179,6 +157,11 @@ namespace P42.Native.Controls
             if (HasShadow)
             {
                 // Create paint for shadow
+                Android.Graphics.Rect clipRect = new Android.Graphics.Rect();
+                canvas.GetClipBounds(clipRect);
+                clipRect.Inset(-500, -500);
+                canvas.ClipRect(clipRect);
+
                 m_paint.Color = Color.Black.WithAlpha(0.5);
                 m_paint.SetMaskFilter(new BlurMaskFilter(
                     NtvShadowRadius / 2,
@@ -191,7 +174,7 @@ namespace P42.Native.Controls
             }
 
             m_paint.SetMaskFilter(null);
-            System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnDraw({canvas.Width}, {canvas.Height})");
+            //System.Diagnostics.Debug.WriteLine($"BubbleBorder.OnDraw({canvas.Width}, {canvas.Height})");
             m_paint.Color = DipBackgroundColor;
             m_paint.SetStyle(Paint.Style.Fill);
             canvas.DrawPath(p, m_paint);
@@ -233,16 +216,6 @@ namespace P42.Native.Controls
             var right = (float)(width  - NtvMargin.Right - borderWidth / 2);
             var top = (float)(NtvMargin.Top + borderWidth / 2);
             var bottom = (float)(height - NtvMargin.Bottom - borderWidth / 2);
-
-            if (HasShadow)
-            {
-                left += NtvShadowRadius;
-                top += NtvShadowRadius;
-                right -= NtvShadowRadius;
-                bottom -= NtvShadowRadius;
-                width = right - left;
-                height = bottom - top;
-            }
 
             width -= (DipPointerDirection.IsHorizontal() ? pointerLength : 0);
             height -= (DipPointerDirection.IsVertical() ? pointerLength : 0);

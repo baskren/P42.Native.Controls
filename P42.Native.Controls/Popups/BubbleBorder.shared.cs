@@ -46,11 +46,11 @@ namespace P42.Native.Controls
             set => b_NtvShadowShift = value.DipToPx();
         }
 
-        bool b_HasShadow;
+        bool b_IsShadow;
         public bool HasShadow
         {
-            get => b_HasShadow;
-            set => SetField(ref b_HasShadow, value);
+            get => b_IsShadow;
+            set => SetField(ref b_IsShadow, value);
         }
 
 
