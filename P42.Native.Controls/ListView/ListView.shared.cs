@@ -43,7 +43,7 @@ namespace P42.Native.Controls
             set => SetField(ref b_DipIsItemClickEnabled, value);
         }
 
-        internal ObservableCollection<object> b_DipSelectedItems = new ObservableCollection<object>();
+        internal P42.Utils.ObservableConcurrentCollection<object> b_DipSelectedItems = new P42.Utils.ObservableConcurrentCollection<object>();
         public IEnumerable DipSelectedItems
         {
             get => b_DipSelectedItems;
@@ -72,14 +72,32 @@ namespace P42.Native.Controls
         public int DipSelectedIndex
         {
             get => b_DipSelectedIndex;
-            set => DipSelectIndex(value);
+            set
+            {
+                if (DipSelectionMode != SelectionMode.None)
+                {
+                    try
+                    {
+                        var item = DipItemsSource.ElementAt(value);
+                        DipSelectItem(item);
+                    }
+                    catch
+                    {
+                        DipSelectItem(null);
+                    }
+                }
+            }
         }
 
         object b_DipSelectedItem;
         public object DipSelectedItem
         {
             get => b_DipSelectedItem;
-            set => DipSelectItem(value);
+            set
+            {
+                if (DipSelectionMode != SelectionMode.None)
+                    SetField(ref b_DipSelectedItem, value, () => DipSelectItem(value));
+            }
         }
 
         IEnumerable b_DipItemsSource;
@@ -116,6 +134,12 @@ namespace P42.Native.Controls
         {
             DipHorizontalAlignment = Alignment.Stretch;
             DipVerticalAlignment = Alignment.Stretch;
+            b_DipSelectedItems.CollectionChanged += DipOnSelectedItems_CollectionChanged;
+        }
+
+        void SharedDispose()
+        {
+            b_DipSelectedItems.CollectionChanged -= DipOnSelectedItems_CollectionChanged;
         }
 
         #region Scroll
@@ -125,7 +149,26 @@ namespace P42.Native.Controls
 
 
         #region Selection
-        internal partial Task DipOnCellTapped(Cell cell);
+
+        internal async Task DipOnCellTapped(Cell cell)
+        {
+            System.Diagnostics.Debug.WriteLine("ListView. CLICK");
+            if (DipSelectionMode != SelectionMode.None)
+            {
+                if (b_DipSelectedItems.Contains(cell.DipDataContext))
+                {
+                    if (DipSelectionMode != SelectionMode.Radio)
+                    {
+                        DipDeselectItem(cell.DipDataContext);
+                    }
+                }
+                else
+                    DipSelectItem(cell.DipDataContext);
+            }
+            await Task.Delay(10);
+            if (DipIsItemClickEnabled)
+                DipItemClick?.Invoke(this, new ItemClickEventArgs(this, cell.DipDataContext, cell));
+        }
 
         private void DipUpdateSelectionMode()
         {
@@ -133,11 +176,11 @@ namespace P42.Native.Controls
                 b_DipSelectedItems.Clear();
             else if (DipSelectionMode != SelectionMode.Multi)
             {
-                if (b_DipSelectedItems.FirstOrDefault() is object first && first != null)
+                if (b_DipSelectedItems.LastOrDefault() is object last && last != null)
                 {
                     var items = b_DipSelectedItems.ToArray();
                     foreach (var item in items)
-                        if (item != first)
+                        if (item != last)
                             b_DipSelectedItems.Remove(item);
                 }
             }
@@ -147,86 +190,80 @@ namespace P42.Native.Controls
         {
             if (DipSelectionMode == SelectionMode.Multi)
             {
+                _manuallyCallingSelectionChanged = true;
+                var newItems = new List<object>();
                 foreach (var item in DipItemsSource)
                 {
                     if (!b_DipSelectedItems.Contains(item))
-                        b_DipSelectedItems.Add(item);
+                        newItems.Add(item);
                 }
+                b_DipSelectedItems.AddRange(newItems);
+
+                _manuallyCallingSelectionChanged = false;
             }
         }
 
-        public void DipDeselectAll()
+        public void DipSelectItem(object item)
         {
-            b_DipSelectedItems.Clear();
-        }
 
-        void DipSelectIndex(int index)
-        {
-            if (DipSelectionMode != SelectionMode.None)
+            if (DipSelectionMode != SelectionMode.None && DipSelectedItem != item)
             {
-                if (DipItemsSource is IList collection)
+                if (item is null)
                 {
-                    DipSelectedItem = collection[index];
+                    b_DipSelectedItems.Clear();
+                    DipSelectedItem = null;
+                    DipSelectedIndex = -1;
                     return;
                 }
-                int i = 0;
-                foreach (var item in DipItemsSource)
+
+                _manuallyCallingSelectionChanged = true;
+                List<object> oldItems = null;
+
+                if (DipSelectionMode != SelectionMode.Multi)
                 {
-                    if (i == index)
-                    {
-                        DipSelectItem(item);
-                        return;
-                    }
-                    i++;
+                    oldItems = new List<object>(b_DipSelectedItems);
+                    b_DipSelectedItems.Clear();
                 }
+                else if (b_DipSelectedItems.IndexOf(item) is int currentIndex && currentIndex > -1)
+                {
+                    b_DipSelectedItems.Move(currentIndex, b_DipSelectedItems.Count - 1);
+                }
+
+                b_DipSelectedItems.Add(item);
+                var newItems = new List<object> { item };
+                DipSelectedItem = item;
+                DipSelectedIndex = DipItemsSource.IndexOf(item);
+
+                DipSelectionChanged?.Invoke(this, new SelectionChangedEventArgs(this, oldItems,newItems));
+                _manuallyCallingSelectionChanged = false;
             }
         }
 
-        void DipSelectItem(object item)
+        public void DipDeselectItem(object item)
         {
-            if (DipSelectionMode != SelectionMode.None)
+            if (b_DipSelectedItems.Contains(item))
+                b_DipSelectedItems.Remove(item);
+
+            if (DipSelectedItem == item)
             {
-                if (_repondingToSelectedItemsCollectionChanged)
-                    return;
-                if (DipSelectionMode == SelectionMode.Single)
+                if (b_DipSelectedItems.Any())
                 {
-                    if (!b_DipSelectedItems.Contains(item))
-                    {
-                        b_DipSelectedItems.Clear();
-                        b_DipSelectedItems.Add(item);
-                    }
+                    DipSelectedItem = b_DipSelectedItems.Last();
+                    b_DipSelectedIndex = DipItemsSource.IndexOf(DipSelectedItem);
                 }
-                else if (DipSelectionMode == SelectionMode.Multi)
+                else
                 {
-                    if (b_DipSelectedItems.Contains(item))
-                        b_DipSelectedItems.Remove(item);
-                    else
-                        b_DipSelectedItems.Add(item);
+                    DipSelectedIndex = -1;
+                    DipSelectedItem = null;
                 }
             }
         }
 
-        bool _repondingToSelectedItemsCollectionChanged;
+        bool _manuallyCallingSelectionChanged;
         private void DipOnSelectedItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            _repondingToSelectedItemsCollectionChanged = true;
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                case NotifyCollectionChangedAction.Remove:
-                case NotifyCollectionChangedAction.Replace:
-                case NotifyCollectionChangedAction.Reset:
-                    if (e.NewItems?.Any() ?? false)
-                        DipSelectedItem = e.NewItems[0];
-                    else if (DipSelectedItem != null && (e.OldItems?.Contains(DipSelectedItem) ?? false))
-                        DipSelectedItem = null;
-                    DipSelectionChanged?.Invoke(this, new SelectionChangedEventArgs(this, e.OldItems, e.NewItems));
-                    break;
-                case NotifyCollectionChangedAction.Move:
-                default:
-                    break;
-            }
-            _repondingToSelectedItemsCollectionChanged = false;
+            if (!_manuallyCallingSelectionChanged)
+                DipSelectionChanged?.Invoke(this, new SelectionChangedEventArgs(this, e.OldItems, e.NewItems));
         }
         #endregion
     }

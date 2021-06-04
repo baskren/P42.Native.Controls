@@ -196,6 +196,7 @@ namespace Demo.Droid
                 var popup = new P42.Native.Controls.TargetedPopup(sender as SegmentButton)
                 {
                     DipContent = content,
+                    DipMargin = (Thickness)50,
                     DipBackgroundColor = Color.Aquamarine,
                     DipBorderColor = Color.Transparent,
                     DipPreferredPointerDirection = segment.Text == "UP"

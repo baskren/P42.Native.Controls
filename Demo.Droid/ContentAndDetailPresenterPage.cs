@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using Android.Widget;
 using P42.Native.Controls;
 
 namespace Demo.Droid
@@ -14,34 +15,58 @@ namespace Demo.Droid
                 "Item A1", "Item B1", "Item C1", "Item D1", "Item E1", "Item F1", "Item G1", "Item H1", "Item I1", "Item J1", "Item K1", "Item L1", "Item M1", "Item N1", "Item O1", "Item P1", "Item Q1", "Item R1", "Item S1", "Item T1", "Item U1", "Item V1", "Item W1", "Item X1", "Item Y1", "Item Z1",
         };
 
-        ListView _listView;
+        P42.Native.Controls.ListView _listView;
 
         public ContentAndDetailPresenterPage()
         {
-            DipContent = new ListView()
+            var grid = new GridLayout(Context)
+            {
+                RowCount = 2,
+                ColumnCount = 1,
+                LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent),
+            };
+
+
+
+            DipContent = new P42.Native.Controls.ListView()
                 .Assign(out _listView)
                 .ItemViewType(typeof(TextCell))
                 .ItemsSource(items)
-                .SelectionMode(SelectionMode.Single);
+                .SelectionMode(SelectionMode.Radio);
 
             _listView.DipSelectionChanged += OnSelectionChanged;
+            //_listView.DipItemClick += OnItemClick;
+        }
 
-            _listView.DipItemClick += OnItemClick;
+        bool _disposed;
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && !_disposed)
+            {
+                _disposed = true;
+                _listView.DipSelectionChanged -= OnSelectionChanged;
+                _listView.DipItemClick -= OnItemClick;
+            }
+            base.Dispose(disposing);
         }
 
         async void OnItemClick(object sender, ItemClickEventArgs args)
         {
-            ListView littleList;
+
+            P42.Native.Controls.ListView littleList;
             var cell = (TextCell)args.CellElement;
             var label = cell._valueLabel;
             var popup = new TargetedPopup(label)
             {
-                DipContent = new ListView()
+                DipBackgroundColor = Android.Graphics.Color.White,
+                DipContent = new P42.Native.Controls.ListView()
                     .Assign(out littleList)
                     .ItemsSource(items)
                     .SelectionMode(SelectionMode.None)
                     .DipRequestedHeight(300)
-                    .DipRequestedWidth(300)
+                    .DipRequestedWidth(300),
+                DipPreferredPointerDirection = PointerDirection.Any,
+                DipMargin = (Thickness)50
             };
             littleList.DipItemClick += async (s, e) =>
             {

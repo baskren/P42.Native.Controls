@@ -10,7 +10,7 @@ namespace P42.Native.Controls
         
         #region Properties
         Orientation b_DipOrientation;
-        public Orientation DipOrientation
+        internal Orientation DipOrientation
         {
             get => b_DipOrientation;
             set => SetField(ref b_DipOrientation, value, UpdateRadii);

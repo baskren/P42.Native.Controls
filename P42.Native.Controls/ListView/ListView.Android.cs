@@ -71,6 +71,7 @@ namespace P42.Native.Controls
         {
             if (!_disposed && disposing)
             {
+                SharedDispose();
                 PxCellHeights.CollectionChanged -= OnNativeCellHeights_CollectionChanged;
                 RemoveNativeListView();
                 DipHeader?.Dispose();
@@ -141,19 +142,6 @@ namespace P42.Native.Controls
         {
             if (DipFooter is View footer)
                 _nativeListView.AddFooterView(footer);
-        }
-        #endregion
-
-
-        #region Selection
-
-        internal async partial Task DipOnCellTapped(Cell cell)
-        {
-            System.Diagnostics.Debug.WriteLine("ListView. CLICK");
-            DipSelectItem(cell.DipDataContext);
-            await Task.Delay(10);
-            if (DipIsItemClickEnabled)
-                DipItemClick?.Invoke(this, new ItemClickEventArgs(this, cell.DipDataContext, cell));
         }
         #endregion
 
