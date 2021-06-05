@@ -8,7 +8,7 @@ using Color = Android.Graphics.Color;
 namespace P42.Native.Controls
 {
     [SimpleTrait]
-    partial class TLabel : TElement, ILabel
+    public partial class TLabel : TElement, ILabel
     {
     
         #region Properties

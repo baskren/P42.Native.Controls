@@ -6,19 +6,19 @@ using System.Text;
 
 namespace P42.Native.Controls
 {
-    public delegate void ItemClickEventHandler(object sender, ItemClickEventArgs e);
+    public delegate void ItemClickEventHandler<T>(object sender, ItemClickEventArgs<T> e);
 
     public delegate void SelectionChangedEventHandler(object sender, SelectionChangedEventArgs e);
 
-    public class ItemClickEventArgs
+    public class ItemClickEventArgs<T>
     {
         public object OriginalSource { get; private set; }
 
         public object ClickedItem { get; private set; }
 
-        public Cell CellElement { get; private set; }
+        public T CellElement { get; private set; }
 
-        internal ItemClickEventArgs(object simpleListView, object clickedItem, Cell cellElement)
+        internal ItemClickEventArgs(object simpleListView, object clickedItem, T cellElement)
         {
             OriginalSource = simpleListView;
             ClickedItem = clickedItem;

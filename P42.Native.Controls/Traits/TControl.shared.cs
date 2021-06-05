@@ -9,7 +9,7 @@ using Color = Android.Graphics.Color;
 namespace P42.Native.Controls
 {
     [SimpleTrait]
-    partial class TControl : TElement, IControl
+    public partial class TControl : TElement, IControl
     {
 
         #region Defaults

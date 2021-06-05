@@ -9,7 +9,7 @@ using SmartTraitsDefs;
 namespace P42.Native.Controls
 {
     [SimpleTrait]
-    partial class TNotifiable : INotifiable
+    public partial class TNotifiable : INotifiable
     {
         #region Events
         public event PropertyChangedEventHandler PropertyChanged;

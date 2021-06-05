@@ -35,7 +35,7 @@ namespace Demo.Droid
                 .SelectionMode(SelectionMode.Radio);
 
             _listView.DipSelectionChanged += OnSelectionChanged;
-            //_listView.DipItemClick += OnItemClick;
+            _listView.DipItemClick += OnItemClick;
         }
 
         bool _disposed;
@@ -50,7 +50,7 @@ namespace Demo.Droid
             base.Dispose(disposing);
         }
 
-        async void OnItemClick(object sender, ItemClickEventArgs args)
+        async void OnItemClick(object sender, ItemClickEventArgs<Cell> args)
         {
 
             P42.Native.Controls.ListView littleList;

@@ -6,7 +6,7 @@ using SmartTraitsDefs;
 namespace P42.Native.Controls
 {
     [SimpleTrait]
-    partial class TElement : TNotifiable, IElement
+    public partial class TElement : TNotifiable, IElement
     {
 
 

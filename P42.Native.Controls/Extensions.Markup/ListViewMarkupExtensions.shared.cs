@@ -42,7 +42,7 @@ namespace P42.Native.Controls
         public static ElementType ItemViewTypeSelector<ElementType>(this ElementType element, IItemTypeSelector value) where ElementType : ListView
         { element.DipItemViewTypeSelector = value; return element; }
 
-        public static ElementType ItemClick<ElementType>(this ElementType element, ItemClickEventHandler value) where ElementType : ListView
+        public static ElementType ItemClick<ElementType>(this ElementType element, ItemClickEventHandler<Cell> value) where ElementType : ListView
         { element.DipItemClick += value; return element; }
 
         public static ElementType SelectionChanged<ElementType>(this ElementType element, SelectionChangedEventHandler value) where ElementType : ListView
